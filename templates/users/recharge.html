@@ -1,0 +1,16 @@
+<html>
+	<head>
+		<title>Recharge - {{ user }}</title>
+	</head>
+	<body>
+		<div><strong>{{user}}</strong>,</div>
+		Available options are:
+		<ul>
+			{% for plan in plans %}
+			<li><a href="pre-process-payment">{{plan.name}}</a></li>
+			{% endfor %}
+		</ul>
+
+		<a href="logout">logout</a>
+	</body>
+</html>

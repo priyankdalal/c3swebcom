@@ -1,0 +1,105 @@
+$(document).ready(function(){
+    $(".close-w3-modal").click(function(){
+        $(".w3-modal").hide();
+    });
+    $("#show_add_client_modal").click(function(){
+        $("#add_client_modal").show();
+    });
+    $("#add_client").click(function(){
+        var client={
+            name:$("#client_name_input").val(),
+            address:($("#client_address_input"))?$("#client_address_input").val():'',
+            phone:($("#client_address_input"))?$("#client_phone_input").val():'',
+            mobile:$("#client_mobile_input").val(),
+            plan:$("#client_plan_input").val(),
+            zone:$("#client_zone_input").val(),
+            type:($("input[name='type']:checked"))?$("input[name='type']:checked").val():'personal',
+            pan:($("#client_pan_input"))?$("#client_pan_input").val():'',
+            email:($("#client_email_input"))?$("#client_email_input").val():'',
+            sms:($("input[name='sms']:checked"))?$("input[name='sms']:checked").val():'yes',
+            comments:($("#client_comments_input"))?$("#client_comments_input").val():'',
+            csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")
+        };
+        if(!client.name || !client.mobile || !client.plan || !client.zone){
+            $(".w3-modal").hide();
+            $(".w3-panel","#alert_modal").addClass("w3-red");
+            $("#alert_msg").html("one or more field is empty.");
+            $("#alert_modal").show();
+            return false;
+        }
+
+        $.ajax({
+            url:"add-client",
+            type:"POST",
+            data:client,
+            error:function(e){
+                $(".w3-modal").hide();
+                $(".w3-panel","#alert_modal").addClass("w3-red");
+                $("#alert_msg").html(e.msg);
+                $("#alert_modal").show();
+                $("#client_name_input").val('');
+            },
+            success:function(r){
+                if(!r.error){
+                    $(".w3-modal").hide();
+                    $(".w3-panel","#alert_modal").removeClass("w3-red").addClass("w3-blue");
+                    $("#alert_msg").html(r.response);
+                    $("#alert_modal").show();
+                    window.setTimeout(function(){window.location.reload();},2000);
+                }
+                else{
+                    $(".w3-modal").hide();
+                    $(".w3-panel","#alert_modal").removeClass("w3-blue").addClass("w3-red");
+                    $("#alert_msg").html(r.msg);
+                    $("#alert_modal").show();
+                    $("#client_name_input").val('');
+                }
+            }
+        });
+    });
+    $(".delete-client.action").click(function(){
+        $(this).prop("disabled",true);
+    });
+    $(".delete-client.abort").click(function(){
+        $(this).siblings(".action").prop("disabled",false);
+    });
+    $(".delete-client.confirm").click(function(){
+        var id=$(this).attr("data-id");
+        if(!!id){
+            $.ajax({
+                url:"remove-client",
+                type:"POST",
+                data:{id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+                error:function(e){
+                    $(".w3-modal").hide();
+                    $(".w3-panel","#alert_modal").addClass("w3-red");
+                    $("#alert_msg").html(e.msg);
+                    $("#alert_modal").show();
+                    $("#client_name_input").val('');
+                },
+                success:function(r){
+                    if(!r.error){
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-red").addClass("w3-blue");
+                        $("#alert_msg").html(r.response);
+                        $("#alert_modal").show();
+                        window.setTimeout(function(){window.location.reload();},2000);
+                    }
+                    else{
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-blue").addClass("w3-red");
+                        $("#alert_msg").html(r.msg);
+                        $("#alert_modal").show();
+                        $("#client_name_input").val('');
+                    }
+                }
+            });
+        }
+        else{
+            $(".w3-modal").hide();
+            $(".w3-panel","#alert_modal").addClass("w3-red");
+            $("#alert_msg").html("No zone selected to remove.");
+            $("#alert_modal").show();
+        }
+    });
+});

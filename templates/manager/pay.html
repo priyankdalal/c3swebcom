@@ -1,0 +1,42 @@
+{% extends "common/default.html" %}
+{% block content %}
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+    <header class="w3-container" style="padding-top:22px">
+        <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
+    </header>
+    <div class="w3-container">
+        <div class="quick-links w3-panel w3-light-gray w3-card">
+                Quick links
+            <table class="w3-table-all w3-margin-top" id="pay_table">
+                <thead>
+                    <tr class="w3-blue">
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="name" placeholder="Enter name" /></th>
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="address" placeholder="Enter address" /></th>
+                        <th></th>
+                        <th></th>
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="phone" placeholder="Enter phone" /></th>
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="mobile" placeholder="Enter mobile" /></th>
+                        <th><button class="w3-button">Action</button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in user_list %}
+                        <tr>
+                            <td class="w3-center" data-filter="name">{{user.name}}</td>
+                            <td class="w3-center" data-filter="address">{{user.address}}</td>
+                            <td class="w3-center" data-filter="expiry">{{user.expiry_date}}</td>
+                            <td class="w3-center" data-filter="package">{{user.package}}</td>
+                            <td class="w3-center" data-filter="phone">{{user.phone}}</td>
+                            <td class="w3-center" data-filter="mobile">{{user.mobile}}</td>
+                            <td class="w3-center"><button class="w3-btn w3-blue" title="Pay" data-user="{{user.ccid}}"><i class="fa fa-plus-circle"></i></button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts%}
+<script src="/static/scripts/pay.js"></script>
+{% endblock %}

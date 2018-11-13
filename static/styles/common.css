@@ -1,0 +1,29 @@
+.confirm,.abort,.action[disabled]{
+    display: none;
+}
+.action[disabled] ~ .confirm,
+.action[disabled] ~ .abort{
+    display: inline-block;
+}
+/*components**********************/
+.toUppercase{
+    text-transform: uppercase;
+}
+.login-box{
+    width:440px;
+    margin: auto;
+}
+.quick-links ul{
+    list-style: none;
+    padding-left:0;
+    margin-bottom: 0;
+}
+.quick-links ul li{
+    display: inline-block;
+    width:24%;
+    text-align: center;
+}
+.quick-links ul li a,
+.quick-links ul li button{
+    width:100%;
+}
