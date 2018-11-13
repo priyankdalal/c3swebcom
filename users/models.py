@@ -15,13 +15,15 @@ class CsUsers(models.Model):
     package = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.CharField(max_length=100, blank=True, null=True)
+    domain = models.CharField(max_length=100)
 
     class Meta:
         managed = False
         db_table = 'cs_users'
+        unique_together = (('ccid', 'domain'),)
     def validateUser(user,password):
         if not user.strip() or not password.strip():
-            return False   
+            return False
         try:
             user_details=CsUsers.objects.get(ccid=user)
         except CsUsers.DoesNotExist:
@@ -39,4 +41,3 @@ class C3SPlans(models.Model):
     class Meta:
         managed = False
         db_table = 'c3s_plans'
-
