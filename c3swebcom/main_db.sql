@@ -6,6 +6,7 @@ use c3swebcom;
 drop table cs_users;
 
 create table cs_users(
+	id int not null auto_increment primary key,
 	ccid int not null,
     name varchar(100) not null,
     password varchar(100),
@@ -16,8 +17,7 @@ create table cs_users(
     phone varchar(100),
     mobile varchar(100),
     domain varchar(100),
-    primary key(ccid,domain))engine=innoDb;
-drop table cs_users;
+    unique key(ccid,domain))engine=innoDb;
 
 create table c3s_plans(
 	id int not null auto_increment primary key,
@@ -29,8 +29,19 @@ create table admin_users(
     name varchar(50) not null unique,
     password varchar(100) not null,
     role enum("admin","operator") default "operator")engine=innoDb;
+    
+create table ip_table(
+	id int not null auto_increment primary key,
+    user_id int not null references cs_users(id),
+    ip varchar(15) default "0.0.0.0",
+    status enum('enabled','disabled') default "enabled")engine=innoDb;
+    
+drop table ip_table;
 
 insert into admin_users(name,password,role) values("admin",sha1("admin1234"),"admin");
+select * from ip_table;
+select ccid,count(*) as cnt from ip_table group by ccid,domain having cnt>1;
+select count(*) from ip_table where status="disabled";
 
 
 insert into c3s_plans(name,price) values("unlimited_250",250.00);
@@ -45,3 +56,5 @@ show tables;
 select * from django_session;
 delete from django_session;
 truncate cs_users;
+select * from cs_users where ccid=19990;
+select distinct domain from cs_users;

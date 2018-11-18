@@ -17,3 +17,28 @@ $(".pay-filter").on("keyup",function(){
         table.find("tr").show();
     }
 });
+$(document).on("click",".c3s-payment-btn",function(){
+  var domain=$(this).data("domain");
+  var user=$(this).data("user");
+  do_payment(user,domain);
+});
+function do_payment(user,domain){
+  if (!!user && !!domain){
+    $.ajax({
+      type:"POST",
+      url:"do-payment",
+      data:{user:user,domain:domain,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      error:function(e){
+        console.log(e);
+      },
+      success:function(resp){
+        console.log(resp)
+        if (!resp.error & resp.payload==0){
+          alert("done");
+        }
+      }
+    });
+  }else{
+    alert("failed");
+  }
+}

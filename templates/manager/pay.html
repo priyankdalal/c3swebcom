@@ -1,21 +1,24 @@
 {% extends "common/default.html" %}
 {% block content %}
+{% load manager_extras %}
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
     <header class="w3-container" style="padding-top:22px">
         <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
     </header>
     <div class="w3-container">
-        <div class="quick-links w3-panel w3-light-gray w3-card">
+        <div class="quick-links w3-panel w3-light-gray w3-card w3-responsive">
                 Quick links
             <table class="w3-table-all w3-margin-top" id="pay_table">
                 <thead>
                     <tr class="w3-blue">
                         <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="name" placeholder="Enter name" /></th>
                         <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="address" placeholder="Enter address" /></th>
-                        <th></th>
-                        <th></th>
+                        <th>Expiry</th>
+                        <th>Package</th>
                         <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="phone" placeholder="Enter phone" /></th>
                         <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="mobile" placeholder="Enter mobile" /></th>
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="domain" placeholder="Enter domain" /></th>
+                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="ip" placeholder="Enter ip" /></th>
                         <th><button class="w3-button">Action</button></th>
                     </tr>
                 </thead>
@@ -28,11 +31,40 @@
                             <td class="w3-center" data-filter="package">{{user.package}}</td>
                             <td class="w3-center" data-filter="phone">{{user.phone}}</td>
                             <td class="w3-center" data-filter="mobile">{{user.mobile}}</td>
-                            <td class="w3-center"><button class="w3-btn w3-blue" title="Pay" data-user="{{user.ccid}}"><i class="fa fa-plus-circle"></i></button></td>
+                            <td class="w3-center" data-filter="domain">{{user.domain}}</td>
+                            <td class="w3-center" data-filter="ip">
+                              <ul class="w3-ul">
+                                {% with user_ip=user.ip %}
+                                {% for ip in user_ip|split:',' %}
+                                  <li>{{ ip }}</li>
+                                {% endfor %}
+                                {% endwith %}
+                              </ul>
+                            </td>
+                            <td class="w3-center"><button class="w3-btn w3-blue c3s-payment-btn" title="Pay" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plus-circle"></i></button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="w3-center w3-padding-16">
+              <div class="w3-bar w3-xlarge w3-border">
+                {% if user_list.has_previous %}
+                    <a href="?page=1" class="w3-button">&laquo; first</a>
+                    <a href="?page={{ user_list.previous_page_number }}" class="w3-button">previous</a>
+                {% else %}
+                  <a href="javascript:void(0)" class="w3-button w3-disabled">&laquo; first</a>
+                  <a href="javascript:void(0)" class="w3-button w3-disabled">previous</a>
+                {% endif %}
+                <a href="?page=1" class="w3-button w3-blue">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
+                {% if user_list.has_next %}
+                    <a href="?page={{ user_list.next_page_number }}" class="w3-button">next</a>
+                    <a href="?page={{ user_list.paginator.num_pages }}" class="w3-button">last &raquo;</a>
+                {% else %}
+                    <a href="?page={{ user_list.next_page_number }}" class="w3-button w3-disabled">next</a>
+                    <a href="?page={{ user_list.paginator.num_pages }}" class="w3-button w3-disabled">last &raquo;</a>
+                {% endif %}
+              </div>
+            </div>
         </div>
     </div>
 </div>
