@@ -6,3 +6,5 @@
 */__pycache__/*
 *.pyo
 *.pyc
+c3swebcom/settings.py
+c3swebcom/wsgi.py

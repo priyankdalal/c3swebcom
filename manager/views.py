@@ -3,10 +3,12 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
 from .models import AdminUsers
 from users.models import CsUsers
-import subprocess
-
+import logging
+import subprocess,os
+log=logging.getLogger(__name__)
 # Create your views here.
 def index(request):
+    log.debug("current directory is: {}".format(os.getcwd()))
     context={
         "title":"C3SWebcom - Login"
     }
