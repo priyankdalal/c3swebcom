@@ -9,7 +9,7 @@ class AdminUsers(models.Model):
     class Meta:
         managed = False
         db_table = 'admin_users'
-    
+
     def validateAdminUser(user,password):
         if not user.strip() or not password.strip():
             return False

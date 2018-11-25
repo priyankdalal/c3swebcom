@@ -21,6 +21,7 @@ class CsUsers(models.Model):
         managed = False
         db_table = 'cs_users'
         unique_together = (('ccid', 'domain'),)
+        ordering = ['-id']
     def validateUser(user,password):
         if not user.strip() or not password.strip():
             return False
