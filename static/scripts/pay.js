@@ -7,12 +7,22 @@ function filterTable(filter,table,needle) {
             $(td).parent().hide();
     }
 }
+var timer={};
 $(".pay-filter").on("keyup",function(){
     var val=$(this).val();
     var table=$("#pay_table");
     if(!!val){
         var filter=$(this).attr("data-filter");
         filterTable(filter,table,val);
+        if(!!timer)
+          clearTimeout(timer);
+        timer=setTimeout(function(){
+          var data={};
+          $(".pay-filter").each(function(){
+            data[$(this).data("filter")]=$(this).val();
+          });
+          get_filtered_data(data);
+        },1500);
     }else{
         table.find("tr").show();
     }
@@ -41,4 +51,16 @@ function do_payment(user,domain){
   }else{
     alert("failed");
   }
+}
+function get_filtered_data(filters){
+  alert("filtered data");
+  filters['csrfmiddlewaretoken']=$("meta[name='csrf_token']").attr("content");
+  $.ajax({
+    type:"POST",
+    url:"get-filtered-users",
+    data:filters,
+    success:function(resp){
+      console.log(resp);
+    }
+  });
 }
