@@ -8,3 +8,4 @@
 *.pyc
 c3swebcom/settings.py
 c3swebcom/wsgi.py
+c3swebcom/conf_vars.py
