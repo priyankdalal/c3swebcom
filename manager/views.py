@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
 from django.core import serializers
 from django.db.models import Q
+from c3swebcom import conf_vars
 import functools,operator
 from .models import AdminUsers
 from users.models import CsUsers
@@ -63,11 +64,13 @@ def do_payment(request):
                 user=request.POST['user'].strip()
                 domain=request.POST['domain'].strip()
                 try:
-                    process=subprocess.run(["python3","/home/priyank/Documents/development/python/ipacct_scripts/ipacct/payment.py","-u{}".format(user),"-h{}".format(domain)])
+                    process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-u{}".format(user),"-h{}".format(domain)])
                     '''with open("/tmp/stdoutjs.txt","w") outf:
                         outf.write(process.std)'''
                 except subprocess.CalledProcessError as err:
                     return JsonResponse({"error":True,"msg":err})
+                if process.returncode>0:
+                    return JsonResponse({"error":True,"msg":"failed to complete payment","payload":process.returncode})
                 return JsonResponse({"error":False,"msg":"done","payload":process.returncode})
             else:
                 return JsonResponse({"error":True,"msg":"parameters required."})
