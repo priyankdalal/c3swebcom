@@ -25,7 +25,7 @@ SECRET_KEY = '#dhon-me2^-ey&jyi=nqccgietblvcc97o%lhnhic!04y0v08j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.2.4','c3swebcom.in','www.c3swebcom.in']
+ALLOWED_HOSTS = ["localhost",'192.168.2.4','c3swebcom.in','www.c3swebcom.in']
 
 
 # Application definition
@@ -56,8 +56,8 @@ ROOT_URLCONF = 'c3swebcom.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        #'DIRS': [os.path.join(os.getcwd(),"templates").replace('\\','/'),],
-        'DIRS': ['/home/pi/c3swebcom/c3swebcom/templates/'],
+        'DIRS': [os.path.join(os.getcwd(),"templates").replace('\\','/'),],
+        #'DIRS': ['/home/pi/c3swebcom/c3swebcom/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'debug': True,
