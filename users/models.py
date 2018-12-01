@@ -11,7 +11,7 @@ class CsUsers(models.Model):
     password = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=500, blank=True, null=True)
     ip_count = models.IntegerField(blank=True, null=True)
-    expiry_date = models.CharField(max_length=10, blank=True, null=True)
+    expiry_date = models.DateField(blank=True, null=True)
     package = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     mobile = models.CharField(max_length=100, blank=True, null=True)

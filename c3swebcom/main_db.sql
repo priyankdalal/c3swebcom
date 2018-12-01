@@ -12,12 +12,14 @@ create table cs_users(
     password varchar(100),
     address varchar(500),
     ip_count int,
-    expiry_date varchar(10),
+    expiry_date date,
     package varchar(100),
     phone varchar(100),
     mobile varchar(100),
     domain varchar(100),
     unique key(ccid,domain))engine=innoDb;
+
+drop table cs_users;
 
 create table c3s_plans(
 	id int not null auto_increment primary key,
@@ -32,10 +34,12 @@ create table admin_users(
     
 create table ip_table(
 	id int not null auto_increment primary key,
-    user_id int not null references cs_users(id),
+    user_id int not null references cs_users(id) on delete cascade,
     ip varchar(15) default "0.0.0.0",
     status enum('enabled','disabled') default "enabled")engine=innoDb;
-    
+select cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) from cs_users cs inner join ip_table ip on cs.id=ip.user_id where cs.id=74 group by cs.ccid,cs.domain limit 10; 
+select user_id,count(*) as cnt from ip_table group by user_id having cnt>1;
+
 drop table ip_table;
 
 insert into admin_users(name,password,role) values("admin",sha1("admin1234"),"admin");
