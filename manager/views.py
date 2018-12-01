@@ -64,7 +64,7 @@ def do_payment(request):
                 user=request.POST['user'].strip()
                 domain=request.POST['domain'].strip()
                 try:
-                    process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-u{}".format(user),"-h{}".format(domain)])
+                    process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-d{}".format(domain),"-umitul","-p{}".format(conf_vars.AUTH[domain]["mitul"]), "-odo_payment","-c{}".format(user)])
                     '''with open("/tmp/stdoutjs.txt","w") outf:
                         outf.write(process.std)'''
                 except subprocess.CalledProcessError as err:
