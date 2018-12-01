@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#dhon-me2^-ey&jyi=nqccgietblvcc97o%lhnhic!04y0v08j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.2.4','c3swebcom.in','www.c3swebcom.in']
 
@@ -82,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "c3swebcom",
         'USER':"root",
-        'PASSWORD':"",
+        'PASSWORD':"prabha882009",
     }
 }
 
