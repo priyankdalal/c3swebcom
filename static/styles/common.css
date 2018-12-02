@@ -10,8 +10,23 @@
     text-transform: uppercase;
 }
 .login-box{
-    width:440px;
+    width:50%;
     margin: auto;
+}
+@media screen and (max-width:480px){
+  .login-box{
+    width:90%;
+  }
+}
+@media screen and (min-width:481px) and (max-width:640px){
+  .login-box{
+    width:80%;
+  }
+}
+@media screen and (min-width:641px) and (max-width:1024px){
+  .login-box{
+    width:65%;
+  }
 }
 .quick-links>ul{
     list-style: none;
