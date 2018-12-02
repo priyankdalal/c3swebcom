@@ -1,4 +1,5 @@
 from django.db import models
+from django.db import connection
 from hashlib import sha1
 import logging
 
@@ -36,6 +37,40 @@ class CsUsers(models.Model):
         return False
     def user_split(self,str1):
         return str1.split(",")
+    def get_filtered_user_list(filters):
+        with connection.cursor() as cursor:
+            where=''
+            if ("name" in filters and filters['name'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="name like '%{}%'".format(filters['name'])
+            if ("address" in filters and filters['address'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="address like '%{}%'".format(filters['address'])
+            if ("phone" in filters and filters['phone'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="phone like '%{}%'".format(filters['phone'])
+            if ("mobile" in filters and filters['mobile'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="mobile like '%{}%'".format(filters['mobile'])
+            if ("domain" in filters and filters['domain'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="domain like '%{}%'".format(filters['domain'])
+            if ("ip" in filters and filters['ip'].strip()):
+                if where.strip():
+                    where+=" and "
+                where+="it.ip like '%{}%'".format(filters['ip'])
+            try:
+                r=cursor.execute("select cs.ccid,cs.name,cs.address,cs.expiry_date,cs.package,cs.phone,cs.mobile,cs.domain,group_concat(it.ip,' ') ip from cs_users cs inner join ip_table it on cs.id=it.user_id where {} group by cs.id".format(where))
+                user_list=dictfetchall(cursor)
+                return user_list
+            except Exception as err:
+                print(err)
+                return false
 
 class C3SPlans(models.Model):
     name = models.CharField(max_length=30)
@@ -55,3 +90,10 @@ class IpTable(models.Model):
         db_table = 'ip_table'
     def get_tables():
         return IpTable.objects.all().select_related()
+def dictfetchall(cursor):
+    "Returns all rows from a cursor as a dict"
+    desc = cursor.description
+    return [
+            dict(zip([col[0] for col in desc], row))
+            for row in cursor.fetchall()
+    ]

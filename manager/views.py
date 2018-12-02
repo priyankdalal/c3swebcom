@@ -49,7 +49,7 @@ def pay(request):
         page=1
     else:
         page=request.GET.get("page")
-    paginator=Paginator(user_list,15)
+    paginator=Paginator(user_list,conf_vars.PAGINATION_ITEMS)
     user_list=paginator.get_page(page)
     context={
         "title":"C3SWebcom - Pay",
@@ -80,22 +80,32 @@ def do_payment(request):
 def get_filter_users(request):
     if request.is_ajax():
         if request.method=="POST":
-            filters=[]
-            if ("name" in request.POST and request.POST['name'].strip()):
-                filters.append(Q(name__icontains=request.POST['name']))
-            if ("address" in request.POST and request.POST['address'].strip()):
-                filters.append(Q(address__icontains=request.POST['address']))
-            if ("phone" in request.POST and request.POST['phone'].strip()):
-                filters.append(Q(phone__icontains=request.POST['phone']))
-            if ("mobile" in request.POST and request.POST['mobile'].strip()):
-                filters.append(Q(mobile__icontains=request.POST['mobile']))
-            if ("domain" in request.POST and request.POST['domain'].strip()):
-                filters.append(Q(domain__icontains=request.POST['domain']))
-            usr_list=CsUsers.objects.filter(functools.reduce(operator.and_,filters))
-            #usr_list.values_list("id","ccid","name","address","expiry_date","package","phone","mobile","domain")
-            usr_dict_json=serializers.serialize("json",usr_list)
-            usr_dict=json.loads(usr_dict_json)
-            return JsonResponse({"error":False,"msg":"done","payload":usr_dict})
+            try:
+                if not "page" in request.POST:
+                    page=1
+                else:
+                    page=request.POST.get("page")
+                user_list=CsUsers.get_filtered_user_list(request.POST)
+                if len(user_list)>conf_vars.PAGINATION_ITEMS:
+                    paginator=Paginator(user_list,conf_vars.PAGINATION_ITEMS)
+                    user_list=paginator.get_page(page)
+                    context={
+                        "user_list":user_list,
+                        "request_user":request.POST,
+                        "pagination":True
+                    }
+                else:
+                    context={
+                        "user_list":user_list,
+                        "request_user":request.POST,
+                        "pagination":False,
+                    }
+                return render(request,"manager/pay_filter.html",context)
+            except Exception as err:
+                print(err)
+            else:
+                return JsonResponse({"error":True,"msg":"internal error"})
+            #return JsonResponse({"error":False,"msg":"done","payload":usr_dict})
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})
     else:

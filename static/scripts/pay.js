@@ -7,25 +7,35 @@ function filterTable(filter,table,needle) {
             $(td).parent().hide();
     }
 }
-var timer={};
-$(".pay-filter").on("keyup",function(){
-    var val=$(this).val();
-    var table=$("#pay_table");
-    if(!!val){
-        var filter=$(this).attr("data-filter");
-        filterTable(filter,table,val);
-        if(!!timer)
-          clearTimeout(timer);
-        timer=setTimeout(function(){
-          var data={};
-          $(".pay-filter").each(function(){
+$(document).on("click",".filter-user-page",function(){
+  var data={};
+  data["page"]=$(this).data("page");
+  $(".pay-filter").each(function(){
+    if ($(this).val().trim())
+      data[$(this).data("filter")]=$(this).val();
+  });
+  get_filtered_data(data);
+});
+$(document).on("keyup",".pay-filter",function(){
+  var timer={};
+  var val=$(this).val();
+  var table=$("#pay_table");
+  if(!!val){
+      var filter=$(this).attr("data-filter");
+      //filterTable(filter,table,val);
+      if(!!timer)
+        clearTimeout(timer);
+      timer=setTimeout(function(){
+        var data={};
+        $(".pay-filter").each(function(){
+          if ($(this).val().trim())
             data[$(this).data("filter")]=$(this).val();
-          });
-          get_filtered_data(data);
-        },1500);
-    }else{
-        table.find("tr").show();
-    }
+        });
+        get_filtered_data(data);
+      },1500);
+  }else{
+      table.find("tr").show();
+  }
 });
 $(document).on("click",".c3s-payment-btn",function(){
   var domain=$(this).data("domain");
@@ -62,58 +72,12 @@ function get_filtered_data(filters){
     data:filters,
     success:function(resp){
       if(!resp.error){
-        make_pay_table_body(resp.payload)
+        //make_pay_table_body(resp.payload)
+        $("#pay_table_container_id").empty().html(resp)
       }else{
         var html="<tr align='center'><td colspan='9' class='w3-center w3-red'>No data to show.</td>";
         $("#pay_table_body").empty().html(html);
       }
     }
   });
-}
-function make_pay_table_body(data){
-  if(data.length>0){
-    html=""
-    for(var i in data){
-      var row_html=""
-      var fields=data[i].fields;
-      if(fields.hasOwnProperty("name"))
-        row_html+='<td class="w3-center" data-filter="name">'+ fields.name+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="name"></td>';
-      if(fields.hasOwnProperty("address"))
-        row_html+='<td class="w3-center" data-filter="address">'+ fields.address+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="address"></td>';
-      if(fields.hasOwnProperty("expiry_date"))
-        row_html+='<td class="w3-center" data-filter="expiry">'+ fields.expiry_date+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="expiry"></td>';
-      if(fields.hasOwnProperty("package"))
-        row_html+='<td class="w3-center" data-filter="package">'+ fields.package+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="package"></td>';
-      if(fields.hasOwnProperty("phone"))
-        row_html+='<td class="w3-center" data-filter="phone">'+ fields.phone+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="phone"></td>';
-      if(fields.hasOwnProperty("mobile"))
-        row_html+='<td class="w3-center" data-filter="mobile">'+ fields.mobile+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="mobile"></td>';
-      if(fields.hasOwnProperty("domain"))
-        row_html+='<td class="w3-center" data-filter="domain">'+ fields.domain+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="domain"></td>';
-      if(fields.hasOwnProperty("ip_count"))
-        row_html+='<td class="w3-center" data-filter="ip">'+ fields.ip_count+ '</td>';
-      else
-        row_html+='<td class="w3-center" data-filter="ip"></td>';
-      row_html+='<td class="w3-center"><button class="w3-btn w3-blue c3s-payment-btn" title="Pay" data-domain="'+ fields.domain+ '" data-user="'+ fields.ccid+ '"><i class="fa fa-plus-circle"></i></button></td>'
-      row_html="<tr>"+ row_html+ "</tr>";
-      html+=row_html;
-    }
-  }else{
-    var html="<tr align='center'><td class='w3-center w3-red' colspan='9'>No data to show.</td>";
-  }
-  $("#pay_table_body").empty().html(html);
 }
