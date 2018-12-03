@@ -1,5 +1,6 @@
 from django.db import models
 from django.db import connection
+from c3swebcom.utils import dict_fetch_all
 from hashlib import sha1
 import logging
 
@@ -66,7 +67,7 @@ class CsUsers(models.Model):
                 where+="it.ip like '%{}%'".format(filters['ip'])
             try:
                 r=cursor.execute("select cs.ccid,cs.name,cs.address,cs.expiry_date,cs.package,cs.phone,cs.mobile,cs.domain,group_concat(it.ip,' ') ip from cs_users cs inner join ip_table it on cs.id=it.user_id where {} group by cs.id".format(where))
-                user_list=dictfetchall(cursor)
+                user_list=dict_fetch_all(cursor)
                 return user_list
             except Exception as err:
                 print(err)
@@ -90,10 +91,3 @@ class IpTable(models.Model):
         db_table = 'ip_table'
     def get_tables():
         return IpTable.objects.all().select_related()
-def dictfetchall(cursor):
-    "Returns all rows from a cursor as a dict"
-    desc = cursor.description
-    return [
-            dict(zip([col[0] for col in desc], row))
-            for row in cursor.fetchall()
-    ]

@@ -41,19 +41,21 @@ $(document).on("click",".c3s-payment-btn",function(){
   var that=this;
   $("#payment_confirmation").data("domain",$(that).data("domain"));
   $("#payment_confirmation").data("user",$(that).data("user"));
+  $("#payment_confirmation").data("user_id",$(that).data("user_id"));
   $("#payment_modal").show();
 });
 $(document).on("click","#payment_confirmation",function(){
   var domain=$(this).data("domain");
   var user=$(this).data("user");
-  do_payment(user,domain);
+  var user_id=$(this).data("user_id");
+  do_payment(user,domain,id);
 });
-function do_payment(user,domain){
+function do_payment(user,domain,id){
   if (!!user && !!domain){
     $.ajax({
       type:"POST",
       url:"do-payment",
-      data:{user:user,domain:domain,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      data:{user_id:id,user:user,domain:domain,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       error:function(e){
         console.log(e);
       },
