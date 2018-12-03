@@ -25,19 +25,33 @@ create table c3s_plans(
 	id int not null auto_increment primary key,
     name varchar(30) not null,
     price float(6,2) not null default 0.00)engine=innoDb;
-    
+
 create table admin_users(
 	id int not null auto_increment primary key,
     name varchar(50) not null unique,
     password varchar(100) not null,
     role enum("admin","operator") default "operator")engine=innoDb;
-    
+
 create table ip_table(
 	id int not null auto_increment primary key,
     user_id int not null references cs_users(id) on delete cascade,
     ip varchar(15) default "0.0.0.0",
     status enum('enabled','disabled') default "enabled")engine=innoDb;
-select cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) from cs_users cs inner join ip_table ip on cs.id=ip.user_id where cs.id=74 group by cs.ccid,cs.domain limit 10; 
+
+create table cs_orders(
+			id int auto_increment not null primary key,
+		    user_id int references cs_users(id),
+		    initiator_id int default 0,
+		    initiator_type enum('admin','user') default "admin",
+		    plan varchar(100),
+		    value float(10,2) default 0.00,
+		    amount float(10,2) default 0.00,
+		    initiated_at datetime default current_timestamp,
+		    completed_at datetime,
+		    status enum('1','0') default '0',
+		    response varchar(100) default null
+		)ENGINE=InnoDB;
+select cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) from cs_users cs inner join ip_table ip on cs.id=ip.user_id where cs.id=74 group by cs.ccid,cs.domain limit 10;
 select user_id,count(*) as cnt from ip_table group by user_id having cnt>1;
 
 drop table ip_table;
