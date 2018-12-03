@@ -67,6 +67,28 @@
         </div>
     </div>
 </div>
+<!-- The Modal -->
+<div id="payment_modal" class="w3-modal payment-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-container w3-row">
+        <div class="w3-col l12 m12">
+          <h3>Do you really want to do payment?</h3>
+          <span class="w3-button w3-display-topright modal-close">&times;</span>
+      </div>
+      </div>
+      <div class="w3-container">
+        <div class="w3-row w3-panel">
+          <div class="w3-bar">
+            <button type="submit" class="w3-button padding-large w3-blue w3-right" id="payment_confirmation">Yes</button>
+            <button type="reset"class="w3-button padding-large w3-red w3-right w3-margin-right modal-cancel">No</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block scripts%}
 <script src="/static/scripts/pay.js"></script>

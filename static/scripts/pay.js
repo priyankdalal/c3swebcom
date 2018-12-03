@@ -38,6 +38,12 @@ $(document).on("keyup",".pay-filter",function(){
   }
 });
 $(document).on("click",".c3s-payment-btn",function(){
+  var that=this;
+  $("#payment_confirmation").data("domain",$(that).data("domain"));
+  $("#payment_confirmation").data("user",$(that).data("user"));
+  $("#payment_modal").show();
+});
+$(document).on("click","#payment_confirmation",function(){
   var domain=$(this).data("domain");
   var user=$(this).data("user");
   do_payment(user,domain);
