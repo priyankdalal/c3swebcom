@@ -89,6 +89,23 @@
     </div>
   </div>
 </div>
+<div id="error_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel w3-red">
+        <h3>Error</h3>
+          <div class="error-msg w3-color-red w3-margin-bottom" id="payment_error">
+            This is demo error message
+        </div>
+      </div>
+      <div class="w3-row w3-panel">
+        <div class="w3-bar">
+          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block scripts%}
 <script src="/static/scripts/pay.js"></script>

@@ -34,13 +34,14 @@ class AdminUsers(models.Model):
         if "initiator_id" in params:
             order.initiator_id=params['initiator_id']
         if "initiator_type" in params:
-            order.initiator_id=params['initiator_type']
+            order.initiator_type=params['initiator_type']
         if "plan" in params:
-            order.initiator_id=params['plan']
+            order.plan=params['plan']
         if "value" in params:
-            order.initiator_id=params['value']
+            order.value=params['value']
         if "amount" in params:
-            order.initiator_id=params['amount']
+            order.amount=params['amount']
+        order.save()
         return order.id
     def update_order_status(id):
         order=CsOrders.objects.get(pk=id)

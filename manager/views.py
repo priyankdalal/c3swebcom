@@ -65,11 +65,13 @@ def do_payment(request):
         if request.method=="POST":
             if "user_id" in request.POST and request.POST['user_id'].strip():
                 user=request.POST['user_id']
+                log.debug("payment request for {}".format(user))
                 user_data=CsUsers.objects.get(pk=request.POST.get("user_id"))
                 if not user_data:
                     return JsonResponse({"error":True,"msg":"This user doesnot exists. Stopping"})
                 ccid=user_data.ccid
                 domain=user_data.domain
+                log.info("ccid :{} and domain: {}".format(ccid,domain))
                 order_params={
                     "user_id":user_data.id,
                     "initiator_id":1,
@@ -78,16 +80,19 @@ def do_payment(request):
                 }
                 order_id=AdminUsers.create_order(order_params)
                 if (not order_id) or order_id<1:
+                    log.error("failed to create order, user id : {}".format(user))
                     return JsonResponse({"error":True,"msg":"Failed to create order. Stopping"})
+                log.info("order id : {}".format(order_id))
                 try:
                     process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-d{}".format(domain),"-umitul","-p{}".format(conf_vars.AUTH[domain]["mitul"]), "-odo_payment","-c{}".format(ccid)])
-                    '''with open("/tmp/stdoutjs.txt","w") outf:
-                        outf.write(process.std)'''
                 except subprocess.CalledProcessError as err:
+                    log.error("failed to call payment module")
                     return JsonResponse({"error":True,"msg":err})
                 if process.returncode>0:
+                    log.error("failed to do payment. error code: {}".format(process.returncode))
                     return JsonResponse({"error":True,"msg":"failed to complete payment","payload":process.returncode})
                 AdminUsers.update_order_status(order_id)
+                log.info("payment completed for {}".format(user))
                 return JsonResponse({"error":False,"msg":"done","payload":process.returncode})
             else:
                 return JsonResponse({"error":True,"msg":"parameters required."})

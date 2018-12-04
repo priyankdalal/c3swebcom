@@ -52,16 +52,20 @@ function do_payment(id){
       type:"POST",
       url:"do-payment",
       data:{user_id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      timeout:10000,
       error:function(e){
-        console.log(e);
+        $("#payment_modal").hide();
+        $("#payment_error").html(e.statusText);
+        $("#error_modal").show();
       },
       success:function(resp){
-        console.log(resp);
         if (!resp.error & resp.payload==0){
           alert("done");
         }else{
-          alert(resp.msg);
+          $("#payment_error").html(resp.msg);
+          $("#error_modal").show();
         }
+        $("#payment_modal").hide();
       }
     });
   }else{
