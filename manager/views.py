@@ -43,14 +43,17 @@ def pay(request):
     if not request.session.get("user"):
         return redirect("/manager")
     #user_list=CsUsers.objects.all()
-    user_list=CsUsers.objects.raw("select cs.id,cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) as `ip` from cs_users cs inner join ip_table ip on cs.id=ip.user_id group by cs.ccid,cs.domain")
+    user_list=CsUsers.objects.raw("select cs.id,cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) as `ip` from cs_users cs inner join ip_table ip on cs.id=ip.user_id group by cs.id")
     page=1
     if not "page" in request.GET:
         page=1
     else:
         page=request.GET.get("page")
-    paginator=Paginator(user_list,conf_vars.PAGINATION_ITEMS)
-    user_list=paginator.get_page(page)
+    try:
+        paginator=Paginator(list(user_list),conf_vars.PAGINATION_ITEMS)
+        user_list=paginator.get_page(page)
+    except Exception as err:
+        print(err)
     context={
         "title":"C3SWebcom - Pay",
         "user":request.session.get("user"),
@@ -60,17 +63,31 @@ def pay(request):
 def do_payment(request):
     if request.is_ajax():
         if request.method=="POST":
-            if "user" in request.POST and request.POST['user'].strip() and "domain" in request.POST and request.POST['domain'].strip():
-                user=request.POST['user'].strip()
-                domain=request.POST['domain'].strip()
+            if "user_id" in request.POST and request.POST['user_id'].strip():
+                user=request.POST['user_id']
+                user_data=CsUsers.objects.get(pk=request.POST.get("user_id"))
+                if not user_data:
+                    return JsonResponse({"error":True,"msg":"This user doesnot exists. Stopping"})
+                ccid=user_data.ccid
+                domain=user_data.domain
+                order_params={
+                    "user_id":user_data.id,
+                    "initiator_id":1,
+                    "plan":user_data.package,
+                    "value":150,
+                }
+                order_id=AdminUsers.create_order(order_params)
+                if (not order_id) or order_id<1:
+                    return JsonResponse({"error":True,"msg":"Failed to create order. Stopping"})
                 try:
-                    process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-d{}".format(domain),"-umitul","-p{}".format(conf_vars.AUTH[domain]["mitul"]), "-odo_payment","-c{}".format(user)])
+                    process=subprocess.run(["python3",conf_vars.IPACCT_HANDLER,"-d{}".format(domain),"-umitul","-p{}".format(conf_vars.AUTH[domain]["mitul"]), "-odo_payment","-c{}".format(ccid)])
                     '''with open("/tmp/stdoutjs.txt","w") outf:
                         outf.write(process.std)'''
                 except subprocess.CalledProcessError as err:
                     return JsonResponse({"error":True,"msg":err})
                 if process.returncode>0:
                     return JsonResponse({"error":True,"msg":"failed to complete payment","payload":process.returncode})
+                AdminUsers.update_order_status(order_id)
                 return JsonResponse({"error":False,"msg":"done","payload":process.returncode})
             else:
                 return JsonResponse({"error":True,"msg":"parameters required."})
