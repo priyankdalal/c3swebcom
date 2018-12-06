@@ -132,6 +132,21 @@ def get_filter_users(request):
             return JsonResponse({"error":True,"msg":"bad request method"})
     else:
         return JsonResponse({"error":True,"msg":"bad request"})
+def sync_users(request):
+    if request.is_ajax():
+        if request.method=="POST":
+            log.info("sending user sync command")
+            domain="epay.globalnoc.in"
+            try:
+                process=subprocess.Popen(["python3",conf_vars.IPACCT_HANDLER,"-d{}".format(domain),"-umitul","-p{}".format(conf_vars.AUTH[domain]["mitul"]), "-osync_users"])
+            except subprocess.CalledProcessError as err:
+                log.error("failed to call user_sync module")
+                return JsonResponse({"error":True,"msg":err})
+            return JsonResponse({"error":False,"msg":"Request summitted."})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    else:
+        return JsonResponse({"error":True,"msg":"bad request"})
 
 def logout(request):
     if request.session.get("user"):

@@ -1,0 +1,30 @@
+$(".sync-user").click(function(){
+  var websock=new WebSocket("ws://localhost:8180");
+  websock.addEventListener("message",function(e){
+    console.log(e.data);
+  });
+  websock.onopen=function(){
+    $.ajax({
+      type:"POST",
+      url:"sync-users",
+      data:{csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      timeout:10000,
+      error:function(e){
+        console.log(e);
+        $("#payment_error").html(e.statusText);
+        $("#error_modal").show();
+      },
+      success:function(res){
+        console.log(res);
+        websock.send("this");
+        if(res.error){
+          $("#payment_error").html(res.msg);
+          $("#error_modal").show();
+        }else{
+          $("#result_response").html(res.msg);
+          $("#result_modal").show();
+        }
+      }
+    });
+  };
+});

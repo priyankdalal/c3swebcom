@@ -9,11 +9,48 @@
                 Quick links
             <div class="w3-row">
                 <div class="w3-panel w3-col l3"><a href="pay" class="w3-button w3-blue w3-padding-large w3-block">Pay</a></div>
-                <div class="w3-panel w3-col l3"><a href="" class="w3-button w3-blue w3-padding-large w3-block">Reports</a></div>
+                <div class="w3-panel w3-col l3 sync-user"><a href="javascript:void(0)" class="w3-button w3-blue w3-padding-large w3-block">Sync Usrs</a></div>
                 <div class="w3-panel w3-col l3"><a href="" class="w3-button w3-blue w3-padding-large w3-block">Orders</a></div>
                 <div class="w3-panel w3-col l3"><a href="" class="w3-button w3-blue w3-padding-large w3-block">Demo</a></div>
             </div>
         </div>
     </div>
 </div>
+<div id="error_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-red">
+        <h3>Error</h3>
+          <div class="error-msg w3-color-red w3-margin-bottom" id="payment_error">
+            This is demo error message
+        </div>
+      </div>
+      <div class="w3-row w3-panel">
+        <div class="w3-bar">
+          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="result_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-blue">
+        <h3>Success</h3>
+          <div class="error-msg w3-color-red w3-margin-bottom" id="result_response">
+            This is demo error message
+        </div>
+      </div>
+      <div class="w3-row w3-panel">
+        <div class="w3-bar">
+          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts%}
+<script src="/static/scripts/dashboard.js"></script>
 {% endblock %}
