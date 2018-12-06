@@ -32,7 +32,7 @@ $(document).on("keyup",".pay-filter",function(){
             data[$(this).data("filter")]=$(this).val();
         });
         get_filtered_data(data);
-      },1500);
+      },3000);
   }else{
       table.find("tr").show();
   }
