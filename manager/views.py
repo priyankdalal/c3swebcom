@@ -10,7 +10,7 @@ from users.models import CsUsers
 import logging
 import subprocess,os
 log=logging.getLogger(__name__)
-import subprocess, json
+import json
 # Create your views here.
 def index(request):
     log.debug("current directory is: {}".format(os.getcwd()))

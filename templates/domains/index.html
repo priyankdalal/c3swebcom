@@ -1,0 +1,65 @@
+{% extends "common/default.html" %}
+{% block content %}
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+    <header class="w3-container" style="padding-top:22px">
+        <h5><b><i class="fa fa-dashboard"></i> Dashboard </b></h5>
+    </header>
+    <div class="w3-container cs-card-container">
+        {% for domain in domains %}
+        <div class="w3-card-4 cs-card">
+          <header class="w3-container w3-orange">
+            <h3>{{ domain.name }}</h3>
+          </header>
+          <div class="card-contents">
+            <i class="fa fa-globe"></i>
+          </div>
+          <footer class="w3-container">
+            <div class="w3-bar btn-group group-2">
+              <button type="submit" class="w3-button w3-green">Edit</button>
+              <button type="submit" class="w3-button w3-red">Delete</button>
+            </div>
+          </footer>
+        </div>
+        {% endfor %}
+        <div class="w3-card-4 cs-card blank-card">
+          <button id="d_a_btn">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+    </div>
+</div>
+<div id="domain_add_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-blue">
+        <h3>Add Domain</h3>
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-padding modal-body">
+        <div class="w3-panel"><label class="w3-margin-top">Name:</label><input class="w3-input" id="n_d_n" name="n_d_n" placeholder="Enter name" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Url</label><input class="w3-input" id="n_d_u" name="n_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Username:</label><input class="w3-input" id="n_d_un" name="n_d_un" placeholder="Enter name" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Password:</label><input class="w3-input" id="n_d_up" name="n_d_up" placeholder="Enter name" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Status:</label>
+        <select class="w3-input" name="n_d_st" id="n_d_st">
+          <option value="up">Up</option>
+          <option value="down">Down</option>
+        </select></div>
+      </div>
+    </div>
+    <div class="w3-panel w3-text-red" id="d_a_e"></div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-footer">
+        <div class="w3-bar">
+          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="d_a_s_btn">Add</button>
+          <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts%}
+<script src="/static/scripts/domain.js"></script>
+{% endblock %}

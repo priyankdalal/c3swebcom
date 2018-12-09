@@ -16,35 +16,27 @@
         </div>
     </div>
 </div>
-<div id="error_modal" class="w3-modal">
-  <div class="w3-modal-content w3-animate-bottom">
-    <div class="w3-container">
-      <div class="w3-row w3-panel modal-head w3-red">
-        <h3>Error</h3>
-          <div class="error-msg w3-color-red w3-margin-bottom" id="payment_error">
-            This is demo error message
-        </div>
-      </div>
-      <div class="w3-row w3-panel">
-        <div class="w3-bar">
-          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div id="result_modal" class="w3-modal">
+<div id="domain_select_modal" class="w3-modal">
   <div class="w3-modal-content w3-animate-bottom">
     <div class="w3-container">
       <div class="w3-row w3-panel modal-head w3-blue">
-        <h3>Success</h3>
-          <div class="error-msg w3-color-red w3-margin-bottom" id="result_response">
-            This is demo error message
-        </div>
+        <h3>Sync Users For</h3>
       </div>
-      <div class="w3-row w3-panel">
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-body">
+        <label>Domain</label>
+        <select id="s_u_d_i" class="w3-input">103.55.88.18
+          <option value="epay.globalnoc.in">epay.globalnoc.in</option>
+          <option value="103.55.88.18">103.55.88.18</option>
+        </select>
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-footer">
         <div class="w3-bar">
-          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="s_u_d_i_btn">Sync</button>
+          <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
         </div>
       </div>
     </div>

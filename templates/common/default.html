@@ -39,6 +39,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <div class="w3-bar-block">
     <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>&nbsp; Close Menu</a>
     <a href="#" class="w3-bar-item w3-button w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>&nbsp; Overview</a>
+    <a href="/domains" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cloud fa-fw"></i>&nbsp; Domains</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-diamond fa-fw"></i>&nbsp; Orders</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>&nbsp; News</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>&nbsp; General</a>
@@ -53,6 +54,68 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 {% block content %}{% endblock %}
+<div id="error_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-red">
+        <h3>Error</h3>
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="error-msg w3-color-red w3-margin-bottom" id="error_message">
+          This is demo error message
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel">
+        <div class="w3-bar">
+          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="result_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-blue">
+        <h3>Success</h3>
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="error-msg w3-color-red w3-margin-bottom" id="result_response">
+          This is demo error message
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel">
+        <div class="w3-bar">
+          <button type="reset" class="w3-button padding-large w3-blue w3-right modal-cancel">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="progress_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-blue">
+        <h3>Please Wait...</h3>
+      </div>
+      <span class="w3-button w3-display-topright modal-close">&times;</span>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-body">
+        <div class="w3-light-grey w3-round">
+          <div class="w3-blue w3-round progress-bar" id="progress_bar"></div>
+        </div>
+        <div class="w3-round">
+          <div class="w3-round progress-bar-text w3-center" id="progress_bar_text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">

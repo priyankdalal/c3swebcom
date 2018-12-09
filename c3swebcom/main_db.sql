@@ -5,6 +5,16 @@ use c3swebcom;
 
 drop table cs_users;
 
+create table cs_domains(
+id int not null auto_increment primary key,
+name varchar(100) not null,
+url varchar(100) not null unique,
+auth_user varchar(100),
+auth_pass varchar(100),
+created_on datetime default current_timestamp,
+status enum('up','down') default 'up'
+)engine=innoDb;
+
 create table cs_users(
 	id int not null auto_increment primary key,
 	ccid int not null,
