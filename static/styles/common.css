@@ -28,6 +28,9 @@
     width:65%;
   }
 }
+.w3-panel{
+  position: relative;
+}
 .quick-links>ul{
     list-style: none;
     padding-left:0;
@@ -54,6 +57,7 @@
   float: left;
   width:23%;
   margin:1%;
+  min-width: 225px;
 }
 .cs-card.blank-card{
   height: 250px;
@@ -66,9 +70,12 @@
   background-color:white;
   border:none;
 }
-.cs-card header,
-.cs-card footer{
+.cs-card header{
   height: 50px;
+  text-align: center;
+}
+.cs-card footer{
+  height: 42px;
   text-align: center;
 }
 .cs-card h3{
@@ -76,10 +83,9 @@
   line-height: 1.4;
 }
 .cs-card .card-contents{
-  height: 150px;
+  height: 158px;
   line-height: 150px;
   text-align:center;
-  font-size: 72px;
   background-color:#5d7cba;
 }
 @media (max-width:768px){
@@ -116,4 +122,12 @@
 }
 .btn-group.group-2 button:last-child{
   margin-left: 1%;
+}
+.input-helper{
+  position: absolute;
+  right: 18px;
+  bottom: 0;
+  background-color:rgba(0,0,0,0);
+  border:none;
+  outline:none;
 }

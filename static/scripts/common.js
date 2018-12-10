@@ -15,3 +15,14 @@ function show_result(msg){
 function hide_result(){
   $("#result_modal").hide();
 }
+$(".input-helper").click(function(){
+  var ty=$(this).data("for");
+  var i_e=$(this).parent().find("input");
+  if(ty=="visibility"){
+    if(i_e.attr("type")=="password"){
+      i_e.attr("type","text");
+    }else{
+      i_e.attr("type","password");
+    }
+  }
+});

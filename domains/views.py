@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.core import serializers
 from .models import CsDomains
 import logging
 log=logging.getLogger(__name__)
@@ -40,6 +41,41 @@ def add_domain(request):
                     return JsonResponse({"error":True,"msg":err})
             else:
                 return JsonResponse({"error":True,"msg":"domain exits"})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    else:
+        return JsonResponse({"error":True,"msg":"bad request"})
+def get_domain(request):
+    if not request.session.get("user"):
+        return JsonResponse({"error":True,"msg":"unauthorized user"})
+    #user_list=CsUsers.objects.all()
+    if request.is_ajax():
+        if request.method=="POST":
+            try:
+                domain=CsDomains.objects.get(pk=request.POST.get("id"))
+            except Exception as err:
+                return JsonResponse({"error":True,"msg":err})
+            return JsonResponse({"error":False,"payload":serializers.serialize("json",[domain,])})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    else:
+        return JsonResponse({"error":True,"msg":"bad request"})
+
+def save_domain(request):
+    if not request.session.get("user"):
+        return JsonResponse({"error":True,"msg":"unauthorized user"})
+    if request.is_ajax():
+        if request.method=="POST":
+            try:
+                domain=CsDomains.objects.get(pk=request.POST.get("id"))
+                domain.name=request.POST.get("nm")
+                domain.url=request.POST.get("url")
+                domain.auth_user=request.POST.get("un")
+                domain.auth_pass=request.POST.get("up")
+                domain.save()
+            except Exception as err:
+                return JsonResponse({"error":True,"msg":err})
+            return JsonResponse({"error":False,"msg":"{} saved".format(domain.name)})
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})
     else:

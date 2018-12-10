@@ -7,16 +7,19 @@
     <div class="w3-container cs-card-container">
         {% for domain in domains %}
         <div class="w3-card-4 cs-card">
-          <header class="w3-container w3-orange">
+          <header class="w3-container w3-teal">
             <h3>{{ domain.name }}</h3>
           </header>
           <div class="card-contents">
-            <i class="fa fa-globe"></i>
+            <div class="w3-row">
+              <i class="fa fa-globe"></i>
+              <strong>{{domain.url}}</strong>
+            </div>
           </div>
-          <footer class="w3-container">
+          <footer>
             <div class="w3-bar btn-group group-2">
-              <button type="submit" class="w3-button w3-green">Edit</button>
-              <button type="submit" class="w3-button w3-red">Delete</button>
+              <button type="submit" class="w3-button w3-green domain-edit" data-id="{{domain.id}}">Edit</button>
+              <button type="submit" class="w3-button w3-red domain-delete" data-id="{{domain.id}}">Delete</button>
             </div>
           </footer>
         </div>
@@ -53,6 +56,37 @@
       <div class="w3-row w3-panel modal-footer">
         <div class="w3-bar">
           <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="d_a_s_btn">Add</button>
+          <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="domain_edit_modal" class="w3-modal">
+  <div class="w3-modal-content w3-animate-bottom">
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-head w3-blue">
+        <h3>Edit Domain</h3>
+      </div>
+    </div>
+    <div class="w3-container">
+      <div class="w3-row w3-padding modal-body">
+        <div class="w3-panel"><label class="w3-margin-top">Name:</label><input class="w3-input" id="e_d_n" name="e_d_n" placeholder="Enter name" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Url</label><input class="w3-input" id="e_d_u" name="e_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Username:</label><input class="w3-input" id="e_d_un" name="e_d_un" placeholder="Enter name" /></div>
+        <div class="w3-panel"><label class="w3-margin-top">Password:</label><input type="password" class="w3-input" id="e_d_up" name="e_d_up" placeholder="Enter name" /><button class="input-helper" data-for="visibility"><i class="fa fa-eye"></i></div>
+        <div class="w3-panel"><label class="w3-margin-top">Status:</label>
+        <select class="w3-input" name="e_d_st" id="e_d_st">
+          <option value="up">Up</option>
+          <option value="down">Down</option>
+        </select></div>
+      </div>
+    </div>
+    <div class="w3-panel w3-text-red" id="d_a_e"></div>
+    <div class="w3-container">
+      <div class="w3-row w3-panel modal-footer">
+        <div class="w3-bar">
+          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="d_e_s_btn">Save</button>
           <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
         </div>
       </div>
