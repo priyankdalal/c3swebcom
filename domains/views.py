@@ -23,22 +23,17 @@ def add_domain(request):
         if request.method=="POST":
             try:
                 old=CsDomains.objects.get(url=request.POST.get("url"))
-            except Exception as err:
-                print("there")
-                err=str(err)
-                if err.find("does not exist")>-1:
-                    domain=CsDomains.objects.create()
-                    domain.name=request.POST.get("nm")
-                    domain.url=request.POST.get("url")
-                    domain.auth_user=request.POST.get("un")
-                    domain.auth_pass=request.POST.get("up")
-                    domain.save()
-                    if domain.id>0:
-                        return JsonResponse({"error":False,"msg":"domain added"})
-                    else:
-                        return JsonResponse({"error":True,"msg":"Failed to add domain"})
+            except CsDomains.DoesNotExist as err:
+                domain=CsDomains.objects.create()
+                domain.name=request.POST.get("nm")
+                domain.url=request.POST.get("url")
+                domain.auth_user=request.POST.get("un")
+                domain.auth_pass=request.POST.get("up")
+                domain.save()
+                if domain.id>0:
+                    return JsonResponse({"error":False,"msg":"domain added"})
                 else:
-                    return JsonResponse({"error":True,"msg":err})
+                    return JsonResponse({"error":True,"msg":"Failed to add domain"})
             else:
                 return JsonResponse({"error":True,"msg":"domain exits"})
         else:
@@ -73,9 +68,30 @@ def save_domain(request):
                 domain.auth_user=request.POST.get("un")
                 domain.auth_pass=request.POST.get("up")
                 domain.save()
+            except CsDomains.DoesNotExist as err:
+                return JsonResponse({"error":True,"msg":"{} does not exits".format(request.POST.get("url"))})
             except Exception as err:
                 return JsonResponse({"error":True,"msg":err})
             return JsonResponse({"error":False,"msg":"{} saved".format(domain.name)})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    else:
+        return JsonResponse({"error":True,"msg":"bad request"})
+
+def delete_domain(request):
+    if not request.session.get("user"):
+        return JsonResponse({"error":True,"msg":"unauthorized user"})
+    #user_list=CsUsers.objects.all()
+    if request.is_ajax():
+        if request.method=="POST":
+            try:
+                domain=CsDomains.objects.get(pk=request.POST.get("id"))
+                domain.delete()
+            except CsDomains.DoesNotExist as err:
+                    return JsonResponse({"error":True,"msg":"Domain does not exits"})
+            except Exception as err:
+                return JsonResponse({"error":True,"msg":err})
+            return JsonResponse({"error":False,"msg":"{} deleted.".format(domain.url)})
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})
     else:
