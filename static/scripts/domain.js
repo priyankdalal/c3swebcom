@@ -13,11 +13,16 @@ $(document).on("click",".domain-edit",function(){
   fetch_domain_info(d_id);
 });
 $(document).on("click",".domain-delete",function(){
-  if(!window.confirm("are you sure?"))
-    return false
   var d_id=$(this).data("id");
-  delete_domain(d_id);
+  lorel.args.push(d_id);
+  lorel.confirm("Are you sure?",lorel_delete);
+  //delete_domain(d_id);
 });
+function lorel_delete(r){
+  if(!!r){
+    delete_domain(lorel.args.pop());
+  }
+}
 function add_domain(){
   var nm=$("#n_d_n").val();
   var url=$("#n_d_u").val();

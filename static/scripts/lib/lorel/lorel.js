@@ -2,6 +2,7 @@
 	function LorelPopup(){
 		var id=new Date().getTime();
 		return {
+			args:[],
 			getVersion:function(){
 				return "1.0";
 			},
@@ -84,6 +85,7 @@
 				this.init({title:m,content:{msg:pmsg,align:"center"},actions:[{value:"Submit",onclick:"lorel.response(this.value,"+ callback+ ")"}]});
 			},
 			response:function(i,callback){
+				this.close();
 				if(!callback)
 					return false;
 				if(i.toLowerCase()=="yes")
@@ -93,7 +95,6 @@
 				}
 				else
 					callback(false);
-				this.close();
 			}
 		};
 	};

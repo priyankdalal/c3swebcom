@@ -26,16 +26,21 @@
     <div class="w3-container">
       <div class="w3-row w3-panel modal-body">
         <label>Domain</label>
-        <select id="s_u_d_i" class="w3-input">103.55.88.18
-          <option value="epay.globalnoc.in">epay.globalnoc.in</option>
-          <option value="103.55.88.18">103.55.88.18</option>
+        <select id="s_u_d_i" class="w3-input">
+          {% if not domains %}
+          <option value="">No domain to sync</option>
+          {% else %}
+          {% for domain in domains %}
+            <option value="{{domain.url}}">{{domain.name}}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
     <div class="w3-container">
       <div class="w3-row w3-panel modal-footer">
         <div class="w3-bar">
-          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="s_u_d_i_btn">Sync</button>
+          <button type="submit" {% if not domains %} disabled {% endif %}class="w3-button w3-margin-left padding-large w3-blue w3-right" id="s_u_d_i_btn">Sync</button>
           <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
         </div>
       </div>

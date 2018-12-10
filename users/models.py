@@ -66,7 +66,7 @@ class CsUsers(models.Model):
                     where+=" and "
                 where+="it.ip like '%{}%'".format(filters['ip'])
             try:
-                r=cursor.execute("select cs.id as 'id',cs.ccid,cs.name,cs.address,cs.expiry_date,cs.package,cs.phone,cs.mobile,cs.domain,group_concat(it.ip,' ') ip from cs_users cs inner join ip_table it on cs.id=it.user_id where {} group by cs.id".format(where))
+                r=cursor.execute("select cs.id as 'id',cs.ccid,cs.name,cs.address,cs.expiry_date,cs.package,cs.phone,cs.mobile,cs.domain,group_concat(it.ip,' ') ip from cs_users cs left join ip_table it on cs.id=it.user_id where {} group by cs.id".format(where))
                 user_list=dict_fetch_all(cursor)
                 return user_list
             except Exception as err:

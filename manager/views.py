@@ -7,6 +7,7 @@ from c3swebcom import conf_vars
 import functools,operator
 from .models import AdminUsers
 from users.models import CsUsers
+from domains.models import CsDomains
 import logging
 import subprocess,os
 log=logging.getLogger(__name__)
@@ -36,14 +37,15 @@ def dashboard(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Dashboard",
-        "user":request.session.get("user")
+        "user":request.session.get("user"),
+        "domains":CsDomains.objects.all(),
     }
     return render(request,"manager/dashboard.html",context)
 def pay(request):
     if not request.session.get("user"):
         return redirect("/manager")
     #user_list=CsUsers.objects.all()
-    user_list=CsUsers.objects.raw("select cs.id,cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) as `ip` from cs_users cs inner join ip_table ip on cs.id=ip.user_id group by cs.id")
+    user_list=CsUsers.objects.raw("select cs.id,cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) as `ip` from cs_users cs left join ip_table ip on cs.id=ip.user_id group by cs.id")
     page=1
     if not "page" in request.GET:
         page=1
