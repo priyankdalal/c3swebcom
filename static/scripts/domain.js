@@ -9,6 +9,7 @@ $(document).on("click","#d_e_s_btn",function(){
 });
 $(document).on("click",".domain-edit",function(){
   var d_id=$(this).data("id");
+  console.log(d_id);
   $("#d_e_s_btn").data("id",d_id);
   fetch_domain_info(d_id);
 });
@@ -64,7 +65,7 @@ function save_domain(){
     $.ajax({
       type:"POST",
       url:"save-domain",
-      data:{id:50,nm:nm,url:url,un:un,up:up,st:st,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      data:{id:id,nm:nm,url:url,un:un,up:up,st:st,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       timeout:10000,
       error:function(err){
         console.log(err)

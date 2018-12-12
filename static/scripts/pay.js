@@ -44,31 +44,35 @@ $(document).on("click",".c3s-payment-btn",function(){
 });
 $(document).on("click","#payment_confirmation",function(){
   var user_id=$(this).data("user_id");
-  var count=0;
   //do_payment(user_id);
   var websock=new WebSocket("ws://localhost:8180");
   websock.onmessage=function(e){
     var data=JSON.parse(e.data);
     console.log(data);
     if(!!data.error){
+      $("#progress_modal").hide();
+      $("#payment_modal").hide();
       $("#error_message").html(data.msg);
       $("#error_modal").show();
       websock.close();
     }
     else{
       //total=parseInt(data.total);
-      count++;
       $("#progress_modal").show();
-      $("#progress_bar").width((count*25)+"%");
+      $("#progress_bar").width(data.step+"%");
       $("#progress_bar_text").text(data.msg);
       if(!!data.end){
-        $("#progress_bar_text").text(data.msg);
+        $("#progress_bar_text").text(data.msg+ " next date: "+ data.date);
+        setTimeout(function(){
+          $("#progress_modal").hide();
+          $("#payment_modal").hide();
+        },1500);
         websock.close();
       }
     }
   };
   websock.onopen=function(){
-    websock.send(JSON.stringify({op:"do_payment",host:"epay.globalnoc.in",payload:"17207"}));
+    websock.send(JSON.stringify({op:"do_payment",host:"epay.globalnoc.in",payload:user_id+""}));
   };
 });
 function do_payment(id){
