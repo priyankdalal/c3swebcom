@@ -66,6 +66,8 @@ $(document).on("click","#payment_confirmation",function(){
         setTimeout(function(){
           $("#progress_modal").hide();
           $("#payment_modal").hide();
+          $("#result_response").html("Next due date of user is : <strong>"+ data.date +"</strong>");
+          $("#result_modal").show();
         },1500);
         websock.close();
       }
