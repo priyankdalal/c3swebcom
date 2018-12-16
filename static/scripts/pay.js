@@ -62,7 +62,7 @@ $(document).on("click","#payment_confirmation",function(){
           $("#progress_modal").hide();
           $("#payment_modal").hide();
           $("#result_response").html("Next due date of user is : <strong>"+ data.date +"</strong>");
-          $("#row_user_"+user_id).find("tr[data-filter='expiry']").text(data.date);
+          $("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
           $("#result_modal").show();
         },1500);
         websock.close();
