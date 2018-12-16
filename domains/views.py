@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core import serializers
+from django.db.utils import IntegrityError
 from .models import CsDomains
 import logging
 log=logging.getLogger(__name__)
@@ -70,8 +71,10 @@ def save_domain(request):
                 domain.save()
             except CsDomains.DoesNotExist as err:
                 return JsonResponse({"error":True,"msg":"{} does not exits".format(request.POST.get("url"))})
+            except IntegrityError as err:
+                return JsonResponse({"error":True,"msg":err.args[1]})
             except Exception as err:
-                return JsonResponse({"error":True,"msg":err})
+                return JsonResponse({"error":True,"msg":str(err)})
             return JsonResponse({"error":False,"msg":"{} saved".format(domain.name)})
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})

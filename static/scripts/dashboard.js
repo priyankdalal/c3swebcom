@@ -8,10 +8,11 @@ $(document).on("click","#s_u_d_i_btn",function(){
 });
 function sync_users(domain){
   $("#domain_select_modal").hide();
+  $("#progress_bar_text").text("connecting...");
+  $("#progress_modal").show();
   var websock=new WebSocket("ws://localhost:8180");
   websock.onmessage=function(e){
     var data=JSON.parse(e.data);
-    console.log(data);
     if(!!data.error){
       $("#error_message").html(data.msg);
       $("#error_modal").show();
@@ -29,12 +30,17 @@ function sync_users(domain){
     }
     if(!!data.end){
       $("#progress_modal").hide();
-      $("#result_response").html("Total Users : "+ data.total+ "<br>Inserted/Updated : "+ data.processed+ "<br>Skipped : "+ data.skipped);
+      $("#result_response").html("Total Users : "+ data.total+ "<br>Inserted/Updated : "+ data.processed+ "<br>IP Inserted for : "+ data.ip+ "<br>Skipped : "+ data.skipped);
       $("#result_modal").show();
       websock.close();
     }
   };
   websock.onopen=function(){
     websock.send(JSON.stringify({op:"sync_users",host:domain}));
+  };
+  websock.onerror=function(e){
+    $("#progress_modal").hide();
+    $("#error_message").html(e.type);
+    $("#error_modal").show();
   };
 }

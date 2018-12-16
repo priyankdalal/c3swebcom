@@ -116,13 +116,13 @@ function delete_domain(id){
       data:{id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       timeout:1000,
       error:function(err){
-        console.log(err)
         show_error(err.statusText);
       },
       success:function(r){
         if(!!r.error){
           show_error(r.msg);
         }else{
+          $("#domain_card_"+id).remove();
           show_result(r.msg);
         }
       }

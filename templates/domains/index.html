@@ -6,7 +6,7 @@
     </header>
     <div class="w3-container cs-card-container">
         {% for domain in domains %}
-        <div class="w3-card-4 cs-card">
+        <div class="w3-card-4 cs-card" id="domain_card_{{domain.id}}">
           <header class="w3-container w3-teal">
             <h3>{{ domain.name }}</h3>
           </header>
