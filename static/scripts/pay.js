@@ -16,23 +16,18 @@ $(document).on("click",".filter-user-page",function(){
   });
   get_filtered_data(data);
 });
-$(document).on("keyup",".pay-filter",function(){
-  var timer={};
+$(document).on("keyup",".pay-filter",function(e){
   var val=$(this).val();
   var table=$("#pay_table");
-  if(!!val){
+  if(!!val && e.keyCode==13){
       var filter=$(this).attr("data-filter");
       //filterTable(filter,table,val);
-      if(!!timer)
-        clearTimeout(timer);
-      timer=setTimeout(function(){
-        var data={};
-        $(".pay-filter").each(function(){
-          if ($(this).val().trim())
-            data[$(this).data("filter")]=$(this).val();
-        });
-        get_filtered_data(data);
-      },3000);
+      var data={};
+      $(".pay-filter").each(function(){
+        if ($(this).val().trim())
+          data[$(this).data("filter")]=$(this).val();
+      });
+      get_filtered_data(data);
   }else{
       table.find("tr").show();
   }
@@ -112,7 +107,11 @@ function get_filtered_data(filters){
     success:function(resp){
       if(!resp.error){
         //make_pay_table_body(resp.payload)
-        $("#pay_table_container_id").empty().html(resp)
+        rep_arr=resp.split("<!--resp-breaker-->");
+        $("#pay_table tbody").empty().html(rep_arr[0]);
+        if (rep_arr.length>1){
+          $(".pagination").empty().html(rep_arr[1]);
+        }
       }else{
         var html="<tr align='center'><td colspan='9' class='w3-center w3-red'>No data to show.</td>";
         $("#pay_table_body").empty().html(html);
