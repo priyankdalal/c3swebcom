@@ -39,45 +39,14 @@ $(document).on("click",".c3s-payment-btn",function(){
 });
 $(document).on("click","#payment_confirmation",function(){
   var user_id=$(this).data("user_id");
-  //do_payment(user_id);
-  var websock=new WebSocket("ws://localhost:8180");
-  websock.onmessage=function(e){
-    var data=JSON.parse(e.data);
-    console.log(data);
-    if(!!data.error){
-      $("#progress_modal").hide();
-      $("#payment_modal").hide();
-      $("#error_message").html(data.msg);
-      $("#error_modal").show();
-      websock.close();
-    }
-    else{
-      //total=parseInt(data.total);
-      $("#progress_modal").show();
-      $("#progress_bar").width(data.step+"%");
-      $("#progress_bar_text").text(data.msg);
-      if(!!data.end){
-        $("#progress_bar_text").text(data.msg+ " next date: "+ data.date);
-        setTimeout(function(){
-          $("#progress_modal").hide();
-          $("#payment_modal").hide();
-          $("#result_response").html("Next due date of user is : <strong>"+ data.date +"</strong>");
-          $("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
-          $("#result_modal").show();
-        },1500);
-        websock.close();
-      }
-    }
-  };
-  websock.onopen=function(){
-    websock.send(JSON.stringify({op:"do_payment",host:"epay.globalnoc.in",payload:user_id+""}));
-  };
+  create_order(user_id);
+
 });
-function do_payment(id){
+function create_order(id){
   if (!!id){
     $.ajax({
       type:"POST",
-      url:"do-payment",
+      url:"create-order",
       data:{user_id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       timeout:10000,
       error:function(e){
@@ -86,8 +55,8 @@ function do_payment(id){
         $("#error_modal").show();
       },
       success:function(resp){
-        if (!resp.error & resp.payload==0){
-          alert("done");
+        if (!resp.error & resp.payload>0){
+          do_payment(id,resp.payload)
         }else{
           $("#payment_error").html(resp.msg);
           $("#error_modal").show();
@@ -97,6 +66,46 @@ function do_payment(id){
     });
   }else{
     alert("failed");
+  }
+}
+function do_payment(user_id,order_id){
+  if(!!user_id && !!order_id){
+    var websock=new WebSocket("ws://localhost:8180");
+    websock.onmessage=function(e){
+      var data=JSON.parse(e.data);
+      console.log(data);
+      if(!!data.error){
+        $("#progress_modal").hide();
+        $("#payment_modal").hide();
+        $("#error_message").html(data.msg);
+        $("#error_modal").show();
+        websock.close();
+      }
+      else{
+        //total=parseInt(data.total);
+        $("#progress_modal").show();
+        $("#progress_bar").width(data.step+"%");
+        $("#progress_bar_text").text(data.msg);
+        if(!!data.end){
+          $("#progress_bar_text").text(data.msg+ " next date: "+ data.date);
+          setTimeout(function(){
+            $("#progress_modal").hide();
+            $("#payment_modal").hide();
+            $("#result_response").html("Next due date of user is : <strong>"+ data.date +"</strong>");
+            $("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
+            $("#result_modal").show();
+          },1500);
+          websock.close();
+        }
+      }
+    };
+    websock.onopen=function(){
+      websock.send(JSON.stringify({op:"do_payment",host:"epay.globalnoc.in",payload:user_id+"",order_load:order_id+""}));
+    };
+  }else{
+    $(".w3-modal").hide();
+    $("#error_message").text("js:payment:invalid request.");
+    $("#error_modal").show();
   }
 }
 function get_filtered_data(filters){

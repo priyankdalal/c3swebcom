@@ -101,6 +101,37 @@ def do_payment(request):
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})
     return JsonResponse({"error":True,"msg":"bad request"})
+def create_order(request):
+    if request.is_ajax():
+        if request.method=="POST":
+            if "user_id" in request.POST and request.POST['user_id'].strip():
+                user=request.POST['user_id']
+                log.debug("order request for {}".format(user))
+                user_data=CsUsers.objects.get(pk=request.POST.get("user_id"))
+                if not user_data:
+                    return JsonResponse({"error":True,"msg":"This user doesnot exists. Stopping"})
+                ccid=user_data.ccid
+                domain=user_data.domain
+                log.info("ccid :{} and domain: {}".format(ccid,domain))
+                order_params={
+                    "user_id":user_data.id,
+                    "initiator_id":1,
+                    "plan":user_data.package,
+                    "value":150,
+                }
+                order_id=AdminUsers.create_order(order_params)
+                if (not order_id) or order_id<1:
+                    log.error("failed to create order, user id : {}".format(user))
+                    return JsonResponse({"error":True,"msg":"Failed to create order. Stopping"})
+                log.info("order id : {}".format(order_id))
+
+                #AdminUsers.update_order_status(order_id)
+                return JsonResponse({"error":False,"msg":"done","payload":order_id})
+            else:
+                return JsonResponse({"error":True,"msg":"parameters required."})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    return JsonResponse({"error":True,"msg":"bad request"})
 def get_filter_users(request):
     if request.is_ajax():
         if request.method=="POST":
