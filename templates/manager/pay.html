@@ -23,7 +23,7 @@
                 </thead>
                 <tbody id="pay_table_body">
                     {% for user in user_list %}
-                        <tr>
+                        <tr id="row_user_{{user.id}}">
                             <td class="w3-center" data-filter="name">{{user.name}}</td>
                             <td class="w3-center" data-filter="address">{{user.address}}</td>
                             <td class="w3-center" data-filter="expiry">{{user.expiry_date}}</td>
