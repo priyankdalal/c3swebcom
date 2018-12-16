@@ -33,7 +33,7 @@
                             <td class="w3-center" data-filter="domain">{{user.domain}}</td>
                             <td class="w3-center" data-filter="ip">
                               <ul class="w3-ul">
-                                {% if user_ip %}
+                                {% if user.ip %}
                                   {% with user_ip=user.ip %}
                                     {% for ip in user_ip|split:',' %}
                                       <li>{{ ip }}</li>
