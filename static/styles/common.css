@@ -5,6 +5,13 @@
 .action[disabled] ~ .abort{
     display: inline-block;
 }
+/*colors**********************/
+.cs-red{
+    background-color:#f69e97 !important;
+}
+.cs-green{
+    background-color:#6f9670 !important;
+}
 /*components**********************/
 .toUppercase{
     text-transform: uppercase;
@@ -48,6 +55,9 @@
 .progress-bar{
   height: 5px;
   width:0%;
+}
+table>thead>tr>th{
+    line-height: 40px;
 }
 /************cards****************/
 .cs-card-container{

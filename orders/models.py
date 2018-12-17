@@ -4,7 +4,7 @@ from users.models import CsUsers
 # Create your models here.
 class CsOrders(models.Model):
     initiatorType=(("admin","admin"),("user","user"))
-    user_id = models.IntegerField(blank=True, null=True)#models.ForeignKey(CsUsers, models.PROTECT,db_column='id')
+    user = models.ForeignKey(CsUsers, models.PROTECT)
     initiator_id = models.IntegerField(blank=True, null=True)
     initiator_type = models.CharField(max_length=5,choices=initiatorType,default="admin")
     plan = models.CharField(max_length=100, blank=True, null=True)

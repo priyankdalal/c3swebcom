@@ -1,0 +1,45 @@
+{% extends "common/default.html" %}
+{% block content %}
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+    <header class="w3-container" style="padding-top:22px">
+        <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
+    </header>
+    <div class="w3-container">
+        <div class="quick-links w3-panel w3-light-gray w3-card">
+             <table class="w3-table-all w3-margin-top">
+                 <thead>
+                     <tr class="w3-blue">
+                         <th>Username</th><th>Address</th><th>By</th><th>plan</th><th>Value</th><th>Amount</th><th>Initiated At</th><th>Completed At</th><th>Status</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                 {% if order_list %}
+                     {% for order in order_list %}
+                         {% if order.status == '1' %}
+                            <tr class="w3-green">
+                         {% else %}
+                            <tr class="w3-red">
+                         {% endif %}
+                             <td>{{ order.user.name }}</td>
+                             <td>{{ order.user.address }}</td>
+                             <td>{{ order.initiator_id }}</td>
+                             <td>{{ order.plan }}</td>
+                             <td>{{ order.value }}</td>
+                             <td>{{ order.amount }}</td>
+                             <td>{{ order.initiated_at }}</td>
+                             <td>{{ order.completed_at }}</td>
+                             <td>{{ order.status }}</td>
+                         </tr>
+                     {% endfor %}
+                 {% else %}
+                     <tr><td colspan="9">No data to show</td></tr>
+                 {% endif %}
+                 </tbody>
+             </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts%}
+<!--<script src="/static/scripts/order.js"></script>-->
+{% endblock %}
