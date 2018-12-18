@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.db.utils import IntegrityError
+from django.http import JsonResponse
 from .models import CsOrders
 from c3swebcom import conf_vars
 import logging
@@ -29,3 +31,23 @@ def index(request):
         context['order_list']=order_list
 
     return render(request,"orders/index.html",context)
+def order_status_update(request):
+    if not request.session.get("user"):
+        return JsonResponse({"error":True,"msg":"unauthorized user"})
+    if request.is_ajax():
+        if request.method=="POST":
+            try:
+                order=CsOrders.objects.get(pk=request.POST.get("id"))
+                order.status=request.POST.get("status")
+                order.save()
+            except CsOrders.DoesNotExist as err:
+                return JsonResponse({"error":True,"msg":"order:{} does not exits".format(request.POST.get("id"))})
+            except IntegrityError as err:
+                return JsonResponse({"error":True,"msg":err.args[1]})
+            except Exception as err:
+                return JsonResponse({"error":True,"msg":str(err)})
+            return JsonResponse({"error":False,"msg":"order:{} status updated".format(order.id)})
+        else:
+            return JsonResponse({"error":True,"msg":"bad request method"})
+    else:
+        return JsonResponse({"error":True,"msg":"bad request"})

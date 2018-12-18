@@ -1,0 +1,23 @@
+.order-status-cell{
+  width:180px;
+}
+.order-status{
+  padding: 0 12px;
+}
+.order-status,
+.order-status-update{
+  width:112px;
+  line-height: 38px;
+}
+.order-status-update,
+.order-submit-btn{
+  display: none;
+}
+.order-status-cell.edit-mode .order-status-update,
+.order-status-cell.edit-mode .order-submit-btn{
+  display: block;
+}
+.order-status-cell.edit-mode .order-status,
+.order-status-cell.edit-mode .order-update-btn{
+  display: none;
+}
