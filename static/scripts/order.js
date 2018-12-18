@@ -35,6 +35,7 @@ function do_order_update(id,val){
           $("#td_"+id).removeClass("edit-mode");
           if(!!val){
             $("#td_"+id).closest("tr").removeClass("w3-red").addClass("w3-green");
+          }else{
             $("#td_"+id).closest("tr").removeClass("w3-green").addClass("w3-red");
           }
         }
