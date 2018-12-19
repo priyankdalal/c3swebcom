@@ -38,9 +38,11 @@ $(document).on("click",".c3s-payment-btn",function(){
   $("#payment_modal").show();
 });
 $(document).on("click","#payment_confirmation",function(){
+  $("#payment_modal").hide();
+  $("#progress_modal").show();
+  $("#progress_bar").width("1%");
   var user_id=$(this).data("user_id");
   create_order(user_id);
-
 });
 $(document).on("click",".c3s-update-btn",function(){
   var that=this;
@@ -66,18 +68,16 @@ function create_order(id){
       data:{user_id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       timeout:10000,
       error:function(e){
-        $("#payment_modal").hide();
-        $("#payment_error").html(e.statusText);
+        $("#error_message").html(e.statusText);
         $("#error_modal").show();
       },
       success:function(resp){
         if (!resp.error & resp.payload>0){
           do_payment(id,resp.payload)
         }else{
-          $("#payment_error").html(resp.msg);
+          $("#error_message").html(resp.msg);
           $("#error_modal").show();
         }
-        $("#payment_modal").hide();
       }
     });
   }else{
@@ -87,12 +87,17 @@ function create_order(id){
 function do_payment(user_id,order_id){
   if(!!user_id && !!order_id){
     var websock=new WebSocket("ws://localhost:8180");
+    websock.onerror=function(err){
+        $("#progress_modal").hide();
+        $("#error_message").html("Error occured while connecting to payment module. Please contact support.");
+        $("#error_modal").show();
+        websock.close();
+    }
     websock.onmessage=function(e){
       var data=JSON.parse(e.data);
       console.log(data);
       if(!!data.error){
         $("#progress_modal").hide();
-        $("#payment_modal").hide();
         $("#error_message").html(data.msg);
         $("#error_modal").show();
         websock.close();
@@ -106,7 +111,6 @@ function do_payment(user_id,order_id){
           $("#progress_bar_text").text(data.msg+ " next date: "+ data.date);
           setTimeout(function(){
             $("#progress_modal").hide();
-            $("#payment_modal").hide();
             $("#result_response").html("Next due date of user is : <strong>"+ data.date +"</strong>");
             $("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
             $("#result_modal").show();
@@ -115,8 +119,9 @@ function do_payment(user_id,order_id){
         }
       }
     };
-    websock.onopen=function(){
-      websock.send(JSON.stringify({op:"do_payment",host:"epay.globalnoc.in",payload:user_id+"",order_load:order_id+""}));
+    websock.onopen=function(e){
+      console.log(e);
+      websock.send(JSON.stringify({op:"do_payment",payload:user_id+"",order_load:order_id+""}));
     };
   }else{
     $(".w3-modal").hide();

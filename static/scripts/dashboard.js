@@ -11,6 +11,12 @@ function sync_users(domain){
   $("#progress_bar_text").text("connecting...");
   $("#progress_modal").show();
   var websock=new WebSocket("ws://localhost:8180");
+  websock.onerror=function(err){
+    $("#progress_modal").hide();
+    $("#error_message").html("Error occured while connecting to payment module. Please contact support.");
+    $("#error_modal").show();
+    websock.close();
+  }
   websock.onmessage=function(e){
     var data=JSON.parse(e.data);
     if(!!data.error){
@@ -37,10 +43,5 @@ function sync_users(domain){
   };
   websock.onopen=function(){
     websock.send(JSON.stringify({op:"sync_users",host:domain}));
-  };
-  websock.onerror=function(e){
-    $("#progress_modal").hide();
-    $("#error_message").html(e.type);
-    $("#error_modal").show();
   };
 }

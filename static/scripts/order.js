@@ -33,9 +33,12 @@ function do_order_update(id,val){
         }else{
           show_result(r.msg);
           $("#td_"+id).removeClass("edit-mode");
-          if(!!val){
+          if(val=="1"){
             $("#td_"+id).closest("tr").removeClass("w3-red").addClass("w3-green");
+            $("#td_"+id).find(".order-status").text("Completed");
+          }else{
             $("#td_"+id).closest("tr").removeClass("w3-green").addClass("w3-red");
+            $("#td_"+id).find(".order-status").text("Pending");
           }
         }
       }
