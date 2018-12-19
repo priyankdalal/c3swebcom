@@ -42,6 +42,22 @@ $(document).on("click","#payment_confirmation",function(){
   create_order(user_id);
 
 });
+$(document).on("click",".c3s-update-btn",function(){
+  var that=this;
+  var user_id=$(that).data("user_id");
+  var websock=new WebSocket("ws://localhost:8180");
+  websock.onmessage=function(e){
+    var data=JSON.parse(e.data);
+    console.log(data);
+    $("#update_out").append("<p>"+data.msg+"</p>");
+    if(!!data.end){
+      websock.close();
+    }
+  };
+  websock.onopen=function(){
+    websock.send(JSON.stringify({op:"upadete_user",payload:user_id+""}));
+  };
+});
 function create_order(id){
   if (!!id){
     $.ajax({
