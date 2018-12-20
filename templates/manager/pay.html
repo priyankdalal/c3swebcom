@@ -45,8 +45,8 @@
                               </ul>
                             </td>
                             <td class="w3-center">
-                              <button class="w3-btn w3-blue c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plus-circle"></i></button>
-                              <button class="w3-btn w3-blue c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-cloud-download"></i></button>
+                              <button class="w3-btn w3-teal c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plug"></i></button>
+                              <button class="w3-btn w3-blue c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -97,6 +97,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/styles/manager/pay.css">
 {% endblock %}
 {% block scripts%}
 <!--<link rel="stylesheet" type="text/css" href="/static/scripts/lib/DataTables/datatables.min.css"/>

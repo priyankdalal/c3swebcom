@@ -47,19 +47,53 @@ $(document).on("click","#payment_confirmation",function(){
 $(document).on("click",".c3s-update-btn",function(){
   var that=this;
   var user_id=$(that).data("user_id");
-  var websock=new WebSocket("ws://localhost:8180");
-  websock.onmessage=function(e){
-    var data=JSON.parse(e.data);
-    console.log(data);
-    $("#update_out").append("<p>"+data.msg+"</p>");
-    if(!!data.end){
+  update_user(user_id);
+});
+function update_user(id){
+  if(!!id){
+    var status='';
+    var websock=new WebSocket("ws://localhost:8180");
+    websock.onmessage=function(e){
+      var data=JSON.parse(e.data);
+      if(!!data.error){
+        $("#progress_modal").hide();
+        $("#error_message").html(data.msg);
+        $("#error_modal").show();
+        websock.close();
+      }
+      else{
+        if(data.step=="90"){
+          status=data.msg;
+        }
+        //total=parseInt(data.total);
+        $("#progress_modal").show();
+        $("#progress_bar").width(data.step+"%");
+        $("#progress_bar_text").text(data.msg);
+        if(!!data.end){
+          setTimeout(function(){
+            $("#progress_modal").hide();
+            $("#result_response").html(status);
+            //$("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
+            $("#result_modal").show();
+          },1500);
+          websock.close();
+        }
+      }
+    };
+    websock.onerror=function(err){
+      $("#progress_modal").hide();
+      $("#error_message").html("Error occured while connecting to payment module. Please contact support.");
+      $("#error_modal").show();
       websock.close();
     }
-  };
-  websock.onopen=function(){
-    websock.send(JSON.stringify({op:"upadete_user",payload:user_id+""}));
-  };
-});
+    websock.onopen=function(){
+      websock.send(JSON.stringify({op:"upadete_user",payload:id+""}));
+    };
+  }else{
+    $("#error_message").html("No/invalid user to update.");
+    $("#error_modal").show();
+  }
+}
 function create_order(id){
   if (!!id){
     $.ajax({
@@ -95,7 +129,6 @@ function do_payment(user_id,order_id){
     }
     websock.onmessage=function(e){
       var data=JSON.parse(e.data);
-      console.log(data);
       if(!!data.error){
         $("#progress_modal").hide();
         $("#error_message").html(data.msg);
@@ -120,7 +153,6 @@ function do_payment(user_id,order_id){
       }
     };
     websock.onopen=function(e){
-      console.log(e);
       websock.send(JSON.stringify({op:"do_payment",payload:user_id+"",order_load:order_id+""}));
     };
   }else{
