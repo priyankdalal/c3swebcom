@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from c3swebcom import conf_vars
 from django.db.utils import IntegrityError
 from django.http import JsonResponse
 from .models import CsOrders
@@ -13,6 +14,7 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Orders",
+        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     try:
         order_list=CsOrders.objects.all()

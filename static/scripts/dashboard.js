@@ -10,7 +10,7 @@ function sync_users(domain){
   $("#domain_select_modal").hide();
   $("#progress_bar_text").text("connecting...");
   $("#progress_modal").show();
-  var websock=new WebSocket("ws://localhost:8180");
+  var websock=new WebSocket(websoket_url);
   websock.onerror=function(err){
     $("#progress_modal").hide();
     $("#error_message").html("Error occured while connecting to payment module. Please contact support.");

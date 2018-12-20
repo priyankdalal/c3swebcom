@@ -52,7 +52,7 @@ $(document).on("click",".c3s-update-btn",function(){
 function update_user(id){
   if(!!id){
     var status='';
-    var websock=new WebSocket("ws://localhost:8180");
+    var websock=new WebSocket(websoket_url);
     websock.onmessage=function(e){
       var data=JSON.parse(e.data);
       if(!!data.error){
@@ -120,7 +120,7 @@ function create_order(id){
 }
 function do_payment(user_id,order_id){
   if(!!user_id && !!order_id){
-    var websock=new WebSocket("ws://localhost:8180");
+    var websock=new WebSocket(websoket_url);
     websock.onerror=function(err){
         $("#progress_modal").hide();
         $("#error_message").html("Error occured while connecting to payment module. Please contact support.");

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.core import serializers
+from c3swebcom import conf_vars
 from django.db.utils import IntegrityError
 from .models import CsDomains
 import logging
@@ -13,7 +14,8 @@ def index(request):
     context={
         "title":"C3SWebcom - Domains",
         "user":request.session.get("user"),
-        "domains":CsDomains.objects.all()
+        "domains":CsDomains.objects.all(),
+        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"domains/index.html",context)
 def add_domain(request):

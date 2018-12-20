@@ -39,6 +39,7 @@ def dashboard(request):
         "title":"C3SWebcom - Dashboard",
         "user":request.session.get("user"),
         "domains":CsDomains.objects.all(),
+        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"manager/dashboard.html",context)
 def pay(request):
@@ -59,7 +60,8 @@ def pay(request):
     context={
         "title":"C3SWebcom - Pay",
         "user":request.session.get("user"),
-        "user_list":user_list
+        "user_list":user_list,
+        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"manager/pay.html",context)
 def do_payment(request):
