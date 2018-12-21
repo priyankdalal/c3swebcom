@@ -9,9 +9,11 @@
                 Quick links
             <div class="w3-row">
                 <div class="w3-panel w3-col l3"><a href="pay" class="w3-button w3-blue w3-padding-large w3-block">Pay</a></div>
+                {% if user.role == "admin" %}
                 <div class="w3-panel w3-col l3 sync-user"><a href="javascript:void(0)" class="w3-button w3-blue w3-padding-large w3-block">Sync Usrs</a></div>
                 <div class="w3-panel w3-col l3"><a href="" class="w3-button w3-blue w3-padding-large w3-block">Orders</a></div>
                 <div class="w3-panel w3-col l3"><a href="" class="w3-button w3-blue w3-padding-large w3-block">Demo</a></div>
+                {% endif %}
             </div>
         </div>
     </div>

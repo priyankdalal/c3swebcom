@@ -34,12 +34,14 @@
                                </div>
                                <div class="w3-left order-status-update">
                                  <select class="w3-input order-status-select" data-id="{{order.id}}">
-                                   <option value="0" {% if order.status == '1' %} selected {% endif %}>Pending</option>
+                                   <option value="0" {% if order.status == '0' %} selected {% endif %}>Pending</option>
                                    <option value="1" {% if order.status == '1' %} selected {% endif %}>Completed</option>
                                  </select>
                                </div>
+                               {% if order.status == '0' or user.role == "admin" %}
                                <button class="w3-button w3-blue w3-right order-update-btn"><i class="fa fa-wrench"></i></button>
                                <button class="w3-button w3-blue w3-right order-submit-btn"><i class="fa fa-arrow-left"></i></button>
+                               {% endif %}
                              </td>
                          </tr>
                      {% endfor %}

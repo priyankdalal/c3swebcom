@@ -14,6 +14,7 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Orders",
+        "user":request.session.get("user"),
         "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     try:

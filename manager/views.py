@@ -24,7 +24,8 @@ def index(request):
         if "username" in request.POST and "password" in request.POST:
             isUser=AdminUsers.validateAdminUser(request.POST['username'],request.POST['password'])
             if isUser==True:
-                request.session['user']=request.POST['username']
+                admin_user=AdminUsers.objects.get(name=request.POST['username'])
+                request.session['user']=admin_user
                 return redirect("dashboard")
             else:
                 context["error"]="invalid user/password."
