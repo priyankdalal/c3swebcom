@@ -18,7 +18,10 @@ def index(request):
         "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     try:
-        order_list=CsOrders.objects.all()
+        if request.session.get("user").role=="admin":
+            order_list=CsOrders.objects.all()
+        else:
+            order_list=CsOrders.objects.all(initiator_id=request.session.get("user").id)
     except Exception as err:
         log.error("error occured: {}".format(str(err)))
     if order_list:

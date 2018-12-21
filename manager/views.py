@@ -118,7 +118,7 @@ def create_order(request):
                 log.info("ccid :{} and domain: {}".format(ccid,domain))
                 order_params={
                     "user_id":user_data.id,
-                    "initiator_id":1,
+                    "initiator_id":request.session.get("user").id,
                     "plan":user_data.package,
                     "value":150,
                 }
