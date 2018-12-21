@@ -21,7 +21,7 @@ def index(request):
         if request.session.get("user").role=="admin":
             order_list=CsOrders.objects.all()
         else:
-            order_list=CsOrders.objects.all(initiator_id=request.session.get("user").id)
+            order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
     except Exception as err:
         log.error("error occured: {}".format(str(err)))
     if order_list:
