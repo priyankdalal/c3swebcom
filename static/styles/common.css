@@ -59,6 +59,11 @@
 table>thead>tr>th{
     line-height: 40px;
 }
+table.w3-center>thead>tr>th,
+table.w3-center>tbody>tr>td,
+table.w3-center>tfoot>tr>td{
+    text-align: center;
+}
 /************cards****************/
 .cs-card-container{
   width:100%;

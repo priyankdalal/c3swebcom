@@ -1,11 +1,9 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
-from django.core import serializers
-from django.db.models import Q
 from c3swebcom import conf_vars
-import functools,operator
-from .models import AdminUsers
+from adminmanager.models import AdminUsers
+from .models import AdminManager
 from users.models import CsUsers
 from domains.models import CsDomains
 import logging
@@ -22,7 +20,7 @@ def index(request):
         return redirect("dashboard")
     if request.method=="POST":
         if "username" in request.POST and "password" in request.POST:
-            isUser=AdminUsers.validateAdminUser(request.POST['username'],request.POST['password'])
+            isUser=AdminManager.validateAdminUser(request.POST['username'],request.POST['password'])
             if isUser==True:
                 admin_user=AdminUsers.objects.get(name=request.POST['username'])
                 request.session['user']=admin_user
@@ -83,7 +81,7 @@ def do_payment(request):
                     "plan":user_data.package,
                     "value":150,
                 }
-                order_id=AdminUsers.create_order(order_params)
+                order_id=AdminManager.create_order(order_params)
                 if (not order_id) or order_id<1:
                     log.error("failed to create order, user id : {}".format(user))
                     return JsonResponse({"error":True,"msg":"Failed to create order. Stopping"})
@@ -96,7 +94,7 @@ def do_payment(request):
                 if process.returncode>0:
                     log.error("failed to do payment. error code: {}".format(process.returncode))
                     return JsonResponse({"error":True,"msg":"failed to complete payment","payload":process.returncode})
-                AdminUsers.update_order_status(order_id)
+                AdminManager.update_order_status(order_id)
                 log.info("payment completed for {}".format(user))
                 return JsonResponse({"error":False,"msg":"done","payload":process.returncode})
             else:
@@ -122,13 +120,13 @@ def create_order(request):
                     "plan":user_data.package,
                     "value":150,
                 }
-                order_id=AdminUsers.create_order(order_params)
+                order_id=AdminManager.create_order(order_params)
                 if (not order_id) or order_id<1:
                     log.error("failed to create order, user id : {}".format(user))
                     return JsonResponse({"error":True,"msg":"Failed to create order. Stopping"})
                 log.info("order id : {}".format(order_id))
 
-                #AdminUsers.update_order_status(order_id)
+                #AdminManager.update_order_status(order_id)
                 return JsonResponse({"error":False,"msg":"done","payload":order_id})
             else:
                 return JsonResponse({"error":True,"msg":"parameters required."})

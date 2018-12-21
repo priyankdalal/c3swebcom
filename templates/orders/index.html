@@ -2,11 +2,11 @@
 {% block content %}
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
     <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
+        <h5><b><i class="fa fa-dashboard"></i> Orders</b></h5>
     </header>
     <div class="w3-container">
         <div class="quick-links w3-panel w3-light-gray w3-card">
-             <table class="w3-table-all w3-margin-top">
+             <table class="w3-table-all w3-center w3-margin-top">
                  <thead>
                      <tr class="w3-blue">
                          <th>Username</th><th>Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th style="width:180px">Status</th>
@@ -22,7 +22,7 @@
                          {% endif %}
                              <td>{{ order.user.name }}</td>
                              <td>{{ order.user.address }}</td>
-                             <td>{{ order.initiator_id }}</td>
+                             <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
                              <td>{{ order.plan }}</td>
                              <td><i class="fa fa-inr"></i> {{ order.value }}</td>
                              <td><i class="fa fa-inr"></i> {{ order.amount }}</td>

@@ -1,15 +1,9 @@
 from django.db import models
 from hashlib import sha1
 from orders.models import CsOrders
+from adminmanager.models import AdminUsers
 #create your models here
-class AdminUsers(models.Model):
-    name = models.CharField(unique=True, max_length=50)
-    password = models.CharField(max_length=100)
-    role = models.CharField(max_length=8, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'admin_users'
+class AdminManager():
 
     def validateAdminUser(user,password):
         if not user.strip() or not password.strip():

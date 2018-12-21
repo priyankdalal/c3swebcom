@@ -61,6 +61,9 @@ create table cs_orders(
 		    status enum('1','0') default '0',
 		    response varchar(100) default null
 		)ENGINE=InnoDB;
+
+alter table cs_orders add foreign key(initiator_id) references admin_users(id);
+
 select cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) from cs_users cs inner join ip_table ip on cs.id=ip.user_id where cs.id=74 group by cs.ccid,cs.domain limit 10;
 select user_id,count(*) as cnt from ip_table group by user_id having cnt>1;
 

@@ -1,11 +1,12 @@
 from django.db import models
 from users.models import CsUsers
+from adminmanager.models import AdminUsers
 
 # Create your models here.
 class CsOrders(models.Model):
     initiatorType=(("admin","admin"),("user","user"))
     user = models.ForeignKey(CsUsers, models.PROTECT)
-    initiator_id = models.IntegerField(blank=True, null=True)
+    initiator = models.ForeignKey(AdminUsers, models.PROTECT)
     initiator_type = models.CharField(max_length=5,choices=initiatorType,default="admin")
     plan = models.CharField(max_length=100, blank=True, null=True)
     value = models.FloatField(blank=True, null=True, default="0.00")
@@ -18,4 +19,4 @@ class CsOrders(models.Model):
     class Meta:
         managed = False
         db_table = 'cs_orders'
-        ordering = ('initiated_at',)
+        ordering = ('-initiated_at',)
