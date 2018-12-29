@@ -1,3 +1,6 @@
+.sidebar-urls a.active{
+    background-color:#2196F3;
+}
 .confirm,.abort,.action[disabled]{
     display: none;
 }

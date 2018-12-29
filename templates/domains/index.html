@@ -94,6 +94,13 @@
   </div>
 </div>
 {% endblock %}
+{% block styles %}
+<style>
+.domain-url{
+    background-color:#2196F3;
+}
+</style>
+{% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
 <script src="/static/scripts/domain.js"></script>

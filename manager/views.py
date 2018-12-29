@@ -12,7 +12,6 @@ log=logging.getLogger(__name__)
 import json
 # Create your views here.
 def index(request):
-    log.debug("current directory is: {}".format(os.getcwd()))
     context={
         "title":"C3SWebcom - Login"
     }

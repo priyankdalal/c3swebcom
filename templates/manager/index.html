@@ -28,6 +28,14 @@
     </div>
 </div>
 {% endblock %}
+{% block styles %}
+<style>
+.manager-url{
+    background-color:#2196F3;
+}
+</style>
+{% endblock %}
 {% block scripts%}
+<script>var error="{{error}}";</script>
 <script src="/static/scripts/login.js"></script>
 {% endblock %}
