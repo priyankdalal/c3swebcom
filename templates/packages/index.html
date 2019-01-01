@@ -1,0 +1,52 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-primary">
+                    <h4 class="card-title">Packages</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Remote ID</th><th>Name</th><th>Value</th><th>Domain</th><th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if package_list %}
+                                {% for package in package_list %}
+                                <tr>
+                                    <td>{{ package.remote_id }}</td>
+                                    <td>{{ package.name }}</td>
+                                    <td><i class="fa fa-inr"></i> {{ package.value }}</td>
+                                    <td>{{ package.domain.name }}</td>
+									<td><button class="btn btn-primary">Update</button></td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="4">No data to show</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/styles/orders/main.css">
+<style>
+.package-url{
+    background-color:#2196F3;
+}
+</style>
+{% endblock %}
+{% block scripts%}
+<script>var websoket_url='{{ websocket }}';</script>
+<script src="/static/js/site/package.js"></script>
+{% endblock %}

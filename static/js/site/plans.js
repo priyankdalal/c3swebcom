@@ -1,0 +1,97 @@
+$(document).ready(function(){
+    $(".close-w3-modal").click(function(){
+        $(".w3-modal").hide();
+    });
+    $("#show_add_plans_modal").click(function(){
+        $("#add_plans_modal").show();
+    });
+    $("#add_plans").click(function(){
+        var plan_name=$("#plans_name_input").val();
+        var plan_fee=$("#plans_fee_input").val();
+        var plan_discount=$("#plans_discount_input").val();
+        if(!!plan_name && !!plan_fee){
+            var data={name:plan_name,price:plan_fee,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")};
+            if(!!plan_discount)
+                    data["discount"]=plan_discount;
+            $.ajax({
+                url:"add-plan",
+                type:"POST",
+                data:data,
+                error:function(e){
+                    $(".w3-modal").hide();
+                    $(".w3-panel","#alert_modal").addClass("w3-red");
+                    $("#alert_msg").html(e.msg);
+                    $("#alert_modal").show();
+                    $("#plans_name_input").val('');
+                },
+                success:function(r){
+                    if(!r.error){
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-red").addClass("w3-blue");
+                        $("#alert_msg").html(r.response);
+                        $("#alert_modal").show();
+                        window.setTimeout(function(){window.location.reload();},2000);
+                    }
+                    else{
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-blue").addClass("w3-red");
+                        $("#alert_msg").html(r.msg);
+                        $("#alert_modal").show();
+                        $("#plans_name_input").val('');
+                    }
+                }
+            });
+        }
+        else{
+            $(".w3-modal").hide();
+            $(".w3-panel","#alert_modal").addClass("w3-red");
+            $("#alert_msg").html("Name or Fee connot be empty.");
+            $("#alert_modal").show();
+        }
+    });
+    $(".delete-plans.action").click(function(){
+        $(this).prop("disabled",true);
+    });
+    $(".delete-plans.abort").click(function(){
+        $(this).siblings(".action").prop("disabled",false);
+    });
+    $(".delete-plans.confirm").click(function(){
+        var id=$(this).attr("data-id");
+        if(!!id){
+            $.ajax({
+                url:"remove-plans",
+                type:"POST",
+                data:{id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+                error:function(e){
+                    $(".w3-modal").hide();
+                    $(".w3-panel","#alert_modal").addClass("w3-red");
+                    $("#alert_msg").html(e.msg);
+                    $("#alert_modal").show();
+                    $("#plans_name_input").val('');
+                },
+                success:function(r){
+                    if(!r.error){
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-red").addClass("w3-blue");
+                        $("#alert_msg").html(r.response);
+                        $("#alert_modal").show();
+                        window.setTimeout(function(){window.location.reload();},2000);
+                    }
+                    else{
+                        $(".w3-modal").hide();
+                        $(".w3-panel","#alert_modal").removeClass("w3-blue").addClass("w3-red");
+                        $("#alert_msg").html(r.msg);
+                        $("#alert_modal").show();
+                        $("#plans_name_input").val('');
+                    }
+                }
+            });
+        }
+        else{
+            $(".w3-modal").hide();
+            $(".w3-panel","#alert_modal").addClass("w3-red");
+            $("#alert_msg").html("No zone selected to remove.");
+            $("#alert_modal").show();
+        }
+    });
+});

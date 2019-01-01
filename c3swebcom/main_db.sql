@@ -61,6 +61,13 @@ create table cs_orders(
 		    status enum('1','0') default '0',
 		    response varchar(100) default null
 		)ENGINE=InnoDB;
+create table `cs_packages`(
+`id` int auto_increment not null primary key,
+`remote_id` int not null,
+`name` varchar(100) not null,
+`value` float(10,2) not null default 0,
+`domain_id` int references cs_domains(id) on delete cascade
+)ENGINE=InnoDB;
 
 alter table cs_orders add foreign key(initiator_id) references admin_users(id);
 

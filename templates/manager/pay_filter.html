@@ -1,39 +1,40 @@
 {% for user in user_list %}
     <tr id="row_user_{{user.id}}">
-        <td class="w3-center" data-filter="name">{{user.name}}</td>
-        <td class="w3-center" data-filter="address">{{user.address}}</td>
-        <td class="w3-center" data-filter="expiry">{{user.expiry_date}}</td>
-        <td class="w3-center" data-filter="package">{{user.package}}</td>
-        <td class="w3-center" data-filter="phone">{{user.phone}}</td>
-        <td class="w3-center" data-filter="mobile">{{user.mobile}}</td>
-        <td class="w3-center" data-filter="domain">{{user.domain}}</td>
+        <td class="text-center" data-filter="name">{{user.name}}</td>
+        <td class="text-center" data-filter="address">{{user.address}}</td>
+        <td class="text-center" data-filter="expiry">{{user.expiry_date}}</td>
+        <td class="text-center" data-filter="package">{{user.package}}</td>
+        <td class="text-center" data-filter="phone">{{user.phone}}</td>
+        <td class="text-center" data-filter="mobile">{{user.mobile}}</td>
+        <td class="text-center" data-filter="domain">{{user.domain}}</td>
         <td class="w3-center" data-filter="ip">
           {{user.ip}}
         </td>
-        <td class="w3-center">
-          <button class="w3-btn w3-teal c3s-payment-btn" title="Pay" data-domain="{{user.domain}}" data-user="{{user.ccid}}" data-user_id="{{user.id}}"><i class="fa fa-plug"></i></button>
-          <button class="w3-btn w3-blue c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
+        <td class="text-center">
+          <button class="btn btn-primary c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plug"></i></button>
+          <button class="btn btn-primary c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
         </td>
     </tr>
 {% endfor %}
     <!--resp-breaker-->
 {% if pagination %}
 
-<div class="w3-bar w3-medium w3-border">
-  {% if user_list.has_previous %}
-      <a data-page="1" class="w3-button filter-user-page">&laquo; first</a>
-      <a data-page="{{ user_list.previous_page_number }}" class="w3-button filter-user-page">previous</a>
-  {% else %}
-    <a href="javascript:void(0)" class="w3-button w3-disabled">&laquo; first</a>
-    <a href="javascript:void(0)" class="w3-button w3-disabled">previous</a>
-  {% endif %}
-  <a href="javascript:void(0)" class="w3-button w3-blue">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
-  {% if user_list.has_next %}
-      <a data-page="{{ user_list.next_page_number }}" class="w3-button filter-user-page">next</a>
-      <a data-page="{{ user_list.paginator.num_pages }}" class="w3-button filter-user-page">last &raquo;</a>
-  {% else %}
-      <a href="javascript:void(0)" class="w3-button w3-disabled">next</a>
-      <a href="javascript:void(0)" class="w3-button w3-disabled">last &raquo;</a>
-  {% endif %}
-</div>
+  <div class="text-center" >
+    {% if user_list.has_previous %}
+        <a href="?page=1" class="btn btn-success">&laquo; first</a>
+        <a href="?page={{ user_list.previous_page_number }}" class="btn btn-success">previous</a>
+    {% else %}
+      <a href="javascript:void(0)" class="btn btn-disabled">&laquo; first</a>
+      <a href="javascript:void(0)" class="btn btn-disabled">previous</a>
+    {% endif %}
+    <a href="javascript:void(0" class="btn btn-primary">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
+    {% if user_list.has_next %}
+        <a href="?page={{ user_list.next_page_number }}" class="btn btn-success">next</a>
+        <a href="?page={{ user_list.paginator.num_pages }}" class="btn btn-success">last &raquo;</a>
+    {% else %}
+        <a href="javascript:void(0)" class="btn btn-disabled">next</a>
+        <a href="javascript:void(0)" class="btn btn-disabled">last &raquo;</a>
+    {% endif %}
+    </div>
+
 {% endif %}

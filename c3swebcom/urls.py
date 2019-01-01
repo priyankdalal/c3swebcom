@@ -22,4 +22,5 @@ urlpatterns = [
     path("manager/", include("manager.urls")),
     path("domains/", include("domains.urls")),
     path("orders/", include("orders.urls")),
+    path("packages/", include("packages.urls")),
 ]

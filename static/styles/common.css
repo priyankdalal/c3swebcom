@@ -1,151 +1,37 @@
-.sidebar-urls a.active{
-    background-color:#2196F3;
-}
-.confirm,.abort,.action[disabled]{
-    display: none;
-}
-.action[disabled] ~ .confirm,
-.action[disabled] ~ .abort{
-    display: inline-block;
-}
-/*colors**********************/
-.cs-red{
-    background-color:#f69e97 !important;
-}
-.cs-green{
-    background-color:#6f9670 !important;
-}
-/*components**********************/
-.toUppercase{
-    text-transform: uppercase;
-}
-.login-box{
-    width:50%;
-    margin: auto;
-}
-@media screen and (max-width:480px){
-  .login-box{
-    width:90%;
-  }
-}
-@media screen and (min-width:481px) and (max-width:640px){
-  .login-box{
-    width:80%;
-  }
-}
-@media screen and (min-width:641px) and (max-width:1024px){
-  .login-box{
-    width:65%;
-  }
-}
-.w3-panel{
-  position: relative;
-}
-.quick-links>ul{
-    list-style: none;
-    padding-left:0;
-    margin-bottom: 0;
-}
-.quick-links>ul>li{
-    display: inline-block;
-    width:24%;
-    text-align: center;
-}
-.quick-links ul li a,
-.quick-links ul li button{
-    width:100%;
-}
-.progress-bar{
-  height: 5px;
-  width:0%;
-}
-table>thead>tr>th{
-    line-height: 40px;
-}
-table.w3-center>thead>tr>th,
-table.w3-center>tbody>tr>td,
-table.w3-center>tfoot>tr>td{
-    text-align: center;
-}
-/************cards****************/
-.cs-card-container{
-  width:100%;
-}
-.cs-card-container .cs-card{
-  float: left;
-  width:23%;
-  margin:1%;
-  min-width: 225px;
-}
-.cs-card.blank-card{
-  height: 250px;
-}
-.cs-card.blank-card button{
-  height: 100%;
-  width:100%;
-  color:#e1e1e1;
-  font-size: 40px;
-  background-color:white;
-  border:none;
-}
-.cs-card header{
-  height: 50px;
-  text-align: center;
-}
-.cs-card footer{
-  height: 42px;
-  text-align: center;
-}
-.cs-card h3{
-  text-transform: capitalize;
-  line-height: 1.4;
-}
-.cs-card .card-contents{
-  height: 158px;
-  line-height: 150px;
-  text-align:center;
-  background-color:#5d7cba;
-}
-@media (max-width:768px){
-  .cs-card-container .cs-card{
-    float: none;
-    width:100%;
-    margin-bottom: 30px !important;
-  }
-  .cs-card.blank-card{
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    height: 52px !important;
-    width: 52px;
-    line-height: 52px;
-    border-radius: 50%;
-  }
-  .cs-card.blank-card button{
-    border-radius: 50%;
-    background-color:#7070f6 !important;
-    font-size: 26px;
-  }
-}
-/************button groups****************/
-.btn-group{
-  width:100%;
-  margin:5px 0;
-}
-.btn-group.group-2 button{
-  width:47%;
-}
-.btn-group.group-2 button:first-child{
-  margin-right: 1%;
-}
-.btn-group.group-2 button:last-child{
-  margin-left: 1%;
-}
 .input-helper{
   position: absolute;
   right: 18px;
-  bottom: 8px;
+  bottom: 12px;
   background-color:rgba(0,0,0,0);
   border:none;
   outline:none;
+}
+/*progressor****************/
+.progressor{
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    z-index: 1040;
+    background-color:rgba(0,0,0,0.3);
+}
+.progressor .progressor-container{
+    width: 266px;
+    margin: 220px auto;
+    box-shadow: 0 6px 19px -5px black;
+}
+.progressor .progress{
+    height: 1.5rem;
+}
+/*table hover**********************/
+table>tbody>tr:hover>td{
+    font-weight: 500;
+    background-color:#f0f0f0;
+    /*transform: scale(1.1);*/
+}
+/*card-stats***********************/
+.card-stats .card-header{
+    min-height: 122px;
 }

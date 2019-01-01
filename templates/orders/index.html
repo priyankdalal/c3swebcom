@@ -1,109 +1,108 @@
-{% extends "common/default.html" %}
+{% extends "common/new_default.html" %}
 {% block content %}
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
-    <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Orders</b></h5>
-    </header>
-    <div class="w3-container">
-        <div class="quick-links w3-panel w3-light-gray w3-card">
-             <table class="w3-table-all w3-center w3-margin-top">
-                 <thead>
-                     <tr class="w3-blue">
-                         <th>Username</th><th>Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th style="width:180px">Status</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                 {% if order_list %}
-                     {% for order in order_list %}
-                         {% if order.status == '1' %}
-                            <tr class="w3-green">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-primary">
+                    <h4 class="card-title">Orders</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr>
+                                <th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th style="width:180px" class="text-center">Status (Action)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if order_list %}
+                             {% for order in order_list %}
+                                 {% if order.status == '1' %}
+                                    <tr class="text-success">
+                                 {% else %}
+                                    <tr class="text-danger">
+                                 {% endif %}
+                                     <td>{{ order.user.name }}</td>
+                                     <td>{{ order.user.address }}</td>
+                                     <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
+                                     <td>{{ order.plan }}</td>
+                                     <td><i class="fa fa-inr"></i> {{ order.value }}</td>
+                                     <td><i class="fa fa-inr"></i> {{ order.amount }}</td>
+                                     <td>{{ order.initiated_at }}</td>
+                                     <td>{{ order.completed_at }}</td>
+                                     <td class="order-status-cell" id="td_{{order.id}}">
+                                       <div class="order-status">
+                                         {% if order.status == '1' %} Completed {% else %} Pending {% endif %}
+                                       </div>
+                                       <div class="text-center order-status-update">
+                                         <select class="form-control text-center order-status-select" data-id="{{order.id}}">
+                                           <option value="0" {% if order.status == '0' %} selected {% endif %}>Pending</option>
+                                           <option value="1" {% if order.status == '1' %} selected {% endif %}>Completed</option>
+                                         </select>
+                                       </div>
+                                       {% if order.status == '0' or user.role == "admin" %}
+                                       <div class="order-actions">
+                                           <button class="btn btn-primary order-update-btn"><i class="fa fa-wrench"></i></button>
+                                           <button class="btn btn-primary order-submit-btn"><i class="fa fa-arrow-left"></i></button>
+                                        </div>
+                                       {% endif %}
+                                     </td>
+                                 </tr>
+                             {% endfor %}
                          {% else %}
-                            <tr class="w3-red">
+                             <tr><td colspan="9">No data to show</td></tr>
                          {% endif %}
-                             <td>{{ order.user.name }}</td>
-                             <td>{{ order.user.address }}</td>
-                             <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
-                             <td>{{ order.plan }}</td>
-                             <td><i class="fa fa-inr"></i> {{ order.value }}</td>
-                             <td><i class="fa fa-inr"></i> {{ order.amount }}</td>
-                             <td>{{ order.initiated_at }}</td>
-                             <td>{{ order.completed_at }}</td>
-                             <td class="order-status-cell" id="td_{{order.id}}">
-                               <div class="w3-left order-status">
-                                 {% if order.status == '1' %} Completed {% else %} Pending {% endif %}
-                               </div>
-                               <div class="w3-left order-status-update">
-                                 <select class="w3-input order-status-select" data-id="{{order.id}}">
-                                   <option value="0" {% if order.status == '0' %} selected {% endif %}>Pending</option>
-                                   <option value="1" {% if order.status == '1' %} selected {% endif %}>Completed</option>
-                                 </select>
-                               </div>
-                               {% if order.status == '0' or user.role == "admin" %}
-                               <button class="w3-button w3-blue w3-right order-update-btn"><i class="fa fa-wrench"></i></button>
-                               <button class="w3-button w3-blue w3-right order-submit-btn"><i class="fa fa-arrow-left"></i></button>
-                               {% endif %}
-                             </td>
-                         </tr>
-                     {% endfor %}
-                 {% else %}
-                     <tr><td colspan="9">No data to show</td></tr>
-                 {% endif %}
-                 </tbody>
-             </table>
-             <div class="w3-center w3-padding-16 pagination" >
-              <div class="w3-bar w3-medium w3-border">
-                {% if order_list.has_previous %}
-                    <a href="?page=1" class="w3-button">&laquo; first</a>
-                    <a href="?page={{ order_list.previous_page_number }}" class="w3-button">previous</a>
-                {% else %}
-                  <a href="javascript:void(0)" class="w3-button w3-disabled">&laquo; first</a>
-                  <a href="javascript:void(0)" class="w3-button w3-disabled">previous</a>
-                {% endif %}
-                <a href="javascript:void(0" class="w3-button w3-blue">Page {{ order_list.number }} of {{ order_list.paginator.num_pages }}.</a>
-                {% if order_list.has_next %}
-                    <a href="?page={{ order_list.next_page_number }}" class="w3-button">next</a>
-                    <a href="?page={{ order_list.paginator.num_pages }}" class="w3-button">last &raquo;</a>
-                {% else %}
-                    <a href="javascript:void(0)" class="w3-button w3-disabled">next</a>
-                    <a href="javascript:void(0)" class="w3-button w3-disabled">last &raquo;</a>
-                {% endif %}
-              </div>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- The Modal -->
-<div id="order_update_modal" class="w3-modal payment-modal">
-  <div class="w3-modal-content w3-animate-bottom">
-    <div class="w3-container">
-      <div class="w3-container w3-row">
-        <div class="w3-col l12 m12">
-          <h3>Do you really want update?</h3>
-          <span class="w3-button w3-display-topright modal-close">&times;</span>
-      </div>
-      </div>
-      <div class="w3-container">
-        <div class="w3-row w3-panel">
-          <div class="w3-bar">
-            <button type="submit" class="w3-button padding-large w3-blue w3-right" id="order_update_confirmation">Yes</button>
-            <button type="reset"class="w3-button padding-large w3-red w3-right w3-margin-right modal-cancel">No</button>
+    <div class="col-md-12">
+        <div class="text-center" >
+          <div class="w3-bar w3-medium w3-border">
+            {% if order_list.has_previous %}
+                <a href="?page=1" class="btn btn-success">&laquo; first</a>
+                <a href="?page={{ order_list.previous_page_number }}" class="btn btn-success">previous</a>
+            {% else %}
+              <a href="javascript:void(0)" class="btn btn-disabled">&laquo; first</a>
+              <a href="javascript:void(0)" class="btn btn-disabled">previous</a>
+            {% endif %}
+            <a href="javascript:void(0)" class="btn btn-primary">Page {{ order_list.number }} of {{ order_list.paginator.num_pages }}.</a>
+            {% if order_list.has_next %}
+                <a href="?page={{ order_list.next_page_number }}" class="btn btn-success">next</a>
+                <a href="?page={{ order_list.paginator.num_pages }}" class="btn btn-success">last &raquo;</a>
+            {% else %}
+                <a href="javascript:void(0)" class="btn btn-disabled">next</a>
+                <a href="javascript:void(0)" class="btn btn-disabled">last &raquo;</a>
+            {% endif %}
           </div>
         </div>
-      </div>
-
     </div>
-  </div>
 </div>
 {% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="/static/styles/orders/main.css">
 <style>
-.order-url{
-    background-color:#2196F3;
-}
+    .order-status-cell{
+        width:220px;
+        text-align:center;
+    }
+    .order-status-cell .order-status,
+    .order-status-cell .order-status-update{
+        float:left;
+    }
+    .order-status-cell .order-actions{
+        float:right;
+    }
+    .order-status-cell .order-status-update .order-status-select{
+        text-align:center;
+    }
 </style>
 {% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/scripts/order.js"></script>
+<script src="/static/js/site/order.js"></script>
 {% endblock %}

@@ -45,7 +45,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="/domains" class="w3-bar-item w3-button w3-padding domain-url"><i class="fa fa-cloud fa-fw"></i>&nbsp; Domains</a>
     {% endif %}
     <a href="/orders" class="w3-bar-item w3-button w3-padding order-url"><i class="fa fa-diamond fa-fw"></i>&nbsp; Orders</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bell fa-fw"></i>&nbsp; News</a>
+    {% if user.role == "admin" %}
+    <a href="/packages" class="w3-bar-item w3-button w3-padding package-url"><i class="fa fa-bell fa-fw"></i>&nbsp; Packages</a>
+    {% endif %}
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>&nbsp; General</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>&nbsp; History</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
@@ -66,7 +68,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </div>
     </div>
     <div class="w3-container">
-      <div class="error-msg w3-color-red w3-margin-bottom" id="error_message">
+      <div class="error-msg w3-color-red w3-margin-bottom error-message" id="error_message">
           This is demo error message
       </div>
     </div>
@@ -87,7 +89,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </div>
     </div>
     <div class="w3-container">
-      <div class="error-msg w3-color-red w3-margin-bottom" id="result_response">
+      <div class="error-msg w3-color-red w3-margin-bottom result-message" id="result_response">
           This is demo error message
       </div>
     </div>
@@ -110,11 +112,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
     <div class="w3-container">
       <div class="w3-row w3-panel modal-body">
-        <div class="w3-light-grey w3-round">
-          <div class="w3-blue w3-round progress-bar" id="progress_bar"></div>
-        </div>
-        <div class="w3-round">
-          <div class="w3-round progress-bar-text w3-center" id="progress_bar_text"></div>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active" role="progressbar" id="progress_bar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+
+          </div>
         </div>
       </div>
     </div>

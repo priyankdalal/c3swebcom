@@ -13,7 +13,8 @@ import json
 # Create your views here.
 def index(request):
     context={
-        "title":"C3SWebcom - Login"
+        "title":"C3SWebcom - Login",
+        "user":request.session.get("user"),
     }
     if request.session.get("user"):
         return redirect("dashboard")

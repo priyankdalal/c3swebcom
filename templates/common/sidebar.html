@@ -1,0 +1,50 @@
+<div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+      <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+          C3SWebcom
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item  active">
+            <a class="nav-link" href="/manager/dashboard">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/manager/pay">
+              <i class="material-icons">perm_contact_calender</i>
+              <p>Users</p>
+            </a>
+          </li>
+          {% if user.role == "admin" %}
+          <li class="nav-item ">
+            <a class="nav-link" href="/domains">
+              <i class="material-icons">library_books</i>
+              <p>Domains</p>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item ">
+            <a class="nav-link" href="/orders">
+              <i class="material-icons">bubble_chart</i>
+              <p>Orders</p>
+            </a>
+          </li>
+          {% if user.role == "admin" %}
+          <li class="nav-item ">
+            <a class="nav-link" href="/packages">
+              <i class="material-icons">location_ons</i>
+              <p>Packages</p>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>

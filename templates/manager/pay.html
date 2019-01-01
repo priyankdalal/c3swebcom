@@ -1,97 +1,103 @@
-{% extends "common/default.html" %}
+{% extends "common/new_default.html" %}
 {% block content %}
 {% load manager_extras %}
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
-    <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Dashboard</b></h5>
-    </header>
-    <div class="w3-container">
-        <div class="quick-links w3-panel w3-light-gray w3-card w3-responsive w3-padding-bottom" id="pay_table_container_id">
-            <table class="w3-table-all w3-margin-top" id="pay_table">
-                <thead>
-                    <tr class="w3-blue">
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="name" placeholder="Enter name" /></th>
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="address" placeholder="Enter address" /></th>
-                        <th>Expiry</th>
-                        <th>Package</th>
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="phone" placeholder="Enter phone" /></th>
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="mobile" placeholder="Enter mobile" /></th>
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="domain" placeholder="Enter domain" /></th>
-                        <th><input type="text" class="w3-input w3-border w3-padding w3-round-xlarge pay-filter" data-filter="ip" placeholder="Enter ip" /></th>
-                        <th><button class="w3-button">Action</button></th>
-                    </tr>
-                </thead>
-                <tbody id="pay_table_body">
-                    {% for user in user_list %}
-                        <tr id="row_user_{{user.id}}">
-                            <td class="w3-center" data-filter="name">{{user.name}}</td>
-                            <td class="w3-center" data-filter="address">{{user.address}}</td>
-                            <td class="w3-center" data-filter="expiry">{{user.expiry_date}}</td>
-                            <td class="w3-center" data-filter="package">{{user.package}}</td>
-                            <td class="w3-center" data-filter="phone">{{user.phone}}</td>
-                            <td class="w3-center" data-filter="mobile">{{user.mobile}}</td>
-                            <td class="w3-center" data-filter="domain">{{user.domain}}</td>
-                            <td class="w3-center" data-filter="ip">
-                              <ul class="w3-ul">
-                                {% if user.ip %}
-                                  {% with user_ip=user.ip %}
-                                    {% for ip in user_ip|split:',' %}
-                                      <li>{{ ip }}</li>
-                                    {% endfor %}
-                                  {% endwith %}
-                                {% else %}
-                                  <li>None</li>
-                                {% endif %}
-                              </ul>
-                            </td>
-                            <td class="w3-center">
-                              <button class="w3-btn w3-teal c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plug"></i></button>
-                              <button class="w3-btn w3-blue c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div class="w3-center w3-padding-16 pagination" >
-              <div class="w3-bar w3-medium w3-border">
-                {% if user_list.has_previous %}
-                    <a href="?page=1" class="w3-button">&laquo; first</a>
-                    <a href="?page={{ user_list.previous_page_number }}" class="w3-button">previous</a>
-                {% else %}
-                  <a href="javascript:void(0)" class="w3-button w3-disabled">&laquo; first</a>
-                  <a href="javascript:void(0)" class="w3-button w3-disabled">previous</a>
-                {% endif %}
-                <a href="javascript:void(0" class="w3-button w3-blue">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
-                {% if user_list.has_next %}
-                    <a href="?page={{ user_list.next_page_number }}" class="w3-button">next</a>
-                    <a href="?page={{ user_list.paginator.num_pages }}" class="w3-button">last &raquo;</a>
-                {% else %}
-                    <a href="javascript:void(0)" class="w3-button w3-disabled">next</a>
-                    <a href="javascript:void(0)" class="w3-button w3-disabled">last &raquo;</a>
-                {% endif %}
-              </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-primary">
+                    <h4 class="card-title ">Users</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="pay_table">
+                            <thead class="text-primary">
+                                <tr>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="name" placeholder="Enter name" /></th>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="address" placeholder="Enter address" /></th>
+                                    <th>Expiry</th>
+                                    <th>Package</th>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="phone" placeholder="Enter phone" /></th>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="mobile" placeholder="Enter mobile" /></th>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="domain" placeholder="Enter domain" /></th>
+                                    <th><input type="text" class="form-control pay-filter" data-filter="ip" placeholder="Enter ip" /></th>
+                                    <th><button class="btn btn-default">Action</button></th>
+                                </tr>
+                            </thead>
+                            <tbody id="pay_table_body">
+                                {% for user in user_list %}
+                                    <tr id="row_user_{{user.id}}">
+                                        <td class="text-center" data-filter="name">{{user.name}}</td>
+                                        <td class="text-center" data-filter="address">{{user.address}}</td>
+                                        <td class="text-center" data-filter="expiry">{{user.expiry_date}}</td>
+                                        <td class="text-center" data-filter="package">{{user.package}}</td>
+                                        <td class="text-center" data-filter="phone">{{user.phone}}</td>
+                                        <td class="text-center" data-filter="mobile">{{user.mobile}}</td>
+                                        <td class="text-center" data-filter="domain">{{user.domain}}</td>
+                                        <td class="text-center" data-filter="ip">
+                                             {{user.ip}}
+                                          <!--<ul class="w3-ul">
+                                            {% if user.ip %}
+                                              {% with user_ip=user.ip %}
+                                                {% for ip in user_ip|split:',' %}
+                                                  <li>{{ ip }}</li>
+                                                {% endfor %}
+                                              {% endwith %}
+                                            {% else %}
+                                              <li>None</li>
+                                            {% endif %}
+                                          </ul> commented for future use-->
+                                        </td>
+                                        <td class="text-center">
+                                          <button class="btn btn-primary c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plug"></i></button>
+                                          <button class="btn btn-primary c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="update_out"></div>
+    </div>
+    <div class="col-md-12">
+        <div class="quick-links" id="pay_table_container_id">
+            <div class="text-center" >
+            {% if user_list.has_previous %}
+                <a href="?page=1" class="btn btn-success">&laquo; first</a>
+                <a href="?page={{ user_list.previous_page_number }}" class="btn btn-success">previous</a>
+            {% else %}
+              <a href="javascript:void(0)" class="btn btn-disabled">&laquo; first</a>
+              <a href="javascript:void(0)" class="btn btn-disabled">previous</a>
+            {% endif %}
+            <a href="javascript:void(0" class="btn btn-primary">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
+            {% if user_list.has_next %}
+                <a href="?page={{ user_list.next_page_number }}" class="btn btn-success">next</a>
+                <a href="?page={{ user_list.paginator.num_pages }}" class="btn btn-success">last &raquo;</a>
+            {% else %}
+                <a href="javascript:void(0)" class="btn btn-disabled">next</a>
+                <a href="javascript:void(0)" class="btn btn-disabled">last &raquo;</a>
+            {% endif %}
+            </div>
+        </div>
     </div>
 </div>
+
 <!-- The Modal -->
-<div id="payment_modal" class="w3-modal payment-modal">
-  <div class="w3-modal-content w3-animate-bottom">
-    <div class="w3-container">
-      <div class="w3-container w3-row">
+<div id="payment_modal" class="modal fade payment-modal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
         <div class="w3-col l12 m12">
           <h3>Do you really want to do payment?</h3>
-          <span class="w3-button w3-display-topright modal-close">&times;</span>
-      </div>
-      </div>
-      <div class="w3-container">
-        <div class="w3-row w3-panel">
-          <div class="w3-bar">
-            <button type="submit" class="w3-button padding-large w3-blue w3-right" id="payment_confirmation">Yes</button>
-            <button type="reset"class="w3-button padding-large w3-red w3-right w3-margin-right modal-cancel">No</button>
-          </div>
         </div>
+      </div>
+      <div class="modal-body">
+          <div class="text-right">
+            <button type="reset"class="btn btn-danger modal-cancel" data-dismiss="modal">No</button>
+            <button type="submit" class="btn btn-success" id="payment_confirmation">Yes</button>
+          </div>
       </div>
 
     </div>
@@ -105,5 +111,5 @@
 <script>var websoket_url='{{ websocket }}';</script>
 <!--<link rel="stylesheet" type="text/css" href="/static/scripts/lib/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="/static/scripts/lib/DataTables/datatables.min.js"></script>-->
-<script src="/static/scripts/pay.js"></script>
+<script src="/static/js/site/pay.js"></script>
 {% endblock %}

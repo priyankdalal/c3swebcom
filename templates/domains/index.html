@@ -1,107 +1,149 @@
-{% extends "common/default.html" %}
+{% extends "common/new_default.html" %}
 {% block content %}
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
-    <header class="w3-container" style="padding-top:22px">
-        <h5><b><i class="fa fa-dashboard"></i> Domains </b></h5>
-    </header>
-    <div class="w3-container cs-card-container">
-        {% for domain in domains %}
-        <div class="w3-card-4 cs-card" id="domain_card_{{domain.id}}">
-          <header class="w3-container w3-teal">
-            <h3>{{ domain.name }}</h3>
-          </header>
-          <div class="card-contents">
-            <div class="w3-row">
-              <i class="fa fa-globe"></i>
-              <strong>{{domain.url}}</strong>
+<div class="row">
+    {% for domain in domains %}
+    <div class="col-md-4">
+        <div class="card card-stats" data-domain_id="{{domain.id}}">
+            <div class="card-header card-header-primary card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">http</i>
+                </div>
+                <p class="card-category">
+                    <i class="material-icons">http</i>: {{domain.url}}
+                </p>
+                <h3 class="card-title">
+                    {{domain.name}}
+                </h3>
+                <a class="btn btn-primary">More...</a>
             </div>
-          </div>
-          <footer>
-            <div class="w3-bar btn-group group-2">
-              <button type="submit" class="w3-button w3-green domain-edit" data-id="{{domain.id}}">Edit</button>
-              <button type="submit" class="w3-button w3-red domain-delete" data-id="{{domain.id}}">Delete</button>
+            <div class="card-footer">
+                <div class="text-right">
+                    <button class="btn btn-danger domain-delete" data-id="{{domain.id}}" title="Delete"><i class="material-icons">delete</i></button>
+                    <button class="btn btn-success domain-edit" data-id="{{domain.id}}" title="Edit"><i class="material-icons">assignment</i></button>
+                </div>
             </div>
-          </footer>
         </div>
-        {% endfor %}
-        <div class="w3-card-4 cs-card blank-card">
-          <button id="d_a_btn">
-            <i class="fa fa-plus"></i>
-          </button>
+    </div>
+    {% endfor %}
+    <div class="col-md-4">
+        <div class="card card-blank" id="d_a_btn">
+            <div class="card-header card-header-primary card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">fiber_new</i>
+                </div>
+            </div>
+            <div class="card-body">
+                <div>+</div>
+            </div>
         </div>
     </div>
 </div>
-<div id="domain_add_modal" class="w3-modal">
-  <div class="w3-modal-content w3-animate-bottom">
-    <div class="w3-container">
-      <div class="w3-row w3-panel modal-head w3-blue">
-        <h3>Add Domain</h3>
-      </div>
-    </div>
-    <div class="w3-container">
-      <div class="w3-row w3-padding modal-body">
-        <div class="w3-panel"><label class="w3-margin-top">Name:</label><input class="w3-input" id="n_d_n" name="n_d_n" placeholder="Enter name" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Url</label><input class="w3-input" id="n_d_u" name="n_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Username:</label><input class="w3-input" id="n_d_un" name="n_d_un" placeholder="Enter name" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Password:</label><input class="w3-input" id="n_d_up" name="n_d_up" placeholder="Enter name" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Status:</label>
-        <select class="w3-input" name="n_d_st" id="n_d_st">
-          <option value="up">Up</option>
-          <option value="down">Down</option>
-        </select></div>
-      </div>
-    </div>
-    <div class="w3-panel w3-text-red" id="d_a_e"></div>
-    <div class="w3-container">
-      <div class="w3-row w3-panel modal-footer">
-        <div class="w3-bar">
-          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="d_a_s_btn">Add</button>
-          <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
+<div class="modal" id="domain_add_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Domain</h3>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Name:</label>
+                    <input class="form-control" id="n_d_n" name="n_d_n" placeholder="Enter name" /></div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Url</label>
+                    <input class="form-control" id="n_d_u" name="n_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" /></div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Username:</label>
+                    <input class="form-control" id="n_d_un" name="n_d_un" placeholder="Enter name" /></div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Password:</label>
+                    <input class="form-control" id="n_d_up" name="n_d_up" placeholder="Enter name" /></div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Status:</label>
+                    <select class="form-control" name="n_d_st" id="n_d_st">
+                      <option value="up">Up</option>
+                      <option value="down">Down</option>
+                    </select></div>
+                <div class="alert alert-danger" id="d_a_e">
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><i class="material-icons">close</i></button>
+                    <span></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-right">
+                    <button type="reset" class="btn btn-danger modal-cancel" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="d_a_s_btn">Add</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
-<div id="domain_edit_modal" class="w3-modal">
-  <div class="w3-modal-content w3-animate-bottom">
-    <div class="w3-container">
-      <div class="w3-row w3-panel modal-head w3-blue">
-        <h3>Edit Domain</h3>
-      </div>
-    </div>
-    <div class="w3-container">
-      <div class="w3-row w3-padding modal-body">
-        <div class="w3-panel"><label class="w3-margin-top">Name:</label><input class="w3-input" id="e_d_n" name="e_d_n" placeholder="Enter name" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Url</label><input class="w3-input" id="e_d_u" name="e_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Username:</label><input class="w3-input" id="e_d_un" name="e_d_un" placeholder="Enter name" /></div>
-        <div class="w3-panel"><label class="w3-margin-top">Password:</label><input type="password" class="w3-input" id="e_d_up" name="e_d_up" placeholder="Enter name" /><button class="input-helper" data-for="visibility"><i class="fa fa-eye"></i></div>
-        <div class="w3-panel"><label class="w3-margin-top">Status:</label>
-        <select class="w3-input" name="e_d_st" id="e_d_st">
-          <option value="up">Up</option>
-          <option value="down">Down</option>
-        </select></div>
-      </div>
-    </div>
-    <div class="w3-panel w3-text-red" id="d_a_e"></div>
-    <div class="w3-container">
-      <div class="w3-row w3-panel modal-footer">
-        <div class="w3-bar">
-          <button type="submit" class="w3-button w3-margin-left padding-large w3-blue w3-right" id="d_e_s_btn">Save</button>
-          <button type="reset" class="w3-button padding-large w3-red w3-right modal-cancel">Cancel</button>
+<div class="modal fade" id="domain_edit_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Domain</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Name:</label><input class="form-control" id="e_d_n" name="e_d_n" placeholder="Enter name" />
+                </div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Url</label><input class="form-control" id="e_d_u" name="e_d_u" placeholder="xxx.xxx.xxx.xxx or domain.domain.domain" />
+                </div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Username:</label>
+                    <input class="form-control" id="e_d_un" name="e_d_un" placeholder="Enter name" />
+                </div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Password:</label>
+                    <input type="password" class="form-control" id="e_d_up" name="e_d_up" placeholder="Enter name" /><button class="input-helper" data-for="visibility"><i class="fa fa-eye"></i></button>
+                </div>
+                <div class="form-group mx-3">
+                    <label class="w3-margin-top">Status:</label>
+                    <select class="form-control" name="e_d_st" id="e_d_st">
+                      <option value="up">Up</option>
+                      <option value="down">Down</option>
+                    </select>
+                </div>
+                <div class="alert alert-danger" id="d_e_e">
+                    <button class="close" type="button" data-dismiss="alert" aria-label="Close"><i class="material-icons">close</i></button>
+                    <span></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="text-right">
+                    <button type="reset" class="btn btn-danger modal-cancel" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="d_e_s_btn">Update</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
+
 {% endblock %}
 {% block styles %}
 <style>
-.domain-url{
-    background-color:#2196F3;
-}
+    .card-stats>.card-header>.card-category>.material-icons{
+        font-size:26px;
+        line-height:12px;
+        height:38px;
+    }
+    .card.card-blank{
+        height:226px;
+    }
+    .card-blank .card-body{
+        text-align:center;
+        margin-top:38px;
+    }
+    .card-blank .card-body>div{
+        font-size: 70px;
+        color: #d8d8d8;
+        cursor:pointer;
+    }
 </style>
 {% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/scripts/domain.js"></script>
+<script src="/static/js/site/domain.js"></script>
 {% endblock %}
