@@ -120,6 +120,10 @@ def create_order(request):
                     "plan":user_data.package,
                     "value":150,
                 }
+                if request.POST.get("paid"):
+                    order_params['paid']=request.POST.get("paid")
+                else:
+                    order_params['paid']='0'
                 order_id=AdminManager.create_order(order_params)
                 if (not order_id) or order_id<1:
                     log.error("failed to create order, user id : {}".format(user))

@@ -11,8 +11,22 @@
           {{user.ip}}
         </td>
         <td class="text-center">
-          <button class="btn btn-primary c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-plug"></i></button>
-          <button class="btn btn-primary c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
+            <div class="pay-actions">
+                <button class="btn btn-primary c3s-payment-go-btn" title="Pay"><i class="fa fa-plug"></i></button>
+                <button class="btn btn-primary c3s-update-btn" title="Update User" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="fa fa-refresh"></i></button>
+            </div>
+            <div class="pay-select-order">
+                <div class="paid-select">
+                    <select id="select_paid_{{user.id}}" class="form-control text-center">
+                        <option value="0" selected>Pending</option>
+                        <option value="1">Completed</option>
+                    </select>
+                </div>
+                <div class="paid-actions">
+                    <button class="btn btn-danger payment-cancel" title="Cancel"><i class="material-icons">clear</i></button>
+                    <button class="btn btn-success c3s-payment-btn" title="Pay" data-user_id="{{user.id}}" data-domain="{{user.domain}}" data-user="{{user.ccid}}"><i class="material-icons">done</i></button>
+                </div>
+            </div>
         </td>
     </tr>
 {% endfor %}

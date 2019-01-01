@@ -35,6 +35,8 @@ class AdminManager():
             order.value=params['value']
         if "amount" in params:
             order.amount=params['amount']
+        if "paid" in params:
+            order.paid=params['paid']
         order.save()
         return order.id
     def update_order_status(id):

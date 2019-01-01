@@ -32,6 +32,18 @@ $(document).on("keyup",".pay-filter",function(e){
       table.find("tr").show();
   }
 });
+$(document).on("click",".c3s-payment-go-btn",function(){
+  var that=this;
+  $(this).closest("td").find(".pay-actions").slideUp(200,function(){
+      $(this).closest("td").find(".pay-select-order").slideDown(200);
+  });
+});
+$(document).on("click",".payment-cancel",function(){
+    var that=this;
+    $(this).closest("td").find(".pay-select-order").slideUp(200,function(){
+      $(this).closest("td").find(".pay-actions").slideDown(200);
+  });
+});
 $(document).on("click",".c3s-payment-btn",function(){
   var that=this;
   $("#payment_confirmation").data("user_id",$(that).data("user_id"));
@@ -39,8 +51,7 @@ $(document).on("click",".c3s-payment-btn",function(){
 });
 $(document).on("click","#payment_confirmation",function(){
   $("#payment_modal").modal("hide");
-  $("#progress_modal").show();
-  $("#progress_bar").width("1%");
+  $(".progressor").show();
   var user_id=$(this).data("user_id");
   create_order(user_id);
 });
@@ -95,21 +106,26 @@ function update_user(id){
 }
 function create_order(id){
   if (!!id){
+    var payment_status=$("#select_paid_"+id).val();
     $.ajax({
       type:"POST",
       url:"create-order",
-      data:{user_id:id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      data:{user_id:id,paid:payment_status,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
       timeout:10000,
       error:function(e){
         $("#error_message").html(e.statusText);
         $("#error_modal").modal();
+        $(".progressor").hide();
+        $(".payment-cancel").click();
       },
       success:function(resp){
+        $(".progressor").hide();
         if (!resp.error & resp.payload>0){
           do_payment(id,resp.payload)
         }else{
           $("#error_message").html(resp.msg);
           $("#error_modal").modal();
+          $(".payment-cancel").click();
         }
       }
     });
@@ -118,6 +134,7 @@ function create_order(id){
   }
 }
 function do_payment(user_id,order_id){
+  $(".payment-cancel").click();
   if(!!user_id && !!order_id){
     var websock=new WebSocket(websoket_url);
     websock.onerror=function(err){

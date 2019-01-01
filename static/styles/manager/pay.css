@@ -2,3 +2,14 @@
   width: 188px;
   text-align: center;
 }
+.pay-select-order{
+    display: none;
+}
+.paid-select select{
+    animation-name: bumpup;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+.paid-select select:focus{
+    animation: none;
+}

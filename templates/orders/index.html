@@ -13,7 +13,7 @@
                     <table class="table">
                         <thead class="text-primary">
                             <tr>
-                                <th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th style="width:180px" class="text-center">Status (Action)</th>
+                                <th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th>Payment</th><th style="width:180px" class="text-center">Status (Action)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,6 +24,7 @@
                                  {% else %}
                                     <tr class="text-danger">
                                  {% endif %}
+                                    <td>{{order.id}}</td>
                                      <td>{{ order.user.name }}</td>
                                      <td>{{ order.user.address }}</td>
                                      <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
@@ -32,6 +33,7 @@
                                      <td><i class="fa fa-inr"></i> {{ order.amount }}</td>
                                      <td>{{ order.initiated_at }}</td>
                                      <td>{{ order.completed_at }}</td>
+                                     <td>{% if order.paid == '1' %} Completed {% else %}Pending{% endif %}</td>
                                      <td class="order-status-cell" id="td_{{order.id}}">
                                        <div class="order-status">
                                          {% if order.status == '1' %} Completed {% else %} Pending {% endif %}
@@ -52,7 +54,7 @@
                                  </tr>
                              {% endfor %}
                          {% else %}
-                             <tr><td colspan="9">No data to show</td></tr>
+                             <tr><td colspan="10" class="text-center">No data to show</td></tr>
                          {% endif %}
                         </tbody>
                     </table>
