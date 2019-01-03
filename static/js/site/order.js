@@ -1,13 +1,17 @@
 $(document).on("click",".order-update-btn",function(){
-  $(this).closest("td").addClass("edit-mode");
+  $(this).closest("tr").addClass("edit-mode");
 });
 $(document).on("click",".order-submit-btn",function(){
-  $(this).closest("td").removeClass("edit-mode");
+  $(this).closest("tr").removeClass("edit-mode");
 });
 $(document).on("change",".order-status-select",function(){
   var o_id=$(this).data("id");
-  var val=$(this).val();
-  $("#confirm_modal").find(".modal-ok").attr("onclick","do_order_update('"+ o_id+ "','"+ val+ "')");
+  $("#confirm_modal").find(".modal-ok").attr("onclick","do_order_update('"+ o_id+ "','status_')");
+  $("#confirm_modal").modal();
+});
+$(document).on("change",".payment-status-select",function(){
+  var o_id=$(this).data("id");
+  $("#confirm_modal").find(".modal-ok").attr("onclick","do_order_update('"+ o_id+ "','payment_')");
   $("#confirm_modal").modal();
 });
 $("#order_update_confirmation").click(function(){
@@ -16,13 +20,19 @@ $("#order_update_confirmation").click(function(){
   $("#order_update_modal").hide();
   do_order_update(o_id,val);
 });
-function do_order_update(id,val){
+function do_order_update(id,field){
   $("#confirm_modal").modal("hide");
-  if(!!id && !!val ){
+  if(!!id && field){
+    var data={
+        id:id,
+        csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content"),
+        key:$("#"+ field+ id).attr("name"),
+        value:$("#"+ field+ id).val(),
+    };
     $.ajax({
       type:"POST",
       url:"do-order-status-update",
-      data:{id:id,status:val,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")},
+      data:data,
       timeout:10000,
       error:function(err){
         console.log(err)
@@ -33,13 +43,13 @@ function do_order_update(id,val){
           show_error(r.msg);
         }else{
           show_result(r.msg);
-          $("#td_"+id).removeClass("edit-mode");
-          if(val=="1"){
-            $("#td_"+id).closest("tr").removeClass("text-danger").addClass("text-success");
-            $("#td_"+id).find(".order-status").text("Completed");
+          $("#tr_"+id).removeClass("edit-mode");
+          if(data.value=="1"){
+            $("#tr_"+id).removeClass("text-danger").addClass("text-success");
+            $("#"+ field+ "td_"+ id).find(".status").text("Completed");
           }else{
-            $("#td_"+id).closest("tr").removeClass("text-success").addClass("text-danger");
-            $("#td_"+id).find(".order-status").text("Pending");
+            $("#tr_"+id).removeClass("text-success").addClass("text-danger");
+            $("#"+ field+ "td_"+ id).find(".status").text("Pending");
           }
         }
       }

@@ -5,19 +5,27 @@
   padding: 0 12px;
 }
 .order-status,
-.order-status-update{
+.order-status-update,
+.payment-status,
+.payment-status-update{
   width:112px;
   line-height: 38px;
 }
 .order-status-update,
-.order-submit-btn{
+.order-submit-btn,
+.payment-status-update,
+.payment-submit-btn{
   display: none;
 }
-.order-status-cell.edit-mode .order-status-update,
-.order-status-cell.edit-mode .order-submit-btn{
+tr.edit-mode .order-status-cell .order-status-update,
+tr.edit-mode .order-status-cell .order-submit-btn,
+tr.edit-mode .payment-status-cell .payment-status-update,
+tr.edit-mode .payment-status-cell .payment-submit-btn{
   display: block;
 }
-.order-status-cell.edit-mode .order-status,
-.order-status-cell.edit-mode .order-update-btn{
+tr.edit-mode .order-status-cell .order-status,
+tr.edit-mode .order-status-cell .order-update-btn,
+tr.edit-mode .payment-status-cell .payment-status,
+tr.edit-mode .payment-status-cell .payment-update-btn{
   display: none;
 }

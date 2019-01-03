@@ -44,7 +44,10 @@ def order_status_update(request):
         if request.method=="POST":
             try:
                 order=CsOrders.objects.get(pk=request.POST.get("id"))
-                order.status=request.POST.get("status")
+                if request.POST.get("key")=="paid":
+                    order.paid=request.POST.get("value");
+                elif request.POST.get("key")=="status":
+                    order.status=request.POST.get("value");
                 order.save()
             except CsOrders.DoesNotExist as err:
                 return JsonResponse({"error":True,"msg":"order:{} does not exits".format(request.POST.get("id"))})
