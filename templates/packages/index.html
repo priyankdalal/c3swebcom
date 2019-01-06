@@ -29,12 +29,12 @@
                         <tbody>
                             {% if package_list %}
                                 {% for package in package_list %}
-                                <tr>
-                                    <td>{{ package.remote_id }}</td>
-                                    <td>{{ package.name }}</td>
-                                    <td><i class="fa fa-inr"></i> {{ package.value }}</td>
-                                    <td>{{ package.domain.name }}</td>
-									<td><button class="btn btn-primary">Update</button></td>
+                                <tr id="package_{{package.id}}">
+                                    <td data-filter="remote">{{ package.remote_id }}</td>
+                                    <td data-filter="name">{{ package.name }}</td>
+                                    <td data-filter="value"><i class="fa fa-inr"></i> {{ package.value }}</td>
+                                    <td data-filter="domain">{{ package.domain.name }}</td>
+									<td><button class="btn btn-primary update-package" data-id="{{package.id}}">Update</button></td>
                                 </tr>
                                 {% endfor %}
                             {% else %}
@@ -47,9 +47,43 @@
         </div>
     </div>
 </div>
+<div id="edit_package_modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="w3-col l12 m12">
+          <h3>Edit Package</h3>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mx-3">
+            <label class="w3-margin-top">Name:</label>
+           <input class="form-control" id="package_name" readonly /></div>
+        <div class="form-group mx-3">
+            <label class="w3-margin-top">Domain:</label>
+            <input class="form-control" id="package_domain" readonly /></div>
+        <div class="form-group mx-3">
+            <label class="w3-margin-top">Value:</label>
+            <input class="form-control" type="number" id="package_value" name="value" placeholder="Enter base value" /></div>
+        <div class="alert alert-danger">
+            <button class="close" type="button" data-dismiss="alert" aria-label="Close"><i class="material-icons">close</i></button>
+            <span></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <div class="text-right">
+            <button type="reset" class="btn btn-danger modal-cancel" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success" id="update_package_btn">Update</button>
+          </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 {% block styles %}
-<link rel="stylesheet" href="/static/styles/orders/main.css">
+<link rel="stylesheet" href="/static/styles/package/main.css">
 <style>
 .package-url{
     background-color:#2196F3;

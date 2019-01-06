@@ -1,3 +1,9 @@
+input.form-control{
+    padding:0 10px;
+}
+.btn{
+    padding:6px 12px;
+}
 .input-helper{
   position: absolute;
   right: 18px;

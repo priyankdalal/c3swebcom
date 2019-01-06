@@ -47,6 +47,64 @@ PackageManager.prototype.syncAll=function(domain){
         };
     }
 };
+PackageManager.prototype.updatePackage=function(package_id,data){
+    var that=this;
+    if(!!package_id){
+        data['csrfmiddlewaretoken']=$("meta[name='csrf_token']").attr("content");
+        data['id']=package_id;
+        $.ajax({
+            type:"POST",
+            url:"update-package-data",
+            data:data,
+            error:function(err){
+                that.errorModel.find(".error-message").html(err.statusText);
+                that.errorModel.modal();
+            },
+            success:function(r){
+                if(r.error){
+                    that.errorModel.find(".error-message").html(r.msg);
+                    that.errorModel.modal();
+                }else{
+                    $("#package_"+data['id']).find("td[data-filter='value']").html('<i class="fa fa-inr"></i>'+ data.value);
+                    that.resultModel.find(".result-message").text(r.msg);
+                    that.resultModel.modal();
+                }
+            }
+        });
+    }else{
+        that.errorModel.find(".error-message").html("<i class='text-danger fa fa-exclamation-triangle'></i> Please select a package first.");
+        that.errorModel.modal();
+    }
+};
+PackageManager.prototype.fetchPackage=function(package_id,callback=null){
+    var that=this;
+    if(!!package_id){
+        var data={id:package_id,csrfmiddlewaretoken:$("meta[name='csrf_token']").attr("content")};
+        $.ajax({
+            type:"POST",
+            url:"get-package-data",
+            data:data,
+            error:function(err){
+                that.errorModel.find(".error-message").html(err.statusText);
+                that.errorModel.modal();
+            },
+            success:function(r){
+                if(r.error){
+                    that.errorModel.find(".error-message").html(r.msg);
+                    that.errorModel.modal();
+                }else{
+                    console.log(r);
+                    if(!!callback){
+                        callback(r.payload);
+                    }
+                }
+            }
+        });
+    }else{
+        that.errorModel.find(".error-message").html("<i class='text-danger fa fa-exclamation-triangle'></i> Please select a package first.");
+        that.errorModel.modal();
+    }
+};
 $("#sync_package").click(function(){
     var pm= new PackageManager({
         host:websoket_url,
@@ -56,3 +114,45 @@ $("#sync_package").click(function(){
         });
     pm.syncAll("epay.globalnoc.in");
 });
+$(document).on("click",".update-package",function(){
+    var package_id=$(this).data("id");
+    if(!!package_id){
+        var pm= new PackageManager({
+            host:websoket_url,
+            progressModel:$("#progress_modal"),
+            errorModel:$("#error_modal"),
+            resultModel:$("#result_modal")
+        });
+        pm.fetchPackage(package_id,showEditPackage);
+    }else{
+        $("#error_modal").find("#error_message").html("<i class='text-danger fa fa-exclamation-triangle'></i> Please select a package first.");
+        $("#error_modal").modal();
+    }
+});
+$(document).on("click","#update_package_btn",function(){
+    var id=$(this).data("id");
+    var value=$("#package_value").val();
+    if(!!id){
+        var pm= new PackageManager({
+            host:websoket_url,
+            progressModel:$("#progress_modal"),
+            errorModel:$("#error_modal"),
+            resultModel:$("#result_modal")
+        });
+        pm.updatePackage(id,{value:value});
+    }else{
+        $("#error_modal").find("#error_message").html("<i class='text-danger fa fa-exclamation-triangle'></i> Please select a package first.");
+        $("#error_modal").modal();
+    }
+});
+function showEditPackage(package){
+    if(!!package){
+        $("#package_name").val(package.name);
+        $("#package_domain").val(package.domain);
+        $("#package_value").val(package.value);
+        $("#update_package_btn").data("id",package.id);
+        $("#edit_package_modal").modal();
+    }else{
+        show_error("No package data fetched");
+    }
+}
