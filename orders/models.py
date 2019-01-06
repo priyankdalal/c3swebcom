@@ -14,7 +14,8 @@ class CsOrders(models.Model):
     amount = models.FloatField(blank=True, null=True, default="0.00")
     initiated_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(auto_now=True)
-    paid = models.CharField(max_length=1, choices=paidTypes, default="Pending")
+    paid = models.CharField(max_length=1, choices=paidTypes, default="0")
+    payment_date = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=1, default="0")
     response = models.CharField(max_length=100, default="")
 

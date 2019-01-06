@@ -49,7 +49,7 @@ PackageManager.prototype.syncAll=function(domain){
 };
 $("#sync_package").click(function(){
     var pm= new PackageManager({
-        host:"ws://localhost:8180",
+        host:websoket_url,
         progressModel:$("#progress_modal"),
         errorModel:$("#error_modal"),
         resultModel:$("#result_modal")

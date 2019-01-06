@@ -67,6 +67,8 @@ create table `cs_packages`(
 
 alter table cs_orders add foreign key(initiator_id) references admin_users(id);
 alter table cs_orders add column paid enum('1','0') default '0' after completed_at;
+alter table cs_orders add column payment_date datetime default null after paid;
+
 
 drop table ip_table;
 

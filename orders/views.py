@@ -5,6 +5,8 @@ from django.db.utils import IntegrityError
 from django.http import JsonResponse
 from .models import CsOrders
 from c3swebcom import conf_vars
+from django.utils import timezone
+import datetime
 import logging
 log=logging.getLogger(__name__)
 
@@ -46,6 +48,7 @@ def order_status_update(request):
                 order=CsOrders.objects.get(pk=request.POST.get("id"))
                 if request.POST.get("key")=="paid":
                     order.paid=request.POST.get("value");
+                    order.payment_date=timezone.now()
                 elif request.POST.get("key")=="status":
                     order.status=request.POST.get("value");
                 order.save()
