@@ -47,27 +47,33 @@ PackageManager.prototype.syncAll=function(domain){
         };
     }
 };
-PackageManager.prototype.updatePackage=function(package_id,data){
+PackageManager.prototype.updatePackage=function(package_id,data,callback=null){
     var that=this;
     if(!!package_id){
         data['csrfmiddlewaretoken']=$("meta[name='csrf_token']").attr("content");
         data['id']=package_id;
         $.ajax({
             type:"POST",
-            url:"update-package-data",
+            url:"update-package",
             data:data,
+            timeout:10000,
             error:function(err){
-                that.errorModel.find(".error-message").html(err.statusText);
-                that.errorModel.modal();
+                show_toast(err.statusText,"danger");
+                if(!!callback){
+                    callback(package_id);
+                }
             },
             success:function(r){
                 if(r.error){
-                    that.errorModel.find(".error-message").html(r.msg);
-                    that.errorModel.modal();
+                    show_toast(r.msg,"danger");
                 }else{
                     $("#package_"+data['id']).find("td[data-filter='value']").html('<i class="fa fa-inr"></i>'+ data.value);
-                    that.resultModel.find(".result-message").text(r.msg);
-                    that.resultModel.modal();
+                    /*that.resultModel.find(".result-message").text(r.msg);
+                    that.resultModel.modal();*/
+                    show_toast(r.msg,"success");
+                }
+                if(!!callback){
+                    callback(package_id);
                 }
             }
         });
@@ -116,6 +122,7 @@ $("#sync_package").click(function(){
 });
 $(document).on("click",".update-package",function(){
     var package_id=$(this).data("id");
+    $(this).prop("disabled",true);
     if(!!package_id){
         var pm= new PackageManager({
             host:websoket_url,
@@ -132,6 +139,7 @@ $(document).on("click",".update-package",function(){
 $(document).on("click","#update_package_btn",function(){
     var id=$(this).data("id");
     var value=$("#package_value").val();
+    $("#edit_package_modal").modal("hide");
     if(!!id){
         var pm= new PackageManager({
             host:websoket_url,
@@ -139,7 +147,7 @@ $(document).on("click","#update_package_btn",function(){
             errorModel:$("#error_modal"),
             resultModel:$("#result_modal")
         });
-        pm.updatePackage(id,{value:value});
+        pm.updatePackage(id,{value:value},postUpdate);
     }else{
         $("#error_modal").find("#error_message").html("<i class='text-danger fa fa-exclamation-triangle'></i> Please select a package first.");
         $("#error_modal").modal();
@@ -155,4 +163,7 @@ function showEditPackage(package){
     }else{
         show_error("No package data fetched");
     }
+}
+function postUpdate(id){
+    $("#package_"+id).find(".update-package").prop("disabled",false);
 }

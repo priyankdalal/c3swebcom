@@ -41,7 +41,105 @@ table>tbody>tr:hover>td{
 .card-stats .card-header{
     min-height: 122px;
 }
+/*toast-***********************/
+.toast {
+    visibility: hidden;
+    max-width: 35px;
+    height: 35px;
+    /*margin-left: -125px;*/
+    margin: auto;
+    background-color: #eeeeec;
+    color: #babdb6;
+    text-align: center;
+    border-radius: 4px;
 
+    position: fixed;
+    z-index: 9;
+    right:20px;
+    top: 30px;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0 2px 7px -2px black;
+    overflow:hidden;
+}
+.toast .icon{
+	width: 35px;
+	height: 35px;
+    float: left;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+    border-radius:4px;
+    font-size:18px;
+}
+.toast .icon .material-icons{
+    font-size:18px;
+}
+.toast .toast-msg{
+    padding: 5px;
+    overflow: hidden;
+	white-space: nowrap;
+}
+
+.toast.bg-success,.toast.bg-danger,.toast.bg-primary,.toast.bg-info{
+    color:white;
+}
+.toast.bg-warning{
+    color:black;
+}
+.toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 2s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {top: 0; opacity: 0;} 
+    to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes expand {
+    from {min-width: 35px} 
+    to {min-width: 350px}
+}
+
+@keyframes expand {
+    from {min-width: 35px}
+    to {min-width: 350px}
+}
+@-webkit-keyframes stay {
+    from {min-width: 350px} 
+    to {min-width: 350px}
+}
+
+@keyframes stay {
+    from {min-width: 350px}
+    to {min-width: 350px}
+}
+@-webkit-keyframes shrink {
+    from {min-width: 350px;} 
+    to {min-width: 35px;}
+}
+
+@keyframes shrink {
+    from {min-width: 350px;} 
+    to {min-width: 35px;}
+}
+
+@-webkit-keyframes fadeout {
+    from {top: 30px; opacity: 1;} 
+    to {top: 60px; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {top: 30px; opacity: 1;}
+    to {top: 60px; opacity: 0;}
+}
 
 /*animations***********************/
 @keyframes bumpup{

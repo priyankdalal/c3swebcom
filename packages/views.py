@@ -41,3 +41,26 @@ def getPackage(request):
             return JsonResponse({"error":True,"msg":"bad request method."})
     else:
         return JsonResponse({"error":True,"msg":"Bad request."})
+        
+def updatePackage(request):
+    if request.is_ajax():
+        if request.method=="POST":
+            if "id" in request.POST:
+                try:
+                    package_id=int(request.POST.get("id"))
+                except ValueError as err:
+                    return JsonResponse({"error":True,"msg":"Invalid package."})
+                try:
+                    package=CsPackages.objects.get(pk=package_id)
+                    if "value" in request.POST:
+                        package.value=request.POST.get("value")
+                    package.save()
+                except CsPackages.DoesNotExist as err:
+                    return JsonResponse({"error":True,"msg":"This package doesnot exists."})
+                return JsonResponse({"error":False,"msg":"Package updated successfully."})
+            else:
+                return JsonResponse({"error":True,"msg":"No package to update."})
+        else:
+            return JsonResponse({"error":True,"msg":"Bad request method"})
+    else:
+     return JsonResponse({"error":True,"msg":"Bad request"})
