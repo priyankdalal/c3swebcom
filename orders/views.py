@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from .models import CsOrders
 from c3swebcom import conf_vars
 from django.utils import timezone
-import datetime
 import logging
 log=logging.getLogger(__name__)
 

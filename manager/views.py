@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
+from django.utils import timezone
 from c3swebcom import conf_vars
 from adminmanager.models import AdminUsers
 from .models import AdminManager
@@ -122,6 +123,7 @@ def create_order(request):
                 }
                 if request.POST.get("paid"):
                     order_params['paid']=request.POST.get("paid")
+                    order_params['payment_date']=timezone.now()
                 else:
                     order_params['paid']='0'
                 order_id=AdminManager.create_order(order_params)
