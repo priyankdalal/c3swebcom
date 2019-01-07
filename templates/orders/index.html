@@ -13,7 +13,7 @@
                     <table class="table">
                         <thead class="text-primary">
                             <tr>
-                                <th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Completed At</th><th>Payment</th><th style="width:180px" class="text-center">Status (Action)</th>
+                                <th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Recharged At</th><th>Payment</th><th>Payment At</th><th style="width:180px" class="text-center">Status (Action)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,6 +50,7 @@
                                        </div>
                                        {% endif %}
                                      </td>
+                                     <td class="text-center">{% if order.payment_date %} {{ order.payment_date }} {% else %} - {% endif %}</td>
                                      <td class="order-status-cell" id="status_td_{{order.id}}">
                                        <div class="status order-status">
                                          {% if order.status == '1' %} Completed {% else %} Pending {% endif %}
