@@ -80,13 +80,9 @@ function update_user(id){
         $("#progress_modal").modal();
         $("#progress_bar").width(data.step+"%").text(data.msg);
         if(!!data.end){
-          setTimeout(function(){
             $("#progress_modal").modal("hide");
-            $("#result_response").html(status);
-            //$("#row_user_"+user_id).find("td[data-filter='expiry']").text(data.date);
-            $("#result_modal").modal();
-          },1500);
-          websock.close();
+            show_toast(status,"success");
+            websock.close();
         }
       }
     };
