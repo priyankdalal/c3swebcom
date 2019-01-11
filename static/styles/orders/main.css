@@ -32,3 +32,10 @@ tr.edit-mode .payment-status-cell .payment-status,
 tr.edit-mode .payment-status-cell .payment-update-btn{
   display: none;
 }
+.text-scroll{
+    width: 190px;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
