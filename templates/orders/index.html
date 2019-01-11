@@ -32,8 +32,8 @@
                                      <td>{{ order.user.name }}</td>
                                      <td>{{ order.user.address }}</td>
                                      <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
-                                     <td>{{ order.initiated_at }}</td>
-                                     <td>{{ order.completed_at }}</td>
+                                     <td>{{ order.initiated_at|date:'d/m/Y' }}</td>
+                                     <td>{{ order.completed_at|date:'d/m/Y'  }}</td>
                                      <td class="payment-status-cell" id="payment_td_{{order.id}}">
                                        {% if order.paid == "0" or user.role == "admin" %}
                                        <div class="status payment-status">
