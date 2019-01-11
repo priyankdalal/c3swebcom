@@ -12,6 +12,12 @@ input.form-control{
   border:none;
   outline:none;
 }
+select,select.form-control{
+    text-indent:12px;
+}
+select.form-control:not([size]):not([multiple]){
+    height:36px;
+}
 /*progressor****************/
 .progressor{
     display: none;

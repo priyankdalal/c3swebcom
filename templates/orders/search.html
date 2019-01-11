@@ -1,0 +1,105 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card search-filters">
+            <div class="card-header">
+                <h4 class="card-title">Filters</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="name" value="" placeholder="Name" id="name_filter" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Address</label>
+                        <input type="text" class="form-control" name="address" value="" placeholder="Address" id="address_filter" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Name</label>
+                        <input type="text" class="form-control" name="address" value="" placeholder="Address" id="address_filter" />
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-3">
+                        <label>Payment Date: Start</label>
+                        <input type="text" class="form-control" name="payment_date_start" value="" placeholder="YYYY-MM-DD" id="pay_date_start_filter" />
+                    </div>
+                    <div class="col-md-3">
+                        <label>Payment Date: End</label>
+                        <input type="text" class="form-control" name="payment_date_end" value="" placeholder="YYYY-MM-DD" id="pay_date_end_filter" />
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-md-3">
+                        <label>Completed By</label>
+                        <select class="form-control" name="completed_by" id="completed_by_filter">
+                            <option value="admin">admin</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Plan</label>
+                        <select class="form-control" name="plan" id="plan_filter">
+                            <option value="admin">Plan1</option>
+                            <option value="admin">Plan3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Payment</label>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="radio" class="form-control" name="payment" id="payment_filter" />
+                            </div>
+                            <div class="col-md-4">
+                                Completed
+                            </div>
+                            <div class="col-md-2">
+                                <input type="radio" class="form-control" name="payment" id="payment_filter" />
+                            </div>
+                            <div class="col-md-4">
+                                Pending
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Status</label>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input type="radio" class="form-control" name="status" id="payment_filter" />
+                            </div>
+                            <div class="col-md-4">
+                                Completed
+                            </div>
+                            <div class="col-md-2">
+                                <input type="radio" class="form-control" name="status" id="payment_filter" />
+                            </div>
+                            <div class="col-md-4">
+                                Pending
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/styles/jquery-ui.css">
+<link rel="stylesheet" href="/static/styles/orders/search.css">
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/core/jquery-ui.js"></script>
+<script>
+    $("#pay_date_start_filter").datepicker({
+	    inline: true,
+	    dateFormat: "yy-mm-dd"
+    });
+    $("#pay_date_end_filter").datepicker({
+	    inline: true,
+	    dateFormat: "yy-mm-dd"
+    });
+</script>
+{% endblock %}
+

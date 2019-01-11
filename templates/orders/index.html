@@ -2,6 +2,10 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
+        <a href="/orders/search" class="btn btn-primary pull-right search-btn"><i class="material-icons">search</i> Filter Orders</a>
+    </div>    
+            
+    <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <div class="card-header-primary">
@@ -13,7 +17,7 @@
                     <table class="table">
                         <thead class="text-primary">
                             <tr>
-                                <th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>plan</th><th style="width:75px">Value</th><th style="width:75px">Amount</th><th>Initiated At</th><th>Recharged At</th><th>Payment</th><th>Payment At</th><th style="width:180px" class="text-center">Status (Action)</th>
+                                <th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>Initiated At</th><th>Recharged At</th><th>Payment</th><th style="width:180px" class="text-center">Status (Action)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,9 +32,6 @@
                                      <td>{{ order.user.name }}</td>
                                      <td>{{ order.user.address }}</td>
                                      <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
-                                     <td>{{ order.plan }}</td>
-                                     <td><i class="fa fa-inr"></i> {{ order.value }}</td>
-                                     <td><i class="fa fa-inr"></i> {{ order.amount }}</td>
                                      <td>{{ order.initiated_at }}</td>
                                      <td>{{ order.completed_at }}</td>
                                      <td class="payment-status-cell" id="payment_td_{{order.id}}">
@@ -50,7 +51,6 @@
                                        </div>
                                        {% endif %}
                                      </td>
-                                     <td class="text-center">{% if order.payment_date %} {{ order.payment_date }} {% else %} - {% endif %}</td>
                                      <td class="order-status-cell" id="status_td_{{order.id}}">
                                        <div class="status order-status">
                                          {% if order.status == '1' %} Completed {% else %} Pending {% endif %}

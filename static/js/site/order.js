@@ -36,13 +36,13 @@ function do_order_update(id,field){
       timeout:10000,
       error:function(err){
         console.log(err)
-        show_error(err.statusText);
+        show_toast(err.statusText,"danger");
       },
       success:function(r){
         if(!!r.error){
-          show_error(r.msg);
+          show_toast(r.msg);
         }else{
-          show_result(r.msg);
+          show_toast(r.msg,"success");
           $("#tr_"+id).removeClass("edit-mode");
           if(data.value=="1"){
             $("#tr_"+id).removeClass("text-danger").addClass("text-success");

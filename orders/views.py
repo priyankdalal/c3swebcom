@@ -38,6 +38,15 @@ def index(request):
         context['order_list']=order_list
 
     return render(request,"orders/index.html",context)
+def search(request):
+    if not request.session.get("user"):
+        return redirect("/manager")
+    context={
+        "title":"C3SWebcom - Orders/search",
+        "user":request.session.get("user"),
+        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
+    }
+    return render(request,"orders/search.html",context)
 def order_status_update(request):
     if not request.session.get("user"):
         return JsonResponse({"error":True,"msg":"unauthorized user"})
