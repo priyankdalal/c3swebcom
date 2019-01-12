@@ -4,6 +4,7 @@ from c3swebcom import conf_vars
 from django.db.utils import IntegrityError
 from django.http import JsonResponse
 from .models import CsOrders
+from .forms import SearchForm
 from c3swebcom import conf_vars
 from django.utils import timezone
 import logging
@@ -46,6 +47,8 @@ def search(request):
         "user":request.session.get("user"),
         "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
+    form=SearchForm()
+    context['form']=form
     return render(request,"orders/search.html",context)
 def order_status_update(request):
     if not request.session.get("user"):

@@ -7,7 +7,54 @@
                 <h4 class="card-title">Filters</h4>
             </div>
             <div class="card-body">
-                <div class="row">
+		<form method="post">
+		    {% csrf_token %}
+		    {{ form.non_field_errors }}
+		    <div class="row">
+			<div class="col-md-3">
+			    {{ form.name.errors }}
+			    {{ form.name.label_tag}}
+			    {{ form.name}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.address.errors }}
+			    {{ form.address.label_tag}}
+			    {{ form.address}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.start_date.errors }}
+			    {{ form.start_date.label_tag}}
+			    {{ form.start_date}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.end_date.errors }}
+			    {{ form.end_date.label_tag}}
+			    {{ form.end_date}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.payment_date.errors }}
+			    {{ form.payment_date.label_tag}}
+			    {{ form.payment_date}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.order_by.errors }}
+			    {{ form.order_by.label_tag}}
+			    {{ form.order_by}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.is_paid.errors }}
+			    {{ form.is_paid.label_tag}}
+			    {{ form.is_paid}}
+			</div>
+			<div class="col-md-3">
+			    {{ form.status.errors }}
+			    {{ form.status.label_tag}}
+			    {{ form.status}}
+			</div>
+		    </div>
+		</form>
+	    
+                <!--<div class="row">
                     <div class="col-md-3">
                         <label>Name</label>
                         <input type="text" class="form-control" name="name" value="" placeholder="Name" id="name_filter" />
@@ -48,38 +95,18 @@
                     <div class="col-md-3">
                         <label>Payment</label>
                         <div class="row">
-                            <div class="col-md-2">
-                                <input type="radio" class="form-control" name="payment" id="payment_filter" />
-                            </div>
-                            <div class="col-md-4">
-                                Completed
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" class="form-control" name="payment" id="payment_filter" />
-                            </div>
-                            <div class="col-md-4">
-                                Pending
-                            </div>
+                        <label class="radio-inline"><input class="form-control" type="radio" name="payment" checked><p>Completed</p></label>
+                            <label class="radio-inline"><input class="form-control" type="radio" name="payment"><p>Pending</p></label>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <label>Status</label>
                         <div class="row">
-                            <div class="col-md-2">
-                                <input type="radio" class="form-control" name="status" id="payment_filter" />
-                            </div>
-                            <div class="col-md-4">
-                                Completed
-                            </div>
-                            <div class="col-md-2">
-                                <input type="radio" class="form-control" name="status" id="payment_filter" />
-                            </div>
-                            <div class="col-md-4">
-                                Pending
-                            </div>
+                            <label class="radio-inline"><input class="form-control" type="radio" name="status" checked><p>Completed</p></label>
+                            <label class="radio-inline"><input class="form-control" type="radio" name="status"><p>Pending</p></label>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -92,11 +119,7 @@
 {% block scripts %}
 <script src="/static/js/core/jquery-ui.js"></script>
 <script>
-    $("#pay_date_start_filter").datepicker({
-	    inline: true,
-	    dateFormat: "yy-mm-dd"
-    });
-    $("#pay_date_end_filter").datepicker({
+    $("#id_start_date, #id_end_date, #id_payment_date").datepicker({
 	    inline: true,
 	    dateFormat: "yy-mm-dd"
     });
