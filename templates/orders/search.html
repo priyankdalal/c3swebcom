@@ -4,65 +4,72 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card search-filters">
-            <div class="card-header">
-                <h4 class="card-title">Filters</h4>
+            <div class="card-header" id="filter_header">
+                <h4 class="card-title">
+		    Filters
+		    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#order_filters" aria-expanded="true" aria-controls="collapseOne">
+		    <i class="fa fa-chevron-down"></i>
+		    </button>
+		</h4>
             </div>
-            <div class="card-body">
-		<form method="get" action="" autocomplete="off">
-		    {{ form.non_field_errors }}
-		    <div class="row">
-			<div class="col-md-4">
-			    {{ form.name.errors }}
-			    {{ form.name.label_tag}}
-			    {{ form.name}}
+	    <div id="order_filters" class="collapse" aria-labelledby="filter_header" data-parent="#accordionExample">
+		<div class="card-body">
+		    <form method="get" action="" autocomplete="off">
+			{{ form.non_field_errors }}
+			<div class="row">
+			    <div class="col-md-4">
+				{{ form.name.errors }}
+				{{ form.name.label_tag}}
+				{{ form.name}}
+			    </div>
+			    <div class="col-md-4">
+				{{ form.address.errors }}
+				{{ form.address.label_tag}}
+				{{ form.address}}
+			    </div>
+			    <div class="col-md-4">
+				{{ form.start_date.errors }}
+				{{ form.start_date.label_tag}}
+				{{ form.start_date}}
+			    </div>
+			    <div class="col-md-4">
+				{{ form.end_date.errors }}
+				{{ form.end_date.label_tag}}
+				{{ form.end_date}}
+			    </div>
+			    <div class="col-md-4">
+				{{ form.payment_date.errors }}
+				{{ form.payment_date.label_tag}}
+				{{ form.payment_date}}
+			    </div>
+			    {% if user.role == "admin" %}
+			    <div class="col-md-4">
+				{{ form.order_by.errors }}
+				{{ form.order_by.label_tag}}
+				{{ form.order_by}}
+			    </div>
+			    {% else %}
+			    <div class="col-md-4">
+			    
+			    </div>
+			    {% endif %}
+			    <div class="col-md-4">
+				{{ form.is_paid.errors }}
+				{{ form.is_paid.label_tag}}
+				{{ form.is_paid}}
+			    </div>
+			    <div class="col-md-4">
+				{{ form.status.errors }}
+				{{ form.status.label_tag}}
+				{{ form.status}}
+			    </div>
+			    <div class="col-md-4">
+				<button type="submit" class="btn btn-primary btn-lg col-md-12">Go</button>
+			    </div>
 			</div>
-			<div class="col-md-4">
-			    {{ form.address.errors }}
-			    {{ form.address.label_tag}}
-			    {{ form.address}}
-			</div>
-			<div class="col-md-4">
-			    {{ form.start_date.errors }}
-			    {{ form.start_date.label_tag}}
-			    {{ form.start_date}}
-			</div>
-			<div class="col-md-4">
-			    {{ form.end_date.errors }}
-			    {{ form.end_date.label_tag}}
-			    {{ form.end_date}}
-			</div>
-			<div class="col-md-4">
-			    {{ form.payment_date.errors }}
-			    {{ form.payment_date.label_tag}}
-			    {{ form.payment_date}}
-			</div>
-			{% if user.role == "admin" %}
-			<div class="col-md-4">
-			    {{ form.order_by.errors }}
-			    {{ form.order_by.label_tag}}
-			    {{ form.order_by}}
-			</div>
-			{% else %}
-			<div class="col-md-4">
-			
-			</div>
-			{% endif %}
-			<div class="col-md-4">
-			    {{ form.is_paid.errors }}
-			    {{ form.is_paid.label_tag}}
-			    {{ form.is_paid}}
-			</div>
-			<div class="col-md-4">
-			    {{ form.status.errors }}
-			    {{ form.status.label_tag}}
-			    {{ form.status}}
-			</div>
-			<div class="col-md-4">
-			    <button type="submit" class="btn btn-primary btn-lg col-md-12">Go</button>
-			</div>
-		    </div>
-		</form>
-            </div>
+		    </form>
+		</div>
+	    </div>
         </div>
     </div>
     <div class="col-md-12">

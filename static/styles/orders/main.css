@@ -44,4 +44,13 @@ tr.edit-mode .order-actions .order-update-btn{
 .search-filters input[type='radio']{
     height:24px;
 }
+button[data-toggle="collapse"]{
+    position:absolute;
+    top:5px;
+    right:0;
+}
+.card{
+    margin-top:10px;
+    margin-bottom:10px;
+}
 
