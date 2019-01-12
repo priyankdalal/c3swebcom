@@ -1,3 +1,6 @@
 .search-filters input[type='radio']{
     height:24px;
 }
+.order-actions{
+    display:none;
+}

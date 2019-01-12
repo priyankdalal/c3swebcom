@@ -45,9 +45,47 @@ def search(request):
     context={
         "title":"C3SWebcom - Orders/search",
         "user":request.session.get("user"),
+        "request":request,
         "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
-    }
-    form=SearchForm()
+    }  
+    if request.method=="GET":
+        form=SearchForm(request.GET)
+        try:
+            if request.session.get("user").role=="admin":
+                order_list=CsOrders.objects.filter()
+            else:
+                order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
+            if form.is_valid():
+                print(form.cleaned_data)
+                if form.cleaned_data['start_date']:
+                    order_list=order_list.filter(initiated_at__gte=form.cleaned_data['start_date'])
+                if form.cleaned_data['end_date']:
+                    order_list=order_list.filter(initiated_at__lte=form.cleaned_data['end_date'])
+                if form.cleaned_data['order_by']:
+                    order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])                 
+                if form.cleaned_data['is_paid']:
+                    print("in paid")
+                    order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
+                if form.cleaned_data['status']:
+                    print("in status")
+                    order_list=order_list.filter(status=form.cleaned_data['status'])
+                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
+                print(order_list.query)         
+        except Exception as err:
+            log.error("error occured: {}".format(str(err))) 
+    else:
+        form=SearchForm()
+    if order_list:
+        if not 'page' in request.GET:
+            page=1
+        else:
+            page=request.GET.get('page')
+        try:
+            paginator=Paginator(order_list,conf_vars.PAGINATION_ITEMS)
+            order_list=paginator.get_page(page)
+        except Exception as err:
+            log.error("error occured: {}".format(str(err)))
+        context['order_list']=order_list   
     context['form']=form
     return render(request,"orders/search.html",context)
 def order_status_update(request):
