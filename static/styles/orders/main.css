@@ -23,13 +23,15 @@
 tr.edit-mode .order-status-cell .order-status-update,
 tr.edit-mode .order-status-cell .order-submit-btn,
 tr.edit-mode .payment-status-cell .payment-status-update,
-tr.edit-mode .payment-status-cell .payment-submit-btn{
+tr.edit-mode .payment-status-cell .payment-submit-btn,
+tr.edit-mode .order-actions .order-submit-btn{
   display: block;
 }
 tr.edit-mode .order-status-cell .order-status,
 tr.edit-mode .order-status-cell .order-update-btn,
 tr.edit-mode .payment-status-cell .payment-status,
-tr.edit-mode .payment-status-cell .payment-update-btn{
+tr.edit-mode .payment-status-cell .payment-update-btn,
+tr.edit-mode .order-actions .order-update-btn{
   display: none;
 }
 .text-scroll{
@@ -39,3 +41,7 @@ tr.edit-mode .payment-status-cell .payment-update-btn{
     text-overflow: ellipsis;
     word-break: break-all;
 }
+.search-filters input[type='radio']{
+    height:24px;
+}
+
