@@ -56,7 +56,6 @@ def search(request):
             else:
                 order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
             if form.is_valid():
-                print(form.cleaned_data)
                 if form.cleaned_data['start_date']:
                     order_list=order_list.filter(initiated_at__gte=form.cleaned_data['start_date'])
                 if form.cleaned_data['end_date']:
@@ -64,13 +63,10 @@ def search(request):
                 if form.cleaned_data['order_by']:
                     order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])                 
                 if form.cleaned_data['is_paid']:
-                    print("in paid")
                     order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
                 if form.cleaned_data['status']:
-                    print("in status")
                     order_list=order_list.filter(status=form.cleaned_data['status'])
-                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
-                print(order_list.query)         
+                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])        
         except Exception as err:
             log.error("error occured: {}".format(str(err))) 
     else:
