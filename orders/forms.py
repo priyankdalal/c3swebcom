@@ -2,8 +2,10 @@ from django import forms
 from adminmanager.models import AdminUsers
 
 class SearchForm(forms.Form):
-    dis_roles=AdminUsers.objects.values('id','name').distinct()
-    users_choice=[(r['id'],r['name'].upper()) for r in dis_roles]
+    admin_users=AdminUsers.objects.values('id','name').distinct()
+    users_choice=[[str(r['id']),r['name'].upper()] for r in admin_users]
+    users_choice.append(["","Any"])
+    users_choice.sort()
     name=forms.CharField(label='Name',required=False,max_length=100,widget=forms.TextInput(attrs={'class':'form-control',"disabled":True}))
     address=forms.CharField(label='Address',required=False,widget=forms.TextInput(attrs={'class':'form-control',"disabled":True}))
     start_date=forms.CharField(label='Order Start',required=False,widget=forms.DateInput(attrs={'class':'form-control'},format='Y-m-d'))
