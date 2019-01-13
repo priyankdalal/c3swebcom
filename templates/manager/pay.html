@@ -161,7 +161,7 @@
             <a href="javascript:void(0)" class="btn btn-primary">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
             {% if user_list.has_next %}
                 <a href="?{% url_replace request 'page' user_list.next_page_number|to_str %}" class="btn btn-success">next</a>
-                <a href="?{% url_replace request 'page' user_list.num_pages|to_str %}" class="btn btn-success">last &raquo;</a>
+                <a href="?{% url_replace request 'page' user_list.paginator.num_pages|to_str %}" class="btn btn-success">last &raquo;</a>
             {% else %}
                 <a href="javascript:void(0)" class="btn btn-disabled">next</a>
                 <a href="javascript:void(0)" class="btn btn-disabled">last &raquo;</a>
