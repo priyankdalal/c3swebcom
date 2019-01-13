@@ -152,6 +152,7 @@
     </div>
     <div class="col-md-12">
 	<div class="text-center" >
+	<a name="pagination"></a>
 	  <div class="w3-bar w3-medium w3-border">
 	    {% if order_list.has_previous %}
 		<a href="?{% url_replace request 'page' 1|to_str %}" class="btn btn-success">&laquo; first</a>

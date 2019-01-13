@@ -2,10 +2,11 @@ from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
 from django.utils import timezone
+from .forms import UserSearch
 from c3swebcom import conf_vars
 from adminmanager.models import AdminUsers
 from .models import AdminManager
-from users.models import CsUsers
+from users.models import CsUsers,IpTable
 from domains.models import CsDomains
 import logging
 import subprocess,os
@@ -45,8 +46,35 @@ def dashboard(request):
 def pay(request):
     if not request.session.get("user"):
         return redirect("/manager")
-    #user_list=CsUsers.objects.all()
-    user_list=CsUsers.objects.raw("select cs.id,cs.ccid,name,address,expiry_date,package,phone,mobile,domain,group_concat(ip.ip) as `ip` from cs_users cs left join ip_table ip on cs.id=ip.user_id group by cs.id")
+    user_list=CsUsers.objects.filter()
+    if request.method=="GET":
+        form=UserSearch(request.GET)
+        try:
+            if form.is_valid():
+                if form.cleaned_data['name']:
+                    user_list=user_list.filter(name__icontains=form.cleaned_data['name'])
+                if form.cleaned_data['address']:
+                    user_list=user_list.filter(address__icontains=form.cleaned_data['address'])
+                if form.cleaned_data['expiry']:
+                    user_list=user_list.filter(expiry_date=form.cleaned_data['expiry'])
+                if form.cleaned_data['pacakge']:
+                    user_list=user_list.filter(pacakge__icontains=form.cleaned_data['pacakge'])
+                if form.cleaned_data['phone']:
+                    user_list=user_list.filter(phone__icontains=form.cleaned_data['phone'])
+                if form.cleaned_data['mobile']:
+                    user_list=user_list.filter(mobile__icontains=form.cleaned_data['mobile'])
+                if form.cleaned_data['domain']:
+                    user_list=user_list.filter(domain__icontains=form.cleaned_data['domain'])
+                if form.cleaned_data['ip']:
+                    ips_ids=IpTable.objects.filter(ip__icontains=form.cleaned_data['ip']).values_list("user_id",flat=True)
+                    ip_users=[(row) for row in ips_ids]
+                    user_list=user_list.filter(id__in=ip_users)                 
+            log.debug(user_list.query)
+        except Exception as err:
+            log.error("error occured: {}".format(str(err))) 
+        pass
+    else:
+        form=UserSearch()
     page=1
     if not "page" in request.GET:
         page=1
@@ -56,11 +84,12 @@ def pay(request):
         paginator=Paginator(list(user_list),conf_vars.PAGINATION_ITEMS)
         user_list=paginator.get_page(page)
     except Exception as err:
-        print(err)
+        log.debug(err)
     context={
         "title":"C3SWebcom - Pay",
         "user":request.session.get("user"),
         "user_list":user_list,
+        "form":form,
         "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"manager/pay.html",context)
@@ -139,6 +168,7 @@ def create_order(request):
         else:
             return JsonResponse({"error":True,"msg":"bad request method"})
     return JsonResponse({"error":True,"msg":"bad request"})
+#NOTE this is obsolate for now
 def get_filter_users(request):
     if request.is_ajax():
         if request.method=="POST":

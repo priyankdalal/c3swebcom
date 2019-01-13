@@ -1,6 +1,3 @@
-$(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
-});
 $(document).on("click",".order-update-btn",function(){
   $(this).closest("tr").addClass("edit-mode");
 });

@@ -1,7 +1,72 @@
 {% extends "common/new_default.html" %}
 {% block content %}
 {% load manager_extras %}
+{% load order_extras %}
 <div class="row">
+    <div class="col-md-12">
+        <div class="card search-filters">
+            <div class="card-header" id="filter_header">
+                <h4 class="card-title">
+                    Filters
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#user_filters" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fa fa-chevron-down"></i>
+                    </button>
+                </h4>
+            </div>
+            <div id="user_filters" class="collapse" aria-labelledby="filter_header" data-parent="#accordionExample">
+                <div class="card-body">
+                    <form method="get" action="" autocomplete="off">
+                        {{ form.non_field_errors }}
+                        <div class="row">
+                            <div class="col-md-4">
+                                {{ form.name.label_tag}}
+                                {{ form.name}}
+                                {{ form.name.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.address.label_tag}}
+                                {{ form.address}}
+                                {{ form.address.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.expiry.label_tag}}
+                                {{ form.expiry}}
+                                {{ form.expiry.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.pacakge.label_tag}}
+                                {{ form.pacakge}}
+                                {{ form.pacakge.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.phone.label_tag}}
+                                {{ form.phone}}
+                                {{ form.phone.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.mobile.label_tag}}
+                                {{ form.mobile}}
+                                {{ form.mobile.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.domain.label_tag}}
+                                {{ form.domain}}
+                                {{ form.domain.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.ip.label_tag}}
+                                {{ form.ip}}
+                                {{ form.ip.errors }}
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary btn-lg col-md-12">Go</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -13,15 +78,15 @@
                         <table class="table" id="pay_table">
                             <thead class="text-primary">
                                 <tr>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="name" placeholder="Enter name" /></th>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="address" placeholder="Enter address" /></th>
-                                    <th>Expiry</th>
-                                    <th>Package</th>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="phone" placeholder="Enter phone" /></th>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="mobile" placeholder="Enter mobile" /></th>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="domain" placeholder="Enter domain" /></th>
-                                    <th><input type="text" class="form-control pay-filter" data-filter="ip" placeholder="Enter ip" /></th>
-                                    <th><button class="btn btn-default">Action</button></th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Address</th>
+                                    <th class="text-center">Expiry</th>
+                                    <th class="text-center">Package</th>
+                                    <th class="text-center">Phone</th>
+                                    <th class="text-center">Mobile</th>
+                                    <th class="text-center">Domain</th>
+                                    <th class="text-center">IP</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="pay_table_body">
@@ -29,14 +94,17 @@
                                 {% for user in user_list %}
                                     <tr id="row_user_{{user.id}}">
                                         <td class="text-center" data-filter="name">{{user.name}}</td>
-                                        <td class="text-center" data-filter="address">{{user.address}}</td>
-                                        <td class="text-center" data-filter="expiry">{{user.expiry_date}}</td>
+                                        <td class="text-center" data-filter="address" data-toggle="tooltip" title="{{ user.address }}"><div class="text-scroll">{{ user.address }}</div></td>
+                                        <td class="text-center" data-filter="expiry">{{user.expiry_date|date:'d/m/Y'}}</td>
                                         <td class="text-center" data-filter="package">{{user.package}}</td>
                                         <td class="text-center" data-filter="phone">{{user.phone}}</td>
                                         <td class="text-center" data-filter="mobile">{{user.mobile}}</td>
                                         <td class="text-center" data-filter="domain">{{user.domain}}</td>
                                         <td class="text-center" data-filter="ip">
                                              {{user.ip}}
+                                             {% for ip in user.iptable_set.all %}
+                                                {{ ip.ip }}
+                                             {% endfor %}
                                           <!--<ul class="w3-ul">
                                             {% if user.ip %}
                                               {% with user_ip=user.ip %}
@@ -81,23 +149,24 @@
     </div>
     <div class="col-md-12">
         <div class="quick-links" id="pay_table_container_id">
-            <div class="text-center" >
+            <a name="pagination"></a>
+            <div class="text-center">
             {% if user_list.has_previous %}
-                <a href="?page=1" class="btn btn-success">&laquo; first</a>
-                <a href="?page={{ user_list.previous_page_number }}" class="btn btn-success">previous</a>
+                <a href="?{% url_replace request 'page' 1|to_str %}" class="btn btn-success">&laquo; first</a>
+                <a href="?{% url_replace request 'page' user_list.previous_page_number|to_str %}" class="btn btn-success">previous</a>
             {% else %}
               <a href="javascript:void(0)" class="btn btn-disabled">&laquo; first</a>
               <a href="javascript:void(0)" class="btn btn-disabled">previous</a>
             {% endif %}
-            <a href="javascript:void(0" class="btn btn-primary">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
+            <a href="javascript:void(0)" class="btn btn-primary">Page {{ user_list.number }} of {{ user_list.paginator.num_pages }}.</a>
             {% if user_list.has_next %}
-                <a href="?page={{ user_list.next_page_number }}" class="btn btn-success">next</a>
-                <a href="?page={{ user_list.paginator.num_pages }}" class="btn btn-success">last &raquo;</a>
+                <a href="?{% url_replace request 'page' user_list.next_page_number|to_str %}" class="btn btn-success">next</a>
+                <a href="?{% url_replace request 'page' user_list.num_pages|to_str %}" class="btn btn-success">last &raquo;</a>
             {% else %}
                 <a href="javascript:void(0)" class="btn btn-disabled">next</a>
                 <a href="javascript:void(0)" class="btn btn-disabled">last &raquo;</a>
             {% endif %}
-            </div>
+          </div>
         </div>
     </div>
 </div>
@@ -123,9 +192,17 @@
 </div>
 {% endblock %}
 {% block styles %}
+<link rel="stylesheet" href="/static/styles/jquery-ui.css">
 <link rel="stylesheet" href="/static/styles/manager/pay.css">
 {% endblock %}
 {% block scripts%}
+<script src="/static/js/core/jquery-ui.js"></script>
+<script>
+    $("#id_expiry").datepicker({
+            inline: true,
+            dateFormat: "yy-mm-dd"
+    });
+</script>
 <script>var websoket_url='{{ websocket }}';</script>
 <!--<link rel="stylesheet" type="text/css" href="/static/scripts/lib/DataTables/datatables.min.css"/>
 <script type="text/javascript" src="/static/scripts/lib/DataTables/datatables.min.js"></script>-->

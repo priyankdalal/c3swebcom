@@ -52,3 +52,6 @@ function show_toast(msg="",type){
         }
     },5000);
 }
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip(); 
+});

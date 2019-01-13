@@ -66,7 +66,7 @@ def search(request):
                     order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
                 if form.cleaned_data['status']:
                     order_list=order_list.filter(status=form.cleaned_data['status'])
-                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])        
+                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])     
         except Exception as err:
             log.error("error occured: {}".format(str(err))) 
     else:
