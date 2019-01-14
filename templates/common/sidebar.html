@@ -13,7 +13,7 @@
         <ul class="nav">
           <li class="nav-item  active">
             <a class="nav-link" href="/manager/dashboard">
-              <i class="material-icons">dashboard</i>
+              <i class="material-icons">view_carousel</i>
               <p>Dashboard</p>
             </a>
           </li>
@@ -26,21 +26,21 @@
           {% if user.role == "admin" %}
           <li class="nav-item ">
             <a class="nav-link" href="/domains">
-              <i class="material-icons">library_books</i>
+              <i class="material-icons">network_check</i>
               <p>Domains</p>
             </a>
           </li>
           {% endif %}
           <li class="nav-item ">
             <a class="nav-link" href="/orders">
-              <i class="material-icons">bubble_chart</i>
+              <i class="material-icons">assignment</i>
               <p>Orders</p>
             </a>
           </li>
           {% if user.role == "admin" %}
           <li class="nav-item ">
             <a class="nav-link" href="/packages">
-              <i class="material-icons">location_ons</i>
+              <i class="material-icons">work</i>
               <p>Packages</p>
             </a>
           </li>
