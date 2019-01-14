@@ -7,6 +7,7 @@ from .models import CsOrders
 from .forms import SearchForm
 from c3swebcom import conf_vars
 from django.utils import timezone
+import datetime
 import logging
 log=logging.getLogger(__name__)
 
@@ -56,6 +57,12 @@ def search(request):
             else:
                 order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
             if form.is_valid():
+                if form.cleaned_data['name']:
+                    order_list=order_list.filter(user__name__icontains=form.cleaned_data['name'])
+                if form.cleaned_data['address']:
+                    order_list=order_list.filter(user__address__icontains=form.cleaned_data['address'])
+                if form.cleaned_data['payment_date']:
+                    order_list=order_list.filter(payment_date__contains=datetime.datetime.strptime(form.cleaned_data['payment_date'],'%Y-%m-%d').date());
                 if form.cleaned_data['start_date']:
                     order_list=order_list.filter(initiated_at__gte=form.cleaned_data['start_date'])
                 if form.cleaned_data['end_date']:
@@ -66,7 +73,7 @@ def search(request):
                     order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
                 if form.cleaned_data['status']:
                     order_list=order_list.filter(status=form.cleaned_data['status'])
-                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])     
+                context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
         except Exception as err:
             log.error("error occured: {}".format(str(err))) 
     else:
