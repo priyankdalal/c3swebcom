@@ -64,9 +64,26 @@
 				{{ form.status}}
 			    </div>
 			    <div class="col-md-4">
-				<button type="submit" class="btn btn-primary btn-lg col-md-12">Go</button>
+				{% if user.role == "admin" %}
+				    <button type="submit" class="btn btn-primary btn-lg col-md-5">Go</button>
+				    <button type="reset" class="btn btn-primary btn-lg col-md-6" id="get_csv_button">Save as Excel</button>
+				{% else %}
+				    <button type="submit" class="btn btn-primary btn-lg col-md-12">Go</button>
+				{% endif %}
 			    </div>
 			</div>
+		    </form>
+		    <form method="get" action="get-csv" target="blank" id="get_csv_form">
+			<input name="name" type="hidden" id="csv_name" />
+			<input name="address" type="hidden" id="csv_address" />
+			<input name="start_date" type="hidden" id="csv_start" />
+			<input name="end_date" type="hidden" id="csv_end" />
+			<input name="payment_date" type="hidden" id="csv_payment_date" />
+			{% if user.role == "admin" %}
+			<input name="order_by" type="hidden" id="csv_order_by" />
+			{% endif %}
+			<input name="is_paid" type="hidden" id="csv_is_paid" />
+			<input name="status" type="hidden" id="csv_status" />
 		    </form>
 		</div>
 	    </div>

@@ -58,3 +58,14 @@ function do_order_update(id,field){
     alert("one or more input is empty");
   }
 }
+$("#get_csv_button").click(function(){
+  $("#csv_name").val($("#id_name").val());
+  $("#csv_address").val($("#id_address").val());
+  $("#csv_start").val($("#id_start_date").val());
+  $("#csv_end").val($("#id_end_date").val());
+  $("#csv_payment_date").val($("#id_payment_date").val());
+  $("#csv_order_by").val($("#id_order_by").val());
+  $("#csv_is_paid").val($("#id_is_paid").val());
+  $("#csv_status").val($("#id_status").val());
+  $("#get_csv_form").submit();
+});

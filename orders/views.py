@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from c3swebcom import conf_vars
 from django.db.utils import IntegrityError
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from .models import CsOrders
 from .forms import SearchForm
 from c3swebcom import conf_vars
@@ -115,3 +115,92 @@ def order_status_update(request):
             return JsonResponse({"error":True,"msg":"bad request method"})
     else:
         return JsonResponse({"error":True,"msg":"bad request"})
+
+def get_pdf(request):
+    from .render import Render    
+    orders=CsOrders.objects.all()
+    today=timezone.now()
+    params={
+        'today':today,
+        'orders':orders,
+        'request':request
+        }
+    return render(request,'orders/pdf.html',params)
+    #return Render.render("orders/pdf.html",params)
+    
+def get_csv(request):
+    import csv
+    from django.utils.encoding import smart_str
+    form=SearchForm(request.GET)
+    try:
+        if request.session.get("user").role=="admin":
+            order_list=CsOrders.objects.filter()
+        else:
+            order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
+        if form.is_valid():
+            if form.cleaned_data['name']:
+                order_list=order_list.filter(user__name__icontains=form.cleaned_data['name'])
+            if form.cleaned_data['address']:
+                order_list=order_list.filter(user__address__icontains=form.cleaned_data['address'])
+            if form.cleaned_data['payment_date']:
+                order_list=order_list.filter(payment_date__contains=datetime.datetime.strptime(form.cleaned_data['payment_date'],'%Y-%m-%d').date());
+            if form.cleaned_data['start_date']:
+                order_list=order_list.filter(initiated_at__gte=form.cleaned_data['start_date'])
+            if form.cleaned_data['end_date']:
+                order_list=order_list.filter(initiated_at__lte=form.cleaned_data['end_date'])
+            if form.cleaned_data['order_by']:
+                order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])                 
+            if form.cleaned_data['is_paid']:
+                order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
+            if form.cleaned_data['status']:
+                order_list=order_list.filter(status=form.cleaned_data['status'])
+            context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
+    except Exception as err:
+        log.error("error occured: {}".format(str(err)))
+    today=timezone.now()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=orders-{}.csv'.format(today)
+    writer = csv.writer(response, csv.excel)
+    response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+    writer.writerow([
+        "Orders Report - {}".format(today),
+        ])
+    writer.writerow([
+        smart_str(u"S.no"),
+        smart_str(u"Name"),
+        smart_str(u"Address"),
+        smart_str(u"Completed By"),
+        smart_str(u"Started At"),
+        smart_str(u"Completed At"),
+        smart_str(u"Payment Date"),
+        smart_str(u"Payment Status"),
+        smart_str(u"Recharge Status"),
+    ])
+    count=1
+    for order in order_list:
+        row=[]
+        row.append(count)
+        if not order.user:
+            row.append("")
+            row.append("")
+        else:
+            row.append(order.user.name)
+            row.append(order.user.address)  
+        if order.initiator_type=="admin":
+            row.append(order.initiator.name)
+        else:
+            row.append("self")
+        row.append(order.initiated_at)
+        row.append(order.completed_at)
+        row.append(order.payment_date)
+        if order.paid == "1":
+            row.append("Completed")
+        else:
+            row.append("Pending")
+        if order.status == "1":
+            row.append("Completed")
+        else:
+            row.append("Pending")  
+        count+=1
+        writer.writerow(row)
+    return response
