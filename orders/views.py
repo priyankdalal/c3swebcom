@@ -184,23 +184,23 @@ def get_csv(request):
             row.append("")
             row.append("")
         else:
-            row.append(order.user.name)
-            row.append(order.user.address)  
+            row.append(smart_str(order.user.name))
+            row.append(smart_str(order.user.address))
         if order.initiator_type=="admin":
-            row.append(order.initiator.name)
+            row.append(smart_str(order.initiator.name))
         else:
-            row.append("self")
-        row.append(order.initiated_at)
-        row.append(order.completed_at)
-        row.append(order.payment_date)
+            row.append(smart_str("self"))
+        row.append(smart_str(order.initiated_at))
+        row.append(smart_str(order.completed_at))
+        row.append(smart_str(order.payment_date))
         if order.paid == "1":
-            row.append("Completed")
+            row.append(smart_str("Completed"))
         else:
-            row.append("Pending")
+            row.append(smart_str("Pending"))
         if order.status == "1":
-            row.append("Completed")
+            row.append(smart_str("Completed"))
         else:
-            row.append("Pending")  
+            row.append(smart_str("Pending"))
         count+=1
         writer.writerow(row)
     return response
