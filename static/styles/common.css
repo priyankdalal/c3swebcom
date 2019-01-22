@@ -137,6 +137,9 @@ table>tbody>tr:hover>td{
     to {min-width: 35px;}
 }
 
+#dual_progress_modal .progress:first-child{
+    margin-bottom:20px;
+}
 @-webkit-keyframes fadeout {
     from {top: 30px; opacity: 1;} 
     to {top: 60px; opacity: 0;}

@@ -93,7 +93,7 @@ function update_user(id){
       websock.close();
     }
     websock.onopen=function(){
-      websock.send(JSON.stringify({op:"upadete_user",payload:id+""}));
+      websock.send(JSON.stringify({op:"update_user",payload:id+""}));
     };
   }else{
     $("#error_message").html("No/invalid user to update.");
