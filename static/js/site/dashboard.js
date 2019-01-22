@@ -79,6 +79,9 @@ function sync_users(){
     if(!!data.step){
       $("#progress_bar_2").width(data.step+"%").text(data.msg);
     }
+    if(!!data.end){
+      $("#progress_bar_2").width("0%").text(data.msg);
+    }
     if(!!data.terminate){
       $("#dual_progress_modal").modal("hide");
       $("#result_response").html("All users updated.");
