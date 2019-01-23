@@ -76,3 +76,5 @@ update cs_users set password=sha1(concat(ccid,"1111"));
 
 update cs_users set name="default" where name="";
 delete from django_session;
+
+alter table admin_users add column password_string varchar(100) not null default "1111";

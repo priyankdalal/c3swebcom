@@ -1,0 +1,38 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Admin Users</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr class="text-center">
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in adminusers %}
+                                {% if user.name != "admin" %}
+                                <tr class="text-center">
+                                    <td>{{user.name}}</td>
+                                    <td>{{user.role}}</td>
+                                    <td><a href="edit/{{user.id}}" class="btn btn-primary"><i class="material-icons">create</i></button></td>
+                                    <td><button class="btn btn-danger"><i class="material-icons">delete</i></button></td>
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

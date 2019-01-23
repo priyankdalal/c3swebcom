@@ -1,0 +1,61 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="title">
+                        {{adminuser.name}}
+                        {% if post_status %}
+                            {{post_status}}
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <a href="/adminusers" class="btn btn-info">Back</a>
+                        </div>
+                    </div>
+                    <form method="post" autocomplete="off">
+                        {{ form.non_field_errors }}
+                        <div class="row">
+                            {{ form.id}}
+                            {% csrf_token %}
+                            {{ form.password_changed }}
+                            <div class="col-md-12">
+                                {{ form.name.label_tag}}
+                                {{ form.name}}
+                                {{ form.name.errors }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.password_string.label_tag}}
+                                {{ form.password_string}}
+                                <button type="reset" class="input-helper" data-for="visibility"><i class="fa fa-eye"></i></button>
+                                {{ form.password_string.errors }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.role.label_tag}}
+                                {{ form.role}}
+                                {{ form.role.errors }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right mt-5 mb-3">
+            				{% if user.role == "admin" %}
+                                <button type="submit" class="btn btn-danger col-md-3 py-3">Update</button>
+                            {% endif %}
+            			    </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+$(document).on("change","#id_password_string",function(){
+    alert("this");
+    $("#id_password_changed").val("1");
+});
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.core import serializers
 from c3swebcom import conf_vars
@@ -41,7 +41,7 @@ def getPackage(request):
             return JsonResponse({"error":True,"msg":"bad request method."})
     else:
         return JsonResponse({"error":True,"msg":"Bad request."})
-        
+
 def updatePackage(request):
     if request.is_ajax():
         if request.method=="POST":
