@@ -34,10 +34,10 @@
                 <h3 class="card-title">
                     _/_ <small>Users</small>
                 </h3>
-                {% if user.role == "admin" %}
                 <a class="btn btn-success check-new-user">Check for new Users</a>
-                {% endif %}
+                {% if user.role == "admin" %}
                 <a class="btn btn-success sync-user">Sync Existing Users</a>
+                {% endif %}
             </div>
             <div class="card-footer">
                 <div class="stats">

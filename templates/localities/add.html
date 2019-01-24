@@ -1,0 +1,52 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="title">
+                        New Locality
+                        {% if post_status %}
+                            {{post_status}}
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <a href="/localities" class="btn btn-info">Back</a>
+                        </div>
+                    </div>
+                    <form method="post" autocomplete="off">
+                        {{ form.non_field_errors }}
+                        <div class="row">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                {{ form.name.label_tag}}
+                                {{ form.name}}
+                                {{ form.name.errors }}
+                            </div>
+                            <div class="col-md-12">
+                                {{ form.code.label_tag}}
+                                {{ form.code}}
+                                {{ form.code.errors }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right mt-5 mb-3">
+            				{% if user.role == "admin" %}
+                                <button type="submit" class="btn btn-danger col-md-3 py-3">Add</button>
+                            {% endif %}
+            			    </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

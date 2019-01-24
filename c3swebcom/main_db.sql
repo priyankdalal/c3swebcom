@@ -78,3 +78,9 @@ update cs_users set name="default" where name="";
 delete from django_session;
 
 alter table admin_users add column password_string varchar(100) not null default "1111";
+
+
+create table localities(
+	id int not null auto_increment primary key,
+    `name` varchar(100) not null,
+    `code` varchar(100) not null)ENGINE=InnoDB;

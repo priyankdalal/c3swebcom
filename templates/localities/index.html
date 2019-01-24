@@ -3,8 +3,8 @@
 <div class="row">
     <div class="col-md-12 text-right">
         <div class="btn-group">
-            <a href="add" class="btn btn-primary btn-lg" title="Add New User">
-                <i class="material-icons">group_add</i>
+            <a href="add" class="btn btn-primary btn-lg" title="Add New Locality">
+                <i class="material-icons">add_locations</i>
             </a>
         </div>
     </div>
@@ -13,7 +13,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header card-header-primary">
-                <h4 class="card-title">Admin Users</h4>
+                <h4 class="card-title">Localities</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -21,22 +21,20 @@
                         <thead class="text-primary">
                             <tr class="text-center">
                                 <th>Name</th>
-                                <th>Role</th>
+                                <th>Code</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% if adminusers %}
-                            {% for user in adminusers %}
-                                {% if user.name != "admin" %}
+                            {% if localities %}
+                            {% for locality in localities %}
                                 <tr class="text-center">
                                     <td>{{user.name}}</td>
                                     <td>{{user.role}}</td>
                                     <td><a href="edit/{{user.id}}" class="btn btn-primary"><i class="material-icons">create</i></button></td>
                                     <td><button class="btn btn-danger"><i class="material-icons">delete</i></button></td>
                                 </tr>
-                                {% endif %}
                             {% endfor %}
                             {% else %}
                             <tr class="text-center">

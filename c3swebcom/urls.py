@@ -24,4 +24,5 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path("packages/", include("packages.urls")),
     path("adminusers/", include("adminmanager.urls")),
+    path("localities/",include("localities.urls"))
 ]
