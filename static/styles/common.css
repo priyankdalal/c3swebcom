@@ -100,7 +100,7 @@ table>tbody>tr:hover>td{
 }
 
 @-webkit-keyframes fadein {
-    from {top: 0; opacity: 0;} 
+    from {top: 0; opacity: 0;}
     to {top: 30px; opacity: 1;}
 }
 
@@ -110,7 +110,7 @@ table>tbody>tr:hover>td{
 }
 
 @-webkit-keyframes expand {
-    from {min-width: 35px} 
+    from {min-width: 35px}
     to {min-width: 350px}
 }
 
@@ -119,7 +119,7 @@ table>tbody>tr:hover>td{
     to {min-width: 350px}
 }
 @-webkit-keyframes stay {
-    from {min-width: 350px} 
+    from {min-width: 350px}
     to {min-width: 350px}
 }
 
@@ -128,12 +128,12 @@ table>tbody>tr:hover>td{
     to {min-width: 350px}
 }
 @-webkit-keyframes shrink {
-    from {min-width: 350px;} 
+    from {min-width: 350px;}
     to {min-width: 35px;}
 }
 
 @keyframes shrink {
-    from {min-width: 350px;} 
+    from {min-width: 350px;}
     to {min-width: 35px;}
 }
 
@@ -141,7 +141,7 @@ table>tbody>tr:hover>td{
     margin-bottom:20px;
 }
 @-webkit-keyframes fadeout {
-    from {top: 30px; opacity: 1;} 
+    from {top: 30px; opacity: 1;}
     to {top: 60px; opacity: 0;}
 }
 
@@ -159,10 +159,31 @@ table>tbody>tr:hover>td{
     40%{transform: scale(1);}
     to{transform: scale(1)}
 }
+@keyframes fadeIn {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
 .errorlist{
     text-align:center;
     padding-left:0;
     margin:0;
     list-style:none;
     color:red;
+}
+/*confirm css****************************/
+*[data-open="close"] .btn-cancel,
+*[data-open="close"] .btn-ok{
+    display:none;
+}
+*[data-open="open"] .btn-confirm{
+    display:none;
+}
+*[data-open="open"] .btn-cancel,
+*[data-open="open"] .btn-ok{
+    animation: fadeIn 0.4s;
+    animation-fill-mode: forwards;
+}
+*[data-open="close"] .btn-confirm{
+    animation: fadeIn 0.4s;
+    animation-fill-mode: forwards;
 }

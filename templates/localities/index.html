@@ -30,10 +30,14 @@
                             {% if localities %}
                             {% for locality in localities %}
                                 <tr class="text-center">
-                                    <td>{{user.name}}</td>
-                                    <td>{{user.role}}</td>
-                                    <td><a href="edit/{{user.id}}" class="btn btn-primary"><i class="material-icons">create</i></button></td>
-                                    <td><button class="btn btn-danger"><i class="material-icons">delete</i></button></td>
+                                    <td>{{locality.name}}</td>
+                                    <td>{{locality.code}}</td>
+                                    <td><a href="edit/{{locality.id}}" class="btn btn-primary"><i class="material-icons">create</i></button></td>
+                                    <td data-open="close">
+                                        <button class="btn btn-danger btn-confirm"><i class="material-icons">delete</i></button>
+                                        <button class="btn btn-danger btn-cancel"><i class="material-icons">clear</i></button>
+                                        <button class="btn btn-success btn-ok" data-locality="{{locality.id}}"><i class="material-icons">done</i></button>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             {% else %}
@@ -49,3 +53,6 @@
     </div>
 </div>
 {% endblock %}
+{% block scripts %}
+<script src="/static/js/site/localities.js"></script>
+{% endblock  %}

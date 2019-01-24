@@ -53,5 +53,14 @@ function show_toast(msg="",type){
     },5000);
 }
 $(document).ready(function(){
-  $('[data-toggle="tooltip"]').tooltip(); 
+  $('[data-toggle="tooltip"]').tooltip();
 });
+/*confirm js***********************************/
+if($(".btn-confirm").length>0){
+    $(".btn-confirm").click(function(){
+        $(this).parent().attr("data-open","open");
+    });
+    $(".btn-cancel").click(function(){
+        $(this).parent().attr("data-open","close");
+    });
+}
