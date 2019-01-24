@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="title">
-                        {{adminuser.name}}
+                        New User
                         {% if post_status %}
                             {{post_status}}
                         {% endif %}
@@ -20,9 +20,7 @@
                     <form method="post" autocomplete="off">
                         {{ form.non_field_errors }}
                         <div class="row">
-                            {{ form.id}}
                             {% csrf_token %}
-                            {{ form.password_changed }}
                             <div class="col-md-12">
                                 {{ form.name.label_tag}}
                                 {{ form.name}}
@@ -43,7 +41,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right mt-5 mb-3">
             				{% if user.role == "admin" %}
-                                <button type="submit" class="btn btn-danger col-md-3 py-3">Update</button>
+                                <button type="submit" class="btn btn-danger col-md-3 py-3">Add</button>
                             {% endif %}
             			    </div>
                         </div>

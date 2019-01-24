@@ -16,6 +16,35 @@ def index(request):
     }
     return render(request,"adminusers/index.html",contaxt)
 
+def add(request):
+    if not request.session.get("user"):
+        return redirect("/manager")
+    context={
+        "title":"C3SWebcom : Admin Users - Add",
+        "user":request.session.get("user"),
+    }
+    add_form=form.AddForm()
+    if request.method=="POST":
+        add_form=form.AddForm(request.POST)
+        try:
+            if add_form.is_valid():
+                if add_form.cleaned_data['name']:
+                    adminuser=AdminUsers(name=add_form.cleaned_data['name'])
+                if add_form.cleaned_data['role']:
+                    adminuser.role=add_form.cleaned_data['role']
+                if add_form.cleaned_data['password_string']:
+                    adminuser.password_string=add_form.cleaned_data['password_string']
+                    newpass=adminuser.name+add_form.cleaned_data['password_string']
+                    newpass=sha1(newpass.encode()).hexdigest()
+                    adminuser.password=newpass
+                adminuser.save()
+                return redirect("/adminusers")
+            pass
+        except Exception as err:
+            log.error("error occured: {}".format(str(err)))
+    context['form']=add_form
+    return render(request,"adminusers/add.html",context)
+
 def edit(request,id):
     if not request.session.get("user"):
         return redirect("/manager")
