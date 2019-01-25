@@ -23,6 +23,13 @@ $(".input-helper").click(function(){
     }
   }
 });
+/*sidebar js***************************/
+$(".close-sidebar").click(function(){
+    $(".wrapper").addClass("hide-sidebar");
+});
+$(".open-sidebar").click(function(){
+    $(".wrapper").removeClass("hide-sidebar");
+});
 
 /*toast js**************************/
 function show_toast(msg="",type){

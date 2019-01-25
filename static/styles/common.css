@@ -18,6 +18,24 @@ select,select.form-control{
 select.form-control:not([size]):not([multiple]){
     height:36px;
 }
+/*sidebar css**********************************/
+.sidebar{
+    overflow: hidden;
+}
+.wrapper .sidebar-wrapper.icons-only,
+.wrapper.hide-sidebar .sidebar-wrapper.full-sidebar,
+.wrapper.hide-sidebar .sidebar .logo{
+    display: none;
+}
+.sidebar-wrapper.icons-only .nav .nav-item a.nav-link{
+    display: inline-block;
+}
+.wrapper .sidebar-wrapper.icons-only .nav{
+    margin-top:42px;
+}
+.sidebar .sidebar-wrapper.icons-only .nav i{
+    margin-right: 0;
+}
 .sidebar-toggle{
     position: absolute;
     z-index: 9;
@@ -26,8 +44,12 @@ select.form-control:not([size]):not([multiple]){
 .wrapper .sidebar-toggle button:last-child{
     display: none;
 }
-.wrapper.hide-sidebar .sidebar{
-    left:-200px;
+.wrapper.hide-sidebar .sidebar,
+.wrapper.hide-sidebar .sidebar .sidebar-wrapper{
+    width:92px;
+}
+.wrapper.hide-sidebar .sidebar-toggle{
+    right: 24px;
 }
 .wrapper.hide-sidebar .sidebar-toggle button:first-child{
     display: none;
@@ -38,9 +60,11 @@ select.form-control:not([size]):not([multiple]){
 .wrapper.hide-sidebar .main-panel{
     width: calc(100% - 70px);
 }
-.wrapper.hide-sidebar .sidebar-wrapper .nav .nav-link p{
-    display: none;
+.wrapper.hide-sidebar .sidebar-wrapper.icons-only{
+    display: block;
+    overflow: hidden;
 }
+/*sidebar css end*********************************/
 /*progressor****************/
 .progressor{
     display: none;

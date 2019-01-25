@@ -5,8 +5,8 @@
         Tip 2: you can also add an image using data-image tag
     -->
     <div class="sidebar-toggle" data-toggle="open">
-        <button class="btn btn-link"><i class="material-icons">arrow_back</i></button>
-        <button class="btn btn-link"><i class="material-icons">arrow_forward</i></button>
+        <button class="btn btn-link close-sidebar"><i class="material-icons">arrow_back</i></button>
+        <button class="btn btn-link open-sidebar"><i class="material-icons">arrow_forward</i></button>
     </div>
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
@@ -14,7 +14,7 @@
         </a>
         <div class="text-center">Welcome, <b class="text-capitalize">{{user.name}}</b></div>
       </div>
-      <div class="sidebar-wrapper">
+      <div class="sidebar-wrapper full-sidebar">
         <ul class="nav">
           <li class="nav-item {% if page == 'dashboard' %}active{% endif %}">
             <a class="nav-link" href="/manager/dashboard">
@@ -61,6 +61,51 @@
             <a class="nav-link" href="/localities">
               <i class="material-icons">pin_drop</i>
               <p>Localities</p>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="sidebar-wrapper icons-only">
+        <ul class="nav">
+          <li class="nav-item {% if page == 'dashboard' %}active{% endif %}">
+            <a class="nav-link" href="/manager/dashboard">
+              <i class="material-icons">view_carousel</i>
+            </a>
+          </li>
+          {% if user.role == "admin" %}
+          <li class="nav-item {% if page == 'adminusers' %}active{% endif %}">
+            <a class="nav-link" href="/adminusers">
+              <i class="material-icons">account_circle</i>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item {% if page == 'pay' %}active{% endif %}">
+            <a class="nav-link" href="/manager/pay">
+              <i class="material-icons">perm_contact_calender</i>
+            </a>
+          </li>
+          {% if user.role == "admin" %}
+          <li class="nav-item {% if page == 'domains' %}active{% endif %}">
+            <a class="nav-link" href="/domains">
+              <i class="material-icons">network_check</i>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item {% if page == 'orders' %}active{% endif %}">
+            <a class="nav-link" href="/orders">
+              <i class="material-icons">assignment</i>
+            </a>
+          </li>
+          {% if user.role == "admin" %}
+          <li class="nav-item {% if page == 'packages' %}active{% endif %}">
+            <a class="nav-link" href="/packages">
+              <i class="material-icons">work</i>
+            </a>
+          </li>
+          <li class="nav-item {% if page == 'localities' %}active{% endif %}">
+            <a class="nav-link" href="/localities">
+              <i class="material-icons">pin_drop</i>
             </a>
           </li>
           {% endif %}
