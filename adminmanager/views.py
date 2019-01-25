@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.forms.models import model_to_dict
+from c3swebcom.conf_vars import VERSION
 from hashlib import sha1
 from .models import AdminUsers
 from . import form
@@ -11,7 +12,7 @@ def index(request):
         return redirect("/manager")
     contaxt={
         "title":"C3SWebcom : Admin Users",
-        "user":request.session.get("user"),
+        "page":"adminusers",
         "adminusers":AdminUsers.objects.all(),
     }
     return render(request,"adminusers/index.html",contaxt)
@@ -21,7 +22,7 @@ def add(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom : Admin Users - Add",
-        "user":request.session.get("user"),
+        "page":"adminusers",
     }
     add_form=form.AddForm()
     if request.method=="POST":
@@ -52,7 +53,7 @@ def edit(request,id):
         return redirect('/adminusers')
     context={
         "title":"C3SWebcom : Admin Users - Edit",
-        "user":request.session.get("user"),
+        "page":"adminusers",
     }
     adminuser=AdminUsers.objects.get(pk=id)
     edit_form=form.EditForm(model_to_dict(adminuser))

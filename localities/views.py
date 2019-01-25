@@ -10,7 +10,7 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Localities",
-        "user":request.session.get("user"),
+        "page":"localities",
         "localities":Localities.objects.all(),
     }
     print(Localities.objects.all())
@@ -21,7 +21,7 @@ def add(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Localities : Add",
-        "user":request.session.get("user"),
+        "page":"localities",
     }
     add_form=addForm()
     if request.method=="POST":
@@ -44,7 +44,7 @@ def edit(request,id):
         return redirect("/localities")
     context={
         "title":"C3SWebcom - Localities : Edit",
-        "user":request.session.get("user"),
+        "page":"localities",
     }
     if request.method=="POST":
         edit_form=editForm(request.POST)

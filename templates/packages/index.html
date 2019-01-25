@@ -83,7 +83,7 @@
 
 {% endblock %}
 {% block styles %}
-<link rel="stylesheet" href="/static/styles/package/main.css">
+<link rel="stylesheet" href="/static/styles/package/main.css{{version}}">
 <style>
 .package-url{
     background-color:#2196F3;
@@ -92,5 +92,5 @@
 {% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/js/site/package.js"></script>
+<script src="/static/js/site/package.js{{version}}"></script>
 {% endblock %}

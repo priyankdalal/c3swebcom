@@ -50,7 +50,7 @@
 			    </div>
 			    {% else %}
 			    <div class="col-md-4">
-			    
+
 			    </div>
 			    {% endif %}
 			    <div class="col-md-4">
@@ -193,7 +193,7 @@
 {% endblock %}
 {% block styles %}
 <link rel="stylesheet" href="/static/styles/jquery-ui.css">
-<link rel="stylesheet" href="/static/styles/orders/main.css">
+<link rel="stylesheet" href="/static/styles/orders/main.css{{version}}">
 {% endblock %}
 {% block scripts %}
 <script src="/static/js/core/jquery-ui.js"></script>
@@ -204,6 +204,5 @@
     });
 </script>
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/js/site/order.js"></script>
+<script src="/static/js/site/order.js{{version}}"></script>
 {% endblock %}
-

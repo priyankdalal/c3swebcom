@@ -17,8 +17,8 @@
   <!-- CSS Files -->
   <link href="/static/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="/static/demo/demo.css" rel="stylesheet" />
-  <link href="/static/styles/common.css" rel="stylesheet" />
+  <link href="/static/demo/demo.css{{version}}" rel="stylesheet" />
+  <link href="/static/styles/common.css{{version}}" rel="stylesheet" />
 	 {% block styles %}{% endblock %}
 </head>
 
@@ -45,8 +45,8 @@
   <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <script src="/static/js/material-dashboard.min.js?v=2.1.1"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="/static/demo/demo.js"></script>
-  <script src="/static/js/site/common.js"></script>
+  <script src="/static/demo/demo.js{{version}}"></script>
+  <script src="/static/js/site/common.js{{version}}"></script>
 	{% block scripts %}{% endblock %}
   <script>
     $(document).ready(function() {
@@ -222,4 +222,3 @@
 </body>
 
 </html>
-

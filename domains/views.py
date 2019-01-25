@@ -14,9 +14,8 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Domains",
-        "user":request.session.get("user"),
+        "page":"domains",
         "domains":CsDomains.objects.all(),
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"domains/index.html",context)
 def add_domain(request):

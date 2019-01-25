@@ -10,8 +10,7 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Packages",
-        "user":request.session.get("user"),
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT),
+        "page":"packages",
         "package_list":CsPackages.objects.all()
     }
     return render(request,"packages/index.html",context)

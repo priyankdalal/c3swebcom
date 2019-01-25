@@ -17,8 +17,7 @@ def index(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Orders",
-        "user":request.session.get("user"),
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
+        "page":"orders",
     }
     try:
         if request.session.get("user").role=="admin":
@@ -45,10 +44,9 @@ def search(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Orders/search",
-        "user":request.session.get("user"),
+        "page":"orders",
         "request":request,
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
-    }  
+    }
     if request.method=="GET":
         form=SearchForm(request.GET)
         try:
@@ -68,14 +66,14 @@ def search(request):
                 if form.cleaned_data['end_date']:
                     order_list=order_list.filter(initiated_at__lte=form.cleaned_data['end_date'])
                 if form.cleaned_data['order_by']:
-                    order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])                 
+                    order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])
                 if form.cleaned_data['is_paid']:
                     order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
                 if form.cleaned_data['status']:
                     order_list=order_list.filter(status=form.cleaned_data['status'])
                 context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
         except Exception as err:
-            log.error("error occured: {}".format(str(err))) 
+            log.error("error occured: {}".format(str(err)))
     else:
         form=SearchForm()
     if order_list:
@@ -88,7 +86,7 @@ def search(request):
             order_list=paginator.get_page(page)
         except Exception as err:
             log.error("error occured: {}".format(str(err)))
-        context['order_list']=order_list   
+        context['order_list']=order_list
     context['form']=form
     return render(request,"orders/search.html",context)
 def order_status_update(request):
@@ -117,7 +115,7 @@ def order_status_update(request):
         return JsonResponse({"error":True,"msg":"bad request"})
 
 def get_pdf(request):
-    from .render import Render    
+    from .render import Render
     orders=CsOrders.objects.all()
     today=timezone.now()
     params={
@@ -127,7 +125,7 @@ def get_pdf(request):
         }
     return render(request,'orders/pdf.html',params)
     #return Render.render("orders/pdf.html",params)
-    
+
 def get_csv(request):
     import csv
     from django.utils.encoding import smart_str
@@ -149,7 +147,7 @@ def get_csv(request):
             if form.cleaned_data['end_date']:
                 order_list=order_list.filter(initiated_at__lte=form.cleaned_data['end_date'])
             if form.cleaned_data['order_by']:
-                order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])                 
+                order_list=order_list.filter(initiator_id=form.cleaned_data['order_by'])
             if form.cleaned_data['is_paid']:
                 order_list=order_list.filter(paid=form.cleaned_data['is_paid'])
             if form.cleaned_data['status']:

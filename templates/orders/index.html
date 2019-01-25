@@ -3,8 +3,8 @@
 <div class="row">
     <div class="col-md-12">
         <a href="/orders/search" class="btn btn-primary pull-right search-btn"><i class="material-icons">search</i> Filter Orders</a>
-    </div>    
-            
+    </div>
+
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
@@ -105,7 +105,7 @@
 </div>
 {% endblock %}
 {% block styles %}
-<link rel="stylesheet" href="/static/styles/orders/main.css">
+<link rel="stylesheet" href="/static/styles/orders/main.css{{version}}">
 <style>
     .order-status-cell{
         width:220px;
@@ -125,5 +125,5 @@
 {% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/js/site/order.js"></script>
+<script src="/static/js/site/order.js{{version}}"></script>
 {% endblock %}

@@ -16,7 +16,6 @@ import json
 def index(request):
     context={
         "title":"C3SWebcom - Login",
-        "user":request.session.get("user"),
     }
     if request.session.get("user"):
         return redirect("dashboard")
@@ -38,9 +37,8 @@ def dashboard(request):
         return redirect("/manager")
     context={
         "title":"C3SWebcom - Dashboard",
-        "user":request.session.get("user"),
+        "page":"dashboard",
         "domains":CsDomains.objects.all(),
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"manager/dashboard.html",context)
 def pay(request):
@@ -68,10 +66,10 @@ def pay(request):
                 if form.cleaned_data['ip']:
                     ips_ids=IpTable.objects.filter(ip__icontains=form.cleaned_data['ip']).values_list("user_id",flat=True)
                     ip_users=[(row) for row in ips_ids]
-                    user_list=user_list.filter(id__in=ip_users)                 
+                    user_list=user_list.filter(id__in=ip_users)
             log.debug(user_list.query)
         except Exception as err:
-            log.error("error occured: {}".format(str(err))) 
+            log.error("error occured: {}".format(str(err)))
         pass
     else:
         form=UserSearch()
@@ -87,10 +85,9 @@ def pay(request):
         log.debug(err)
     context={
         "title":"C3SWebcom - Pay",
-        "user":request.session.get("user"),
+        "page":"pay",
         "user_list":user_list,
         "form":form,
-        "websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)
     }
     return render(request,"manager/pay.html",context)
 def do_payment(request):
