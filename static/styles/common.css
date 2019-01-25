@@ -18,6 +18,29 @@ select,select.form-control{
 select.form-control:not([size]):not([multiple]){
     height:36px;
 }
+.sidebar-toggle{
+    position: absolute;
+    z-index: 9;
+    right: 8px;
+}
+.wrapper .sidebar-toggle button:last-child{
+    display: none;
+}
+.wrapper.hide-sidebar .sidebar{
+    left:-200px;
+}
+.wrapper.hide-sidebar .sidebar-toggle button:first-child{
+    display: none;
+}
+.wrapper.hide-sidebar .sidebar-toggle button:last-child{
+    display: block;
+}
+.wrapper.hide-sidebar .main-panel{
+    width: calc(100% - 70px);
+}
+.wrapper.hide-sidebar .sidebar-wrapper .nav .nav-link p{
+    display: none;
+}
 /*progressor****************/
 .progressor{
     display: none;
@@ -186,4 +209,10 @@ table>tbody>tr:hover>td{
 *[data-open="close"] .btn-confirm{
     animation: fadeIn 0.4s;
     animation-fill-mode: forwards;
+}
+*[data-toggle="open"] button:last-child{
+    display: none;
+}
+*[data-toggle="close"] button:first-child{
+    display: none;
 }
