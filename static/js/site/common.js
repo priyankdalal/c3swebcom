@@ -25,12 +25,17 @@ $(".input-helper").click(function(){
 });
 /*sidebar js***************************/
 $(".close-sidebar").click(function(){
+    window.localStorage.setItem("sidebar-open","0");
     $(".wrapper").addClass("hide-sidebar");
 });
 $(".open-sidebar").click(function(){
+    window.localStorage.setItem("sidebar-open","1");
     $(".wrapper").removeClass("hide-sidebar");
 });
-
+if(!!window.localStorage.getItem("sidebar-open")){
+    if(window.localStorage.getItem("sidebar-open")=="0")
+        $(".wrapper").addClass("hide-sidebar");
+}
 /*toast js**************************/
 function show_toast(msg="",type){
     var toast=document.getElementById("toast");
