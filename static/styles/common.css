@@ -58,7 +58,7 @@ select.form-control:not([size]):not([multiple]){
     display: block;
 }
 .wrapper.hide-sidebar .main-panel{
-    width: calc(100% - 70px);
+    width: calc(100% - 90px);
 }
 .wrapper.hide-sidebar .sidebar-wrapper.icons-only{
     display: block;
