@@ -54,6 +54,9 @@ function show_toast(msg="",type){
             case "warning":
                 icon_e.getElementsByClassName('material-icons')[0].innerText="report_problem";
                 break;
+            case "info":
+                icon_e.getElementsByClassName('material-icons')[0].innerText="info";
+                break;
         }
     }
     toast.classList.add("show");
@@ -64,8 +67,17 @@ function show_toast(msg="",type){
         }
     },5000);
 }
+function show_notification_from_json(msg_obj){
+    if(!!msg_obj){
+        msg_obj=$('<textarea />').html(msg_obj).text();
+        console.log(msg_obj);
+        msg_obj=JSON.parse(msg_obj);
+        show_toast(msg_obj.msg,msg_obj.type);
+    }
+}
 $(document).ready(function(){
   $('[data-toggle="tooltip"]').tooltip();
+  show_notification_from_json(flash);
 });
 /*confirm js***********************************/
 if($(".btn-confirm").length>0){

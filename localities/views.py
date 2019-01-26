@@ -32,6 +32,7 @@ def add(request):
             if add_form.cleaned_data['code']:
                 locality.code=add_form.cleaned_data['code']
             locality.save()
+            request.session["flash"]={"msg":"Locality added.","type":"success"}
             return redirect("/localities")
     context['form']=add_form
     return render(request,"localities/add.html",context)
@@ -56,6 +57,7 @@ def edit(request,id):
             if edit_form.cleaned_data['code']:
                 locality.code=edit_form.cleaned_data['code']
             locality.save()
+            request.session["flash"]={"msg":"Locality updated.","type":"info"}
             return redirect("/localities")
     try:
         locality=Localities.objects.get(pk=id)
@@ -63,6 +65,7 @@ def edit(request,id):
         context['form']=edit_form
     except Localities.DoesNotExist as err:
         log.error("Error:", exc_info=True)
+        request.session["flash"]={"msg":err.args[0],"type":"danger"}
     return render(request,"localities/edit.html",context)
 
 def delete(request,id):
@@ -71,8 +74,10 @@ def delete(request,id):
     try:
         locality=Localities.objects.get(pk=id)
         locality.delete()
+        request.session["flash"]={"msg":"Locality deleted.","type":"info"}
     except Localities.DoesNotExist as err:
         log.error("Error:", exc_info=True)
+        request.session["flash"]={"msg":err.args[0],"type":"danger"}
 
     return redirect("/localities")
     pass

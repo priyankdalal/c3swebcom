@@ -39,10 +39,14 @@ def add(request):
                     newpass=sha1(newpass.encode()).hexdigest()
                     adminuser.password=newpass
                 adminuser.save()
+                request.session["flash"]={"msg":"User added.","type":"success"}
                 return redirect("/adminusers")
             pass
         except Exception as err:
-            log.error("error occured: {}".format(str(err)))
+            log.error("error occured: {}".format(str(err)),exc_info=True)
+            request.session["flash"]={"msg":str(err.args[1]),"type":"danger"}
+
+        #what if user exists
     context['form']=add_form
     return render(request,"adminusers/add.html",context)
 
@@ -73,6 +77,7 @@ def edit(request,id):
                         newpass=sha1(newpass.encode()).hexdigest()
                         adminuser.password=newpass
                     adminuser.save()
+                    request.session["flash"]={"msg":"User updated.","type":"warning"}
                     return redirect("/adminusers")
                 else:
                     return redirect("/adminusers")
@@ -84,3 +89,15 @@ def edit(request,id):
     context['adminuser']=adminuser
     context['form']=edit_form
     return render(request,"adminusers/edit.html",context)
+def delete(request,id):
+    if not request.session.get("user") and not id:
+        return redirect("/manager")
+    try:
+        admin_user=AdminUsers.objects.get(pk=id)
+        admin_user.delete()
+        request.session["flash"]={"msg":"User deleted.","type":"warning"}
+    except AdminUsers.DoesNotExist as err:
+        log.error("Error:", exc_info=True)
+
+    return redirect("/adminusers")
+    pass

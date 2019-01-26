@@ -20,7 +20,7 @@ select.form-control:not([size]):not([multiple]){
 }
 /*sidebar css**********************************/
 .sidebar{
-    overflow: hidden;
+    overflow-x: hidden;
 }
 .wrapper .sidebar-wrapper.icons-only,
 .wrapper.hide-sidebar .sidebar-wrapper.full-sidebar,
@@ -62,7 +62,7 @@ select.form-control:not([size]):not([multiple]){
 }
 .wrapper.hide-sidebar .sidebar-wrapper.icons-only{
     display: block;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 /*sidebar css end*********************************/
 /*progressor****************/

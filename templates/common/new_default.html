@@ -44,10 +44,11 @@
   <script src="/static/js/core/bootstrap-material-design.min.js"></script>
   <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <script src="/static/js/material-dashboard.min.js?v=2.1.1"></script>
+  <script>var flash='{{ flash }}';</script>
+  {% block scripts %}{% endblock %}
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="/static/demo/demo.js{{version}}"></script>
   <script src="/static/js/site/common.js{{version}}"></script>
-	{% block scripts %}{% endblock %}
   <script>
     $(document).ready(function() {
       $().ready(function() {
