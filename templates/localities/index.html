@@ -2,9 +2,12 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12 text-right">
-        <div class="btn-group">
-            <a href="add" class="btn btn-primary btn-lg" title="Add New Locality">
-                <i class="material-icons">add_locations</i>
+        <div class="btn-group btn-group-lg">
+            <a href="add" class="btn btn-primary" title="Add New Locality">
+                Add New
+            </a>
+            <a href="assign-users" class="btn btn-primary" title="Assign Users">
+                Assign Users
             </a>
         </div>
     </div>
@@ -32,11 +35,17 @@
                                 <tr class="text-center">
                                     <td>{{locality.name}}</td>
                                     <td>{{locality.code}}</td>
-                                    <td><a href="edit/{{locality.id}}" class="btn btn-primary"><i class="material-icons">create</i></button></td>
+                                    <td>
+                                        {% if locality.id == 1 %}
+                                        <button class="btn btn-default" disabled title="Edit Locality"><i class="material-icons">create</i></button>
+                                        {% else %}
+                                        <a href="edit/{{locality.id}}" class="btn btn-primary" title="Edit Locality"><i class="material-icons">create</i></a>
+                                        {% endif %}
+                                    </td>
                                     <td data-open="close">
-                                        <button class="btn btn-danger btn-confirm"><i class="material-icons">delete</i></button>
+                                        <button {% if locality.id == 1 %} class="btn btn-default btn-confirm" disabled {% else %}class="btn btn-danger btn-confirm"{% endif %} title="Delete Locality"><i class="material-icons">delete</i></button>
                                         <button class="btn btn-danger btn-cancel"><i class="material-icons">clear</i></button>
-                                        <button class="btn btn-success btn-ok" data-locality="{{locality.id}}"><i class="material-icons">done</i></button>
+                                        <button class="btn btn-success btn-ok" id="delete_locality" data-locality="{{locality.id}}"><i class="material-icons">done</i></button>
                                     </td>
                                 </tr>
                             {% endfor %}

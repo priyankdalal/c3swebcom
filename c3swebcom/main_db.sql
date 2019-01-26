@@ -80,7 +80,11 @@ delete from django_session;
 alter table admin_users add column password_string varchar(100) not null default "1111";
 
 
-create table localities(
+create table cs_localities(
 	id int not null auto_increment primary key,
     `name` varchar(100) not null,
     `code` varchar(100) not null)ENGINE=InnoDB;
+INSERT INTO `cs_localities` VALUES (1,'default','default');
+
+alter table cs_users add column locality int default 1 after address;
+alter table cs_users add foreign key(locality) references cs_localities(id);

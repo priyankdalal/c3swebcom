@@ -6,4 +6,5 @@ urlpatterns=[
     path("add",views.add,name="add-locality"),
     path("edit/<int:id>",views.edit,name="edit-locality"),
     path("delete/<int:id>",views.delete,name="delete-locality"),
+    path("assign-users",views.assign_users,name="assign-users"),
 ]

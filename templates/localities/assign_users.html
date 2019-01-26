@@ -1,0 +1,58 @@
+{% extends "common/new_default.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-right">
+        <div data-open="close">
+            <button class="btn btn-primary btn-lg btn-confirm" title="Assign Users">
+                Auto Assign
+            </button>
+            <button class="btn btn-success btn-lg btn-cancel"><i class="material-icons">clear</i></button>
+            <button class="btn btn-danger btn-lg btn-ok" id="auto_assign"><i class="material-icons">done</i></button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title">Localities</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Locality</th>
+                                <th>Assign</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if user_list %}
+                            {% for user in user_list %}
+                            <tr id="user_{{user.id}}">
+                                <td>{{user.id}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.address}}</td>
+                                <td class="user-locality"> {% if user.locality == 0 %} Unassigned {% else %} {{user.locality.name}} {% endif %}</td>
+                                <td><button class="btn btn-primary assign-btn">Assign</button></td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td class="text-center" colspan="5">No data found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/site/localities.js{{version}}"></script>
+{% endblock  %}

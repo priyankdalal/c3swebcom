@@ -1,5 +1,6 @@
 from django.db import models
 from django.db import connection
+from localities.models import CsLocalities
 from c3swebcom.utils import dict_fetch_all
 from hashlib import sha1
 import logging
@@ -12,6 +13,7 @@ class CsUsers(models.Model):
     name = models.CharField(max_length=100)
     password = models.CharField(max_length=100, blank=True, null=True)
     address = models.CharField(max_length=500, blank=True, null=True)
+    locality = models.ForeignKey(CsLocalities, models.DO_NOTHING, db_column='locality', blank=True, null=True)
     ip_count = models.IntegerField(blank=True, null=True)
     expiry_date = models.DateField(blank=True, null=True)
     package = models.CharField(max_length=100, blank=True, null=True)
@@ -23,7 +25,7 @@ class CsUsers(models.Model):
         managed = False
         db_table = 'cs_users'
         unique_together = (('ccid', 'domain'),)
-        ordering = ['-id']
+        ordering = ['id']
     def validateUser(user,password):
         if not user.strip() or not password.strip():
             return False
