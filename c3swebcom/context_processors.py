@@ -18,9 +18,7 @@ def websocket_processor(request):
     return {"websocket":"{}:{}".format(conf_vars.WEBSOCKET_SERVER,conf_vars.WEBSOCKET_PORT)}
 
 def flash_processor(request):
-    print(request.session.get("flash"))
     if request.session:
-        print(request.session)
         if request.session.get("flash"):
             flash=request.session.get("flash")
             del request.session['flash']
