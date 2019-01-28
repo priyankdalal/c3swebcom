@@ -1,44 +1,31 @@
 <!DOCTYPE html>
 <html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>{{ title }}</title>
-<meta name="csrf_token" content="{{csrf_token}}" />
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/static/styles/w3.css">
-<link rel="stylesheet" href="/static/styles/css.css">
-<link rel="stylesheet" href="/static/styles/common.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8" />
+    <meta name="csrf_token" content="{{csrf_token}}" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/static/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+      {{ title }}
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- CSS Files -->
+    <link href="/static/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+    <link href="/static/styles/common.css{{version}}" rel="stylesheet" />
+    <link href="/static/styles/login.css{{version}}" rel="stylesheet" />
+{% block styles %}{% endblock %}
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 </head>
-<body class="w3-light-grey">
-<!-- Overlay effect when opening sidebar on small screens -->
-<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
-{% block content %}
-
-{% endblock %}
-    <div class="w3-modal" id="alert_modal">
-        <div class="w3-modal-content w3-card">
-            <div class="w3-center" style="height: 52px;">
-                <span class="w3-button w3-xlarge w3-hover-red w3-display-topright close-w3-modal">&times;</span>
-            </div>
-            <div class="w3-container w3-border-top w3-padding-16">
-                <div class="w3-section">
-                    <div class="w3-panel">
-                        <h3>Info!</h3>
-                        <p id="alert_msg">Blue often indicates a neutral informative change or action.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="w3-container w3-border-top w3-padding-16 w3-light-grey">
-               <div class="w3-display-container" style="height: 36px">
-                    <button class="w3-button w3-round w3-teal w3-display-bottomright close-w3-modal">Dismiss</button>
-                </div>
-            </div>
-        </div>
+<body class="">
+    <div class="wrapper">
+      {% block content %}{% endblock %}
     </div>
+</body>
 
 
 <script>
@@ -66,6 +53,8 @@ function w3_close() {
 }
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>var flash='{{ flash }}';</script>
+<script src="/static/js/site/login.js{{version}}"></script>
 {% block scripts %}{% endblock %}
 
 

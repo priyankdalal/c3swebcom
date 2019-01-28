@@ -1,41 +1,43 @@
 {% extends "common/default_nodecorations.html" %}
 {% block content %}
-<div class="w3-main">
-    <!-- Header -->
-    <div class="login-box">
-        <div class="w3-container w3-margin-top">
-            <form method="POST" class="w3-container w3-card-4">
-                {% csrf_token %}
-                <div class="w3-panel">
-                    <h5><b><i class="fa fa-users"></i> Login </b></h5>
-                </div>
-                <div class="w3-panel w3-red" id="error">
-                   <p>{{error}}</p>
-                </div>
-                <p>
-                    <label for="">Username</label>
-                    <input type="text" class="w3-input" name="username" id="username" />
-                </p>
-                <p>
-                    <label for="password">Password</label>
-                    <input type="password" class="w3-input" name="password" id="password" />
-                </p>
-                <p>
-                    <input type="submit" value="login" class="w3-button w3-blue w3-hover-teal w3-col m12 w3-margin-bottom" />
-                </p>
-            </form>
-        </div>
-    </div>
+<div id="formContent">
+  <!-- Tabs Titles -->
+
+  <!-- Icon -->
+  <div class="login-title first">
+    {# <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" /> #}
+    Please Login
+  </div>
+
+  <!-- Login Form -->
+  <form action="" method="post">
+      {% csrf_token %}
+      {{ form.name }}
+      {{ form.password }}
+    <input type="submit" class=" fourth" value="Log In">
+  </form>
+
+  <!-- Remind Passowrd -->
+  <div id="formFooter">
+      <p>For C3SWebcom</p>
+    {# <a class="underlineHover" href="#">Forgot Password?</a> #}
+  </div>
+
+</div>
+<div class="toast" id="toast">
+    <div id="img" class="icon"><i class="material-icons">notification_important</i></div>
+    <div id="toast_msg" class="toast-msg">A notification message..</div>
 </div>
 {% endblock %}
 {% block styles %}
 <style>
+body{
+    background:url(/static/img/login-bg.png);
+}
 .manager-url{
     background-color:#2196F3;
 }
 </style>
 {% endblock %}
 {% block scripts%}
-<script>var error="{{error}}";</script>
-<script src="/static/scripts/login.js{{version}}"></script>
 {% endblock %}

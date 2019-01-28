@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse,JsonResponse
 from django.utils import timezone
-from .forms import UserSearch
+from .forms import UserSearch, LoginForm
 from c3swebcom import conf_vars
 from adminmanager.models import AdminUsers
 from .models import AdminManager
@@ -20,16 +20,17 @@ def index(request):
     if request.session.get("user"):
         return redirect("dashboard")
     if request.method=="POST":
-        if "username" in request.POST and "password" in request.POST:
-            isUser=AdminManager.validateAdminUser(request.POST['username'],request.POST['password'])
+        loginform=LoginForm(request.POST)
+        if loginform.is_valid():
+            isUser=AdminManager.validateAdminUser(loginform.cleaned_data['name'],loginform.cleaned_data['password'])
             if isUser==True:
-                admin_user=AdminUsers.objects.get(name=request.POST['username'])
+                admin_user=AdminUsers.objects.get(name=loginform.cleaned_data['name'])
                 request.session['user']=admin_user
                 return redirect("dashboard")
             else:
-                context["error"]="invalid user/password."
-        else:
-            context['error']="invalid request."
+                request.session["flash"]={"msg":"Invalid username/password.","type":"danger"}
+    loginform=LoginForm()
+    context['form']=loginform
     return render(request,"manager/index.html",context)
 
 def dashboard(request):
