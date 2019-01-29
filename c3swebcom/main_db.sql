@@ -88,3 +88,14 @@ INSERT INTO `cs_localities` VALUES (1,'default','default');
 
 alter table cs_users add column locality int default 1 after address;
 alter table cs_users add foreign key(locality) references cs_localities(id);
+
+CREATE TABLE `cs_price_mappings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `package` int(11) DEFAULT NULL,
+  `locality` int(11) DEFAULT NULL,
+  `price` float(10,2) DEFAULT '0.00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+alter table cs_price_mappings add foreign key(package) references cs_packages(id);
+alter table cs_price_mappings add foreign key(locality) references cs_localities(id);
