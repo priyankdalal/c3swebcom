@@ -12,36 +12,35 @@ PackageManager.prototype.pingUrl=function(){
     var that=this;
     console.log(that.websoket_url);
 };
-PackageManager.prototype.syncAll=function(domain){
-    if(!!this.websoket_url && !!domain){
+PackageManager.prototype.syncAll=function(){
+    if(!!this.websoket_url){
         var that=this;
         var websocket=new WebSocket(that.websoket_url);
         websocket.onerror=function(){
-            that.progressModel.hide();
+            that.progressModel.modal("hide");
             that.errorModel.find(".error-message").html("Error while connecting to Package Module. Please contact support.");
-            that.errorModel.show();
+            that.errorModel.modal();
             websocket.close();
         };
         websocket.onopen=function(){
-            websocket.send(JSON.stringify({op:"sync_packages",host:domain}));
+            websocket.send(JSON.stringify({op:"sync_packages"}));
         };
         websocket.onmessage=function(e){
             var data=JSON.parse(e.data);
             console.log(data);
             if(!!data.error){
-                that.progressModel.hide();
+                that.progressModel.modal("hide");;
                 that.errorModel.find(".error-message").html(data.msg);
-                that.errorModel.show();
+                that.errorModel.modal();
             }
             else{
                 if(data.end){
-                    that.progressModel.hide();
-                    that.resultModel.find(".result-message").text(data.msg);
-                    that.resultModel.show();
+                    that.progressModel.modal("hide");
+                    show_toast(data.msg,"success");
                 }else{
                     that.progressModel.find(".progress-bar-text").text(data.msg);
-                    that.progressModel.show();
-                    that.progressModel.find(".progress-bar").width(data.step+"%");
+                    that.progressModel.modal();
+                    that.progressModel.find("#progress_bar").width(data.step+"%").text(data.msg);
                 }
             }
         };
@@ -118,7 +117,7 @@ $("#sync_package").click(function(){
         errorModel:$("#error_modal"),
         resultModel:$("#result_modal")
         });
-    pm.syncAll("epay.globalnoc.in");
+    pm.syncAll();
 });
 $(document).on("click",".update-package",function(){
     var package_id=$(this).data("id");

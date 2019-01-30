@@ -1,5 +1,6 @@
 from django.db import models
 from domains.models import CsDomains
+from localities.models import CsLocalities
 
 class CsPackages(models.Model):
     remote_id = models.IntegerField()
@@ -11,3 +12,11 @@ class CsPackages(models.Model):
         managed = False
         db_table = 'cs_packages'
 
+class CsPriceMappings(models.Model):
+    package = models.ForeignKey(CsPackages, models.DO_NOTHING, db_column='package')
+    locality = models.ForeignKey(CsLocalities, models.DO_NOTHING, db_column='locality')
+    price = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cs_price_mappings'
