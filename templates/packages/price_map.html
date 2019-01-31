@@ -14,33 +14,33 @@
                         <h4>Packages</h4>
                         <ul class="list-group">
                             {% for package in packages %}
-                                <li class="list-group-item list-group-item-primary" draggable="true">{{package.name}}</li>
+                                <li class="list-group-item list-group-item-primary package-item" id="package_{{package.id}}" data-type="package" data-id="{{package.id}}" ondragstart="drag(event)" draggable="true">{{package.name}}</li>
                             {% endfor %}
                         </ul>
                     </div>
                     <div class="col-sm-4 selection-container">
                         <div class="form-group">
                             <label for="select_packages">Packages</label>
-                            <select name="" id="select_packages" class="form-control" multiple>
-                                <optgroup label="Unavalible">
-                                    <option>Please select from  left side</option>
-                                </optgroup>
+                            <select name="" id="select_packages" data-type="package" class="form-control" multiple ondrop="drop(event)" ondragover="allowdrag(event)">
+                                <option disabled>Please select from  left side</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="select_localities">Localities</label>
-                            <select name="" id="select_localities" class="form-control" multiple>
-                                <optgroup label="Unavalible">
-                                    <option>Please select from  right side</option>
-                                </optgroup>
+                            <select name="" id="select_localities" data-type="locality" class="form-control" multiple ondrop="drop(event)" ondragover="allowdrag(event)">
+                                <option disabled>Please select from  right side</option>
                             </select>
+                        </div>
+                        <div>
+                            <input type="text" id="package_collection" />
+                            <input type="text" id="locality_collection" />
                         </div>
                     </div>
                     <div class="col-sm-4 locality-container">
                         <h4>Localities</h4>
                         <ul class="list-group">
                             {% for locality in localities %}
-                                <li class="list-group-item list-group-item-primary" draggable="true">{{locality.name}}</li>
+                                <li class="list-group-item list-group-item-primary locality-item" id="locality_{{locality.id}}" data-type="locality" data-id="{{locality.id}}" ondragstart="drag(event)" draggable="true">{{locality.name}}</li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -94,5 +94,5 @@
 {% endblock %}
 {% block scripts%}
 <script>var websoket_url='{{ websocket }}';</script>
-<script src="/static/js/site/package.js{{version}}"></script>
+<script src="/static/js/site/pricemap.js{{version}}"></script>
 {% endblock %}
