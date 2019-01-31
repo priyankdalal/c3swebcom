@@ -1,3 +1,16 @@
 .alert{
     display:none;
 }
+.package-container .list-group,
+.locality-container .list-group{
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.package-container .list-group li,
+.locality-container .list-group li{
+    cursor: pointer;
+    border-top:1px solid;
+}
+.selection-container select{
+    min-height:100px;
+}

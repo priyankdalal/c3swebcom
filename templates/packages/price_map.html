@@ -5,43 +5,45 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-header-primary">
-                    <h4 class="card-title">Packages</h4>
+                    <h4 class="card-title">Price Map</h4>
                 </div>
             </div>
             <div class="card-body">
-                <ul class="nav nav-pills">
-                    <li class="nav-item">
-                        <button class="btn btn-primary" id="sync_package"><i class="material-icons">assignment_returned</i> Sync Packages</button>
-                    </li>
-                    <li class="nav-item">
-                        <a href="price-map" class="btn btn-primary"><i class="material-icons">assignment_returned</i> Map Packages to Localities</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead class="text-primary">
-                            <tr>
-                                <th>Remote ID</th><th>Name</th><th>Value</th><th>Domain</th><th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% if package_list %}
-                                {% for package in package_list %}
-                                <tr id="package_{{package.id}}">
-                                    <td data-filter="remote">{{ package.remote_id }}</td>
-                                    <td data-filter="name">{{ package.name }}</td>
-                                    <td data-filter="value"><i class="fa fa-inr"></i> {{ package.value }}</td>
-                                    <td data-filter="domain">{{ package.domain.name }}</td>
-									<td><button class="btn btn-primary update-package" data-id="{{package.id}}">Update</button></td>
-                                </tr>
-                                {% endfor %}
-                            {% else %}
-                                <tr><td colspan="5" class="text-center">No data to show</td></tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-sm-4 package-container">
+                        <h4>Packages</h4>
+                        <ul class="list-group">
+                            {% for package in packages %}
+                                <li class="list-group-item list-group-item-primary" draggable="true">{{package.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-sm-4 selection-container">
+                        <div class="form-group">
+                            <label for="select_packages">Packages</label>
+                            <select name="" id="select_packages" class="form-control" multiple>
+                                <optgroup label="Unavalible">
+                                    <option>Please select from  left side</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="select_localities">Localities</label>
+                            <select name="" id="select_localities" class="form-control" multiple>
+                                <optgroup label="Unavalible">
+                                    <option>Please select from  right side</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 locality-container">
+                        <h4>Localities</h4>
+                        <ul class="list-group">
+                            {% for locality in localities %}
+                                <li class="list-group-item list-group-item-primary" draggable="true">{{locality.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

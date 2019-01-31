@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.core import serializers
 from c3swebcom import conf_vars
 from .models import CsPackages
+from localities.models import CsLocalities
 
 # Create your views here.
 def index(request):
@@ -63,3 +64,14 @@ def updatePackage(request):
             return JsonResponse({"error":True,"msg":"Bad request method"})
     else:
      return JsonResponse({"error":True,"msg":"Bad request"})
+
+def priceMap(request):
+    if not request.session.get("user"):
+        return redirect("/manager")
+    context={
+        "title":"C3SWebcom - Packages : Price Map",
+        "packages":CsPackages.objects.all(),
+        "localities":CsLocalities.objects.all(),
+    }
+    return render(request,"packages/price_map.html",context)
+    pass

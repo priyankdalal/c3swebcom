@@ -11,6 +11,7 @@ class CsPackages(models.Model):
     class Meta:
         managed = False
         db_table = 'cs_packages'
+        unique_together = (('remote_id', 'domain'),)
 
 class CsPriceMappings(models.Model):
     package = models.ForeignKey(CsPackages, models.DO_NOTHING, db_column='package')
