@@ -42,11 +42,25 @@ def index(request):
 def dashboard(request):
     if not request.session.get("user"):
         return redirect("/manager")
+    from orders.models import CsOrders
+    from django.db.models import Count
     context={
         "title":"C3SWebcom - Dashboard",
         "page":"dashboard",
         "domains":CsDomains.objects.all(),
+        "total":0,
+        "paid":0,
+        "completed":0,
     }
+    total=CsOrders.objects.aggregate(total_count=Count('id'))
+    if total:
+        context['total']=total['total_count']
+    paid=CsOrders.objects.filter(paid="1").aggregate(paid_count=Count('id'))
+    if paid:
+        context['paid']=paid['paid_count']
+    completed=CsOrders.objects.filter(status="1").aggregate(completed_count=Count('id'))
+    if completed:
+        context['completed']=completed['completed_count']
     return render(request,"manager/dashboard.html",context)
 def pay(request):
     if not request.session.get("user"):
