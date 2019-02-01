@@ -101,3 +101,4 @@ alter table cs_price_mappings add foreign key(package) references cs_packages(id
 alter table cs_price_mappings add foreign key(locality) references cs_localities(id);
 
 alter table cs_packages add unique(remote_id,domain_id);
+alter table admin_users add column enabled enum("0","1") default "1";

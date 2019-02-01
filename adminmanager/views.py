@@ -38,6 +38,8 @@ def add(request):
                     newpass=adminuser.name+add_form.cleaned_data['password_string']
                     newpass=sha1(newpass.encode()).hexdigest()
                     adminuser.password=newpass
+                if add_form.cleaned_data['enabled']:
+                    adminuser.enabled=add_form.cleaned_data['enabled'];
                 adminuser.save()
                 request.session["flash"]={"msg":"User added.","type":"success"}
                 return redirect("/adminusers")
@@ -76,6 +78,8 @@ def edit(request,id):
                         newpass=adminuser.name+edForm.cleaned_data['password_string']
                         newpass=sha1(newpass.encode()).hexdigest()
                         adminuser.password=newpass
+                    if edForm.cleaned_data['enabled']:
+                        adminuser.enabled=edForm.cleaned_data['enabled'];
                     adminuser.save()
                     request.session["flash"]={"msg":"User updated.","type":"warning"}
                     return redirect("/adminusers")

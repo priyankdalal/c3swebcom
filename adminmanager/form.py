@@ -7,9 +7,11 @@ class EditForm(forms.Form):
     password_string=forms.CharField(label="Password",required=False,widget=forms.PasswordInput(render_value=True,attrs={'class':'form-control'}))
     role=forms.ChoiceField(label="Role",required=False,choices=(("admin","Admin"),("operator","Operator")),widget=forms.Select(attrs={'class':'form-control'}))
     password_changed=forms.CharField(label="pass_change",widget=forms.HiddenInput(attrs={'value':'0'}))
+    enabled=forms.ChoiceField(label="Is user enabled",required=False,choices=(("1","Enabled"),("0","Disabled")),widget=forms.Select(attrs={'class':'form-control'}))
 
 class AddForm(forms.Form):
     name=forms.CharField(label="Name",required=True,widget=forms.TextInput(attrs={'class':'form-control'}))
     password=forms.CharField(label="OrigPassword",required=False,widget=forms.PasswordInput(attrs={'class':'form-control'}))
     password_string=forms.CharField(label="Password",required=True,widget=forms.PasswordInput(render_value=True,attrs={'class':'form-control'}))
     role=forms.ChoiceField(label="Role",required=True,choices=(("admin","Admin"),("operator","Operator")),widget=forms.Select(attrs={'class':'form-control'}))
+    enabled=forms.ChoiceField(label="Is user enabled",required=False,choices=(("1","Enabled"),("0","Disabled")),widget=forms.Select(attrs={'class':'form-control'}))

@@ -12,7 +12,8 @@ class AdminManager():
             admin_user=AdminUsers.objects.get(name=user)
         except AdminUsers.DoesNotExist:
             return False
-        print(admin_user)
+        if admin_user.enabled=="0":
+            return False
         en_pass=user+password
         en_pass=sha1(en_pass.encode()).hexdigest()
         if admin_user.password==en_pass:
