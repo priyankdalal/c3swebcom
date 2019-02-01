@@ -7,18 +7,18 @@ class AdminManager():
 
     def validateAdminUser(user,password):
         if not user.strip() or not password.strip():
-            return False
+            return 1
         try:
             admin_user=AdminUsers.objects.get(name=user)
         except AdminUsers.DoesNotExist:
-            return False
+            return 2
         if admin_user.enabled=="0":
-            return False
+            return 3
         en_pass=user+password
         en_pass=sha1(en_pass.encode()).hexdigest()
         if admin_user.password==en_pass:
-            return True
-        return False
+            return 0
+        return 4
 
     def create_order(params):
         order=CsOrders.objects.create()

@@ -22,13 +22,19 @@ def index(request):
     if request.method=="POST":
         loginform=LoginForm(request.POST)
         if loginform.is_valid():
-            isUser=AdminManager.validateAdminUser(loginform.cleaned_data['name'],loginform.cleaned_data['password'])
-            if isUser==True:
+            status=AdminManager.validateAdminUser(loginform.cleaned_data['name'],loginform.cleaned_data['password'])
+            if status==0:
                 admin_user=AdminUsers.objects.get(name=loginform.cleaned_data['name'])
                 request.session['user']=admin_user
                 return redirect("dashboard")
+            elif status==1:
+                request.session["flash"]={"msg":"No user/password given.","type":"danger"}
+            elif status==2:
+                request.session["flash"]={"msg":"This user doesnot exists.","type":"danger"}
+            elif status==3:
+                request.session["flash"]={"msg":"User is currently disabled, Please contact admin.","type":"danger"}
             else:
-                request.session["flash"]={"msg":"Invalid username/password.","type":"danger"}
+                request.session["flash"]={"msg":"Internal error, Please contact administrator.","type":"danger"}
     loginform=LoginForm()
     context['form']=loginform
     return render(request,"manager/index.html",context)
