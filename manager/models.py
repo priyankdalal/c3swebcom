@@ -45,3 +45,55 @@ class AdminManager():
         order=CsOrders.objects.get(pk=id)
         order.status=1
         order.save()
+
+class SummaryManger():
+    def get_orders_summary():
+        import datetime
+        from orders.models import CsOrders
+        from django.db.models import Count
+        res={
+            "all_time":{
+                "total":0,
+                "paid":0,
+                "completed":0,},
+            "monthly":{
+                "total":0,
+                "paid":0,
+                "completed":0,},
+            "today":{
+                "total":0,
+                "paid":0,
+                "completed":0,},
+        }
+        total=CsOrders.objects.aggregate(total_count=Count('id'))
+        if total:
+            res['all_time']['total']=total['total_count']
+        paid=CsOrders.objects.filter(paid="1").aggregate(paid_count=Count('id'))
+        if paid:
+            res['all_time']['paid']=paid['paid_count']
+        completed=CsOrders.objects.filter(status="1").aggregate(completed_count=Count('id'))
+        if completed:
+            res['all_time']['completed']=completed['completed_count']
+        today=datetime.date.today()
+        month=today.month
+        year=today.year
+        total=CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).aggregate(total_count=Count('id'))
+        print(total)
+        if total:
+            res['monthly']['total']=total['total_count']
+        paid=CsOrders.objects.filter(paid="1").filter(initiated_at__month=month).filter(initiated_at__year=year).aggregate(paid_count=Count('id'))
+        if paid:
+            res['monthly']['paid']=paid['paid_count']
+        completed=CsOrders.objects.filter(status="1").filter(initiated_at__month=month).filter(initiated_at__year=year).aggregate(completed_count=Count('id'))
+        if completed:
+            res['monthly']['completed']=completed['completed_count']
+        total=CsOrders.objects.filter(initiated_at__date=today).aggregate(total_count=Count('id'))
+        if total:
+            res['today']['total']=total['total_count']
+        paid=CsOrders.objects.filter(paid="1").filter(initiated_at__date=today).aggregate(paid_count=Count('id'))
+        if paid:
+            res['today']['paid']=paid['paid_count']
+        completed=CsOrders.objects.filter(status="1").filter(initiated_at__date=today).aggregate(completed_count=Count('id'))
+        if completed:
+            res['today']['completed']=completed['completed_count']
+        return res

@@ -13,12 +13,29 @@
                 <!--<h3 class="card-title">
                     this
                 </h3>-->
-                <div class="text-success">
-                    <span class="badge badge-success">Paid : {{paid}}</span>
-                    <span class="badge badge-info">Completed : {{completed}}</span>
-                    <span class="badge badge-light">Total : {{total}}</span>
-                </div>
                 <a href="/manager/pay" class="btn btn-warning">Do Payment</a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="text-warning">All Time</div>
+                        <span class="badge badge-success">Paid : {{orders_summary.all_time.paid}}</span>
+                        <span class="badge badge-info">Completed : {{orders_summary.all_time.completed}}</span>
+                        <span class="badge badge-light">Total : {{orders_summary.all_time.total}}</span>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-warning">This Month</div>
+                        <span class="badge badge-success">Paid : {{orders_summary.monthly.paid}}</span>
+                        <span class="badge badge-info">Completed : {{orders_summary.monthly.completed}}</span>
+                        <span class="badge badge-light">Total : {{orders_summary.monthly.total}}</span>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-warning">Today</div>
+                        <span class="badge badge-success">Paid : {{orders_summary.today.paid}}</span>
+                        <span class="badge badge-info">Completed : {{orders_summary.today.completed}}</span>
+                        <span class="badge badge-light">Total : {{orders_summary.today.total}}</span>
+                    </div>
+                </div>
             </div>
             <div class="card-footer">
                 <div class="stats">
