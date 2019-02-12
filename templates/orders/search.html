@@ -101,7 +101,7 @@
 		    <table class="table">
 			<thead class="text-primary">
 			    <tr>
-				<th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>Initiated At</th><th>Recharged At</th><th>Payment</th><th style="width:180px">Status</th><th>Action</th>
+				<th>ID</th><th>Username</th><th style="width:200px">Address</th><th>By</th><th>Domain</th><th>Initiated At</th><th>Recharged At</th><th>Payment</th><th style="width:180px">Status</th><th>Action</th>
 			    </tr>
 			</thead>
 			<tbody>
@@ -116,7 +116,8 @@
 				     <td>{{ order.user.name }}</td>
 				     <td data-toggle="tooltip" title="{{ order.user.address }}"><div class="text-scroll">{{ order.user.address }}</div></td>
 				     <td>{% if order.initiator_type == "admin" %}{{ order.initiator.name }} {% else %} self {% endif %}</td>
-				     <td>{{ order.initiated_at|date:'d/m/Y' }}</td>
+ 				     <td>{{ order.user.domain }}</td>
+				     <td>{{ order.initiated_at|date:'d/m/Y H:i:s' }}</td>
 				     <td>{{ order.completed_at|date:'d/m/Y'  }}</td>
 				     <td class="payment-status-cell" id="payment_td_{{order.id}}">
 				       {% if order.paid == "0" or user.role == "admin" %}
