@@ -48,6 +48,7 @@ def dashboard(request):
         "page":"dashboard",
         "domains":CsDomains.objects.all(),
         "orders_summary":SummaryManger.get_orders_summary(),
+        "res_data":json.dumps(SummaryManger.get_chart_summary())
     }
     return render(request,"manager/dashboard.html",context)
 def pay(request):

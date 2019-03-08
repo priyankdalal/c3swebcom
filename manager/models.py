@@ -97,3 +97,35 @@ class SummaryManger():
         if completed:
             res['today']['completed']=completed['completed_count']
         return res
+
+    def get_chart_summary():
+        import datetime
+        from orders.models import CsOrders
+        from django.db.models import Count
+        res={}
+        today=datetime.date.today()
+        year=today.year
+        month_wise = CsOrders.objects.filter(initiated_at__year=year).extra({"order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
+        month_wise = month_wise.values("order_month","order_year")
+        month_wise = month_wise.annotate(order_count=Count('id'))
+        month_chart_data=[]
+        for d in month_wise:
+            temp = {}
+            temp['count'] = d['order_count']
+            temp['month'] = "{}-{}".format(d['order_month'],d['order_year'])
+            month_chart_data.append(temp)
+        res['monthwise']=month_chart_data
+        today=datetime.date.today()
+        month=today.month
+        day_wise = CsOrders.objects.filter(initiated_at__month=month).extra({"order_day":"DAY(initiated_at)","order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
+        day_wise = day_wise.values("order_day","order_month","order_year")
+        day_wise = day_wise.annotate(order_count=Count('id'))
+        day_chart_data=[]
+        for d in day_wise:
+            temp = {}
+            temp['count'] = d['order_count']
+            temp['day'] = "{}-{}-{}".format(d['order_day'],d['order_month'],d['order_year'])
+            day_chart_data.append(temp)
+        res['daywise']=day_chart_data
+        print(res)
+        return res

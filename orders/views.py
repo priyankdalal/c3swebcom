@@ -51,7 +51,7 @@ def search(request):
         form=SearchForm(request.GET)
         try:
             if request.session.get("user").role=="admin":
-                order_list=CsOrders.objects.filter()
+                order_list=CsOrders.objects.filter().order_by("-initiated_at")
             else:
                 order_list=CsOrders.objects.filter(initiator_id=request.session.get("user").id)
             if form.is_valid():
@@ -72,6 +72,7 @@ def search(request):
                 if form.cleaned_data['status']:
                     order_list=order_list.filter(status=form.cleaned_data['status'])
                 context['valid']="valid : {}".format(form.cleaned_data['is_paid'])
+            order_list.order_by("-initiated_at")
         except Exception as err:
             log.error("error occured: {}".format(str(err)))
     else:

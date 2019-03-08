@@ -69,6 +69,28 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-chart">
+            <div class="card-header card-header-warning">
+                <div class="ct-chart" id="dailyOrdersChart"></div>
+            </div>
+            <div class="card-body">
+                Daily Chart
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-chart">
+            <div class="card-header card-header-danger">
+                <div class="ct-chart" id="monthlyOrdersChart"></div>
+            </div>
+            <div class="card-body">
+                Montly Chart
+            </div>
+        </div>
+    </div>
+</div>
 <div id="domain_select_modal" class="modal fade domain-select-modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -135,6 +157,11 @@
 </style>
 {% endblock %}
 {% block scripts%}
+<script src="/static/js/plugins/chartist.min.js"></script>
 <script>var websoket_url='{{ websocket }}';</script>
+<script>
+    var res_data=JSON.parse('{{ res_data|safe }}');
+    console.log(res_data);
+</script>
 <script src="/static/js/site/dashboard.js{{version}}"></script>
 {% endblock %}

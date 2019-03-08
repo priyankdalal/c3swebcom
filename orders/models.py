@@ -22,4 +22,4 @@ class CsOrders(models.Model):
     class Meta:
         managed = False
         db_table = 'cs_orders'
-        ordering = ('-initiated_at',)
+        #ordering = ('-initiated_at',)

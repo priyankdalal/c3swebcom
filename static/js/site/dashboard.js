@@ -90,3 +90,50 @@ function sync_users(){
     }
   };
 }
+$(document).ready(function(){
+    var daywise=res_data.daywise,monthwise=res_data.monthwise;
+    var dataDailyChart = {
+        labels: daywise.map(function(d){
+            return d.day;
+        }),
+        series: [daywise.map(function(d){
+            return d.count;
+        })]
+    };
+    var dataMonthlyChart = {
+        labels: monthwise.map(function(d){
+            return d.month;
+        }),
+        series: [monthwise.map(function(d){
+            return d.count;
+        })]
+    };
+    var optionsDailyChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 1
+        }),
+        low: 0,
+        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+    };
+    var optionsMonthlyChart = {
+        lineSmooth: Chartist.Interpolation.cardinal({
+          tension: 1
+        }),
+        low: 0,
+        high: 700, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        chartPadding: {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        },
+    };
+    var dailyOrderChart = new Chartist.Line('#dailyOrdersChart', dataDailyChart, optionsDailyChart);
+    var dailyOrderChart = new Chartist.Line('#monthlyOrdersChart', dataMonthlyChart, optionsMonthlyChart);
+});
