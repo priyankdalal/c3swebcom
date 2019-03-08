@@ -126,7 +126,7 @@ $(document).ready(function(){
           tension: 1
         }),
         low: 0,
-        high: 700, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         chartPadding: {
           top: 0,
           right: 0,
