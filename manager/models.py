@@ -112,7 +112,7 @@ class SummaryManger():
         for d in month_wise:
             temp = {}
             temp['count'] = d['order_count']
-            temp['month'] = "{}-{}".format(d['order_month'],d['order_year'])
+            temp['month'] = "{}".format(d['order_month'])
             month_chart_data.append(temp)
         res['monthwise']=month_chart_data
         today=datetime.date.today()
@@ -124,7 +124,7 @@ class SummaryManger():
         for d in day_wise:
             temp = {}
             temp['count'] = d['order_count']
-            temp['day'] = "{}-{}-{}".format(d['order_day'],d['order_month'],d['order_year'])
+            temp['day'] = "{}".format(d['order_day'])
             day_chart_data.append(temp)
         res['daywise']=day_chart_data
         print(res)
