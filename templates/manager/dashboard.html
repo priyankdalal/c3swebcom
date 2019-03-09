@@ -73,7 +73,8 @@
     <div class="col-md-12">
         <div class="card card-chart">
             <div class="card-header card-header-warning">
-                <div class="ct-chart" id="dailyOrdersChart"></div>
+                <!-- <div class="ct-chart" id="dailyOrdersChart"></div>-->
+                <canvas id="dailyOrdersChart" width="400" height="150"></canvas>
             </div>
             <div class="card-body">
                 Daily Chart
@@ -83,7 +84,10 @@
     <div class="col-md-12">
         <div class="card card-chart">
             <div class="card-header card-header-danger">
-                <div class="ct-chart" id="monthlyOrdersChart"></div>
+                <!--<div class="ct-chart" id="monthlyOrdersChart"></div>-->
+                <div class="chart-container" style="position: relative;">
+                    <canvas id="monthlyOrdersChart" width="400" height="150"></canvas>
+                </div>
             </div>
             <div class="card-body">
                 Montly Chart
@@ -157,7 +161,7 @@
 </style>
 {% endblock %}
 {% block scripts%}
-<script src="/static/js/plugins/chartist.min.js"></script>
+<script src="/static/js/plugins/Chart.min.js"></script>
 <script>var websoket_url='{{ websocket }}';</script>
 <script>
     var res_data=JSON.parse('{{ res_data|safe }}');

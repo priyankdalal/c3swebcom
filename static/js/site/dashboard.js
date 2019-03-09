@@ -91,49 +91,95 @@ function sync_users(){
   };
 }
 $(document).ready(function(){
+    var dailyCtx = document.getElementById("dailyOrdersChart").getContext('2d');
+    var monthlyCtx = document.getElementById("monthlyOrdersChart").getContext('2d');
     var daywise=res_data.daywise,monthwise=res_data.monthwise;
-    var dataDailyChart = {
-        labels: daywise.map(function(d){
-            return d.day;
-        }),
-        series: [daywise.map(function(d){
-            return d.count;
-        })]
-    };
-    var dataMonthlyChart = {
-        labels: monthwise.map(function(d){
-            return d.month;
-        }),
-        series: [monthwise.map(function(d){
-            return d.count;
-        })]
-    };
-    var optionsDailyChart = {
-        lineSmooth: Chartist.Interpolation.cardinal({
-          tension: 1
-        }),
-        low: 0,
-        high: 100, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        chartPadding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
+    var chartOptions={
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true,
+                    fontColor:'#fff'
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor:'#fff'
+                }
+            }]
         },
-    };
-    var optionsMonthlyChart = {
-        lineSmooth: Chartist.Interpolation.cardinal({
-          tension: 1
-        }),
-        low: 0,
-        high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        chartPadding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
+        title:{
+            fontColor:'rgb(200,30,40)'
         },
+        legend:{
+            labels:{
+                fontColor:'#fff'
+            }
+        }
     };
-    var dailyOrderChart = new Chartist.Line('#dailyOrdersChart', dataDailyChart, optionsDailyChart);
-    var dailyOrderChart = new Chartist.Line('#monthlyOrdersChart', dataMonthlyChart, optionsMonthlyChart);
+    var monthlyChart = new Chart(monthlyCtx,{
+        responsive:true,
+        type:"line",
+        data:{
+            labels:monthwise.map(function(d){
+                //return d.month;
+                if(d.month=='1')
+                    return "Jan";
+                if(d.month=='2')
+                    return "Feb";
+                if(d.month=='3')
+                    return "Mar";
+                if(d.month=='4')
+                    return "Apr";
+                if(d.month=='5')
+                    return "May";
+                if(d.month=='6')
+                    return "Jun";
+                if(d.month=='7')
+                    return "Jul";
+                if(d.month=='8')
+                    return "Aug";
+                if(d.month=='9')
+                    return "Sep";
+                if(d.month=='10')
+                    return "Oct";
+                if(d.month=='11')
+                    return "Nov";
+                if(d.month=='12')
+                    return "Dec";
+            }),
+            datasets:[{
+                label:"Orders",
+                data:monthwise.map(function(d){
+                    return d.count;
+                }),
+                borderWidth:2,
+                backgroundColor:'rgba(233,233,233,0.45)',
+                borderColor:'#fff',
+                pointRadius:8
+            }]
+        },
+        options:chartOptions
+    });
+
+    var dailyChart = new Chart(dailyCtx,{
+        responsive:true,
+        type:"line",
+        data:{
+            labels:daywise.map(function(d){
+                return d.day;
+            }),
+            datasets:[{
+                label:"Orders",
+                data:daywise.map(function(d){
+                    return d.count;
+                }),
+                borderWidth:2,
+                backgroundColor:'rgba(233,233,233,0.45)',
+                borderColor:'#fff',
+                pointRadius:8
+            }]
+        },
+        options:chartOptions
+    });
 });
