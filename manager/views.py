@@ -48,7 +48,9 @@ def dashboard(request):
         "page":"dashboard",
         "domains":CsDomains.objects.all(),
         "orders_summary":SummaryManger.get_orders_summary(),
-        "res_data":json.dumps(SummaryManger.get_chart_summary(user=request.session.get("user")))
+        "res_data":json.dumps(SummaryManger.get_chart_summary(user=request.session.get("user"))),
+        "dailyChartData":json.dumps(SummaryManger.get_daily_chart_summary(request.session.get('user'))),
+        "dailyPaymentWiseData":json.dumps(SummaryManger.get_daily_chart_payment_summary(request.session.get('user')))
     }
     return render(request,"manager/dashboard.html",context)
 def pay(request):

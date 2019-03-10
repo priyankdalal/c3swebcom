@@ -60,7 +60,6 @@ function sync_users(){
     show_toast("Error occred while connecting to payment module. Please contact support.","danger");
   };
   websock.onmessage=function(e){
-    console.log(e);
     var data=JSON.parse(e.data);
     /*if(!!data.error){
       $("#error_message").html(data.msg);
@@ -91,14 +90,41 @@ function sync_users(){
   };
 }
 $(document).ready(function(){
-    var daywise=res_data.daywise,monthwise=res_data.monthwise;
-    var dayStaffWise = res_data.dayStaffWise;
+    drawMonthlyChart(monthlyChartData);
+    drawYearlyChart(yearlyChartData);
+    drawMonthlyPaymentWiseChart(dailyPaymentWiseData);
+});
+function drawMonthlyChart(monthlyData){
+    var daywise=monthlyData.daywise,dayStaffWise = monthlyData.dayStaffWise;
     var days_arr=daywise.map(function(d){
         return d.day;
     });
-    console.log(days_arr);
+
     var dailyCtx = document.getElementById("dailyOrdersChart").getContext('2d');
-    var monthlyCtx = document.getElementById("monthlyOrdersChart").getContext('2d');
+
+    var chartOptions={
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true,
+                    fontColor:'#fff'
+                }
+            }],
+            xAxes: [{
+                ticks: {
+                    fontColor:'#fff'
+                }
+            }]
+        },
+        title:{
+            fontColor:'rgb(200,30,40)'
+        },
+        legend:{
+            labels:{
+                fontColor:'#fff'
+            }
+        }
+    };
 
     var datasets=[{
         label:"Total Orders",
@@ -131,7 +157,23 @@ $(document).ready(function(){
         data['pointRadius']=3;
         datasets.push(data);
     }
-    console.log(datasets);
+
+    var montlyChart = new Chart(dailyCtx,{
+        responsive:true,
+        type:"line",
+        data:{
+            labels:daywise.map(function(d){
+                return d.day;
+            }),
+            datasets:datasets.sort()
+        },
+        options:chartOptions
+    });
+
+}
+function drawYearlyChart(yearlyData){
+    var monthwise=yearlyData.monthwise;
+    var monthlyCtx = document.getElementById("monthlyOrdersChart").getContext('2d');
     var chartOptions={
         scales: {
             yAxes: [{
@@ -199,26 +241,49 @@ $(document).ready(function(){
         },
         options:chartOptions
     });
-
-    var dailyChart = new Chart(dailyCtx,{
-        responsive:true,
-        type:"line",
-        data:{
-            labels:daywise.map(function(d){
-                return d.day;
-            }),
-            /*datasets:[{
-                label:"Orders",
-                data:daywise.map(function(d){
-                    return d.count;
-                }),
-                borderWidth:2,
-                backgroundColor:'rgba(233,233,233,0.45)',
-                borderColor:'#fff',
-                pointRadius:8
-            }]*/
-            datasets:datasets.sort()
+}
+function drawMonthlyPaymentWiseChart(monthlyData){
+    var monthlyObj = monthlyData.monthlyPaymentWiseData;
+    var ctx = document.getElementById("dailyOrdersPaymentChart").getContext('2d');
+    var datasets = [];
+    for(var status in monthlyObj.chartData){
+        var set={
+            label: status+ " orders",
+            data:monthlyObj.users.map(function(d){
+                return monthlyObj.chartData[status][d];
+            })
+        }
+        if(status == 'paid')
+            set['backgroundColor'] = "darkseagreen";
+        else
+            set['backgroundColor'] = "indianred";
+        datasets.push(set);
+    }
+    var options = {
+        scales: {
+            xAxes: [{
+                stacked: true
+            }],
+            yAxes: [{
+                stacked: true
+            }]
         },
-        options:chartOptions
+        title:{
+            fontColor:'rgb(200,30,40)'
+        },
+        /*legend:{
+            labels:{
+                fontColor:'#fff'
+            }
+        }*/
+    };
+    var data = {
+        labels: monthlyObj.users,
+        datasets: datasets
+    }
+    var payementChart = new Chart(ctx,{
+        type: 'bar',
+        data: data,
+        options: options
     });
-});
+}

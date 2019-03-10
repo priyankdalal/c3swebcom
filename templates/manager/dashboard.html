@@ -77,7 +77,18 @@
                 <canvas id="dailyOrdersChart" width="400" height="80"></canvas>
             </div>
             <div class="card-body">
-                Daily Chart
+                Daily Chart - Staff Wise
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card card-chart">
+            <div class="card-header">
+                <!-- <div class="ct-chart" id="dailyOrdersChart"></div>-->
+                <canvas id="dailyOrdersPaymentChart" width="400" height="80"></canvas>
+            </div>
+            <div class="card-body">
+                Monthly Chart - Payment Wise
             </div>
         </div>
     </div>
@@ -164,8 +175,10 @@
 <script src="/static/js/plugins/Chart.min.js"></script>
 <script>var websoket_url='{{ websocket }}';</script>
 <script>
-    var res_data=JSON.parse('{{ res_data|safe }}');
-    console.log(res_data);
+    var yearlyChartData=JSON.parse('{{ res_data|safe }}');
+    var monthlyChartData = JSON.parse('{{ dailyChartData|safe }}');
+    var dailyPaymentWiseData = JSON.parse('{{ dailyPaymentWiseData|safe }}');
+    console.log(dailyPaymentWiseData);
 </script>
 <script src="/static/js/site/dashboard.js{{version}}"></script>
 {% endblock %}

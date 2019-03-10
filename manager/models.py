@@ -1,7 +1,9 @@
 from django.db import models
+from django.db.models import Count
 from hashlib import sha1
 from orders.models import CsOrders
 from adminmanager.models import AdminUsers
+import datetime
 #create your models here
 class AdminManager():
 
@@ -48,9 +50,6 @@ class AdminManager():
 
 class SummaryManger():
     def get_orders_summary():
-        import datetime
-        from orders.models import CsOrders
-        from django.db.models import Count
         res={
             "all_time":{
                 "total":0,
@@ -78,7 +77,6 @@ class SummaryManger():
         month=today.month
         year=today.year
         total=CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).aggregate(total_count=Count('id'))
-        print(total)
         if total:
             res['monthly']['total']=total['total_count']
         paid=CsOrders.objects.filter(paid="1").filter(initiated_at__month=month).filter(initiated_at__year=year).aggregate(paid_count=Count('id'))
@@ -99,9 +97,6 @@ class SummaryManger():
         return res
 
     def get_chart_summary(user):
-        import datetime
-        from orders.models import CsOrders
-        from django.db.models import Count
         res={}
         today=datetime.date.today()
         year=today.year
@@ -116,6 +111,14 @@ class SummaryManger():
             month_chart_data.append(temp)
         res['monthwise']=month_chart_data
         month=today.month
+        return res
+
+    def get_daily_chart_summary(user):
+
+        today = datetime.date.today()
+        year = today.year
+        month=today.month
+        res = {}
         day_wise = CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).filter(initiator_type='admin').extra({"order_day":"DAY(initiated_at)","order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
         day_wise = day_wise.values("order_day","order_month","order_year")
         day_wise = day_wise.annotate(order_count=Count('id'))
@@ -138,4 +141,35 @@ class SummaryManger():
                 day_staff_chart_data[entry['initiator__name']]=[]
             day_staff_chart_data[entry['initiator__name']].append({'order_day':entry['order_day'],'order_count':entry['order_count']})
         res['dayStaffWise']=day_staff_chart_data
+        return res
+
+    def get_daily_chart_payment_summary(user):
+        today = datetime.date.today()
+        year = today.year
+        month = today.month
+        res={}
+
+        daily_data = CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).filter(initiator_type='admin')
+        if user.name != "admin":
+            daily_data = daily_data.filter(initiator__name = user.name)
+        daily_data = daily_data.values('initiator__name','paid')
+        daily_data = daily_data.annotate(order_count = Count('id'))
+
+        daily_chart_data = {'paid': {},"pending": {}}
+        users=[]
+        for entry in daily_data:
+            if not entry['initiator__name'] in users:
+                users.append(entry['initiator__name'])
+
+            if entry['paid'] == "1":
+                if not entry['initiator__name'] in daily_chart_data['paid']:
+                    daily_chart_data['paid'][entry['initiator__name']]=int(entry['order_count'])
+                else:
+                    daily_chart_data['paid'][entry['initiator__name']] += int(entry['order_count'])
+            else:
+                if not entry['initiator__name'] in daily_chart_data['pending']:
+                    daily_chart_data['pending'][entry['initiator__name']]=int(entry['order_count'])
+                else:
+                    daily_chart_data['pending'][entry['initiator__name']] += int(entry['order_count'])
+        res['monthlyPaymentWiseData']={"chartData":daily_chart_data,"users":users}
         return res
