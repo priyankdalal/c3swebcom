@@ -91,9 +91,47 @@ function sync_users(){
   };
 }
 $(document).ready(function(){
+    var daywise=res_data.daywise,monthwise=res_data.monthwise;
+    var dayStaffWise = res_data.dayStaffWise;
+    var days_arr=daywise.map(function(d){
+        return d.day;
+    });
+    console.log(days_arr);
     var dailyCtx = document.getElementById("dailyOrdersChart").getContext('2d');
     var monthlyCtx = document.getElementById("monthlyOrdersChart").getContext('2d');
-    var daywise=res_data.daywise,monthwise=res_data.monthwise;
+
+    var datasets=[{
+        label:"Total Orders",
+        data:daywise.map(function(d){
+            return d.count;
+        }),
+        borderWidth:2,
+        backgroundColor:'rgba(233,233,233,0.45)',
+        borderColor:'#fff',
+        pointRadius:4
+    }];
+    for(var i in dayStaffWise){
+        var data={};
+        data['label']=i+ " orders";
+        data['data']=days_arr.map(function(d){
+            //debugger;
+            var r=0;
+            for(var j in dayStaffWise[i]){
+                if(dayStaffWise[i][j].order_day==parseInt(d)){
+                    r=dayStaffWise[i][j].order_count;
+                    break;
+                }
+            }
+            return r;
+        });
+        data['borderWidth']=1;
+        data['backgroundColor']='rgba('+ Math.round(Math.random()*200)+ ','+ Math.round(Math.random()*200)+ ','+ Math.round(Math.random()*200)+ ',0.5)';
+        //debugger;
+        data['borderColor']='#fff';
+        data['pointRadius']=3;
+        datasets.push(data);
+    }
+    console.log(datasets);
     var chartOptions={
         scales: {
             yAxes: [{
@@ -169,7 +207,7 @@ $(document).ready(function(){
             labels:daywise.map(function(d){
                 return d.day;
             }),
-            datasets:[{
+            /*datasets:[{
                 label:"Orders",
                 data:daywise.map(function(d){
                     return d.count;
@@ -178,7 +216,8 @@ $(document).ready(function(){
                 backgroundColor:'rgba(233,233,233,0.45)',
                 borderColor:'#fff',
                 pointRadius:8
-            }]
+            }]*/
+            datasets:datasets.sort()
         },
         options:chartOptions
     });

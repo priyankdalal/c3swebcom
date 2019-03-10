@@ -115,11 +115,11 @@ class SummaryManger():
             temp['month'] = "{}".format(d['order_month'])
             month_chart_data.append(temp)
         res['monthwise']=month_chart_data
-        today=datetime.date.today()
         month=today.month
-        day_wise = CsOrders.objects.filter(initiated_at__month=month).extra({"order_day":"DAY(initiated_at)","order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
+        day_wise = CsOrders.objects.filter(initiated_at__month=2).filter(initiated_at__year=year).filter(initiator_type='admin').extra({"order_day":"DAY(initiated_at)","order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
         day_wise = day_wise.values("order_day","order_month","order_year")
         day_wise = day_wise.annotate(order_count=Count('id'))
+        print(day_wise.query)
         day_chart_data=[]
         for d in day_wise:
             temp = {}
@@ -127,5 +127,16 @@ class SummaryManger():
             temp['day'] = "{}".format(d['order_day'])
             day_chart_data.append(temp)
         res['daywise']=day_chart_data
-        print(res)
+
+        day_staff_wise = CsOrders.objects.filter(initiated_at__month=2).filter(initiated_at__year=year).filter(initiator_type='admin')
+        day_staff_wise = day_staff_wise.extra({"order_day":"DAY(initiated_at)"})
+        day_staff_wise = day_staff_wise.values('initiator__name','order_day').annotate(order_count=Count('id'))
+        print(day_staff_wise.query)
+        day_staff_chart_data={}
+        for entry in day_staff_wise:
+            if not entry['initiator__name'] in day_staff_chart_data:
+                day_staff_chart_data[entry['initiator__name']]=[]
+            day_staff_chart_data[entry['initiator__name']].append({'order_day':entry['order_day'],'order_count':entry['order_count']})
+        print(day_staff_chart_data)
+        res['dayStaffWise']=day_staff_chart_data
         return res
