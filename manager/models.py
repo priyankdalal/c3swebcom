@@ -98,8 +98,9 @@ class SummaryManger():
             res['today']['completed']=completed['completed_count']
         return res
 
-    def get_chart_summary():
+    def get_chart_summary(user):
         import datetime
+        print(user)
         from orders.models import CsOrders
         from django.db.models import Count
         res={}
@@ -119,7 +120,6 @@ class SummaryManger():
         day_wise = CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).filter(initiator_type='admin').extra({"order_day":"DAY(initiated_at)","order_month":"MONTH(initiated_at)","order_year":"YEAR(initiated_at)"})
         day_wise = day_wise.values("order_day","order_month","order_year")
         day_wise = day_wise.annotate(order_count=Count('id'))
-        print(day_wise.query)
         day_chart_data=[]
         for d in day_wise:
             temp = {}
@@ -129,14 +129,14 @@ class SummaryManger():
         res['daywise']=day_chart_data
 
         day_staff_wise = CsOrders.objects.filter(initiated_at__month=month).filter(initiated_at__year=year).filter(initiator_type='admin')
+        if user.name!="admin":
+            day_staff_wise = day_staff_wise.filter(initiator__name = user.name)
         day_staff_wise = day_staff_wise.extra({"order_day":"DAY(initiated_at)"})
         day_staff_wise = day_staff_wise.values('initiator__name','order_day').annotate(order_count=Count('id'))
-        print(day_staff_wise.query)
         day_staff_chart_data={}
         for entry in day_staff_wise:
             if not entry['initiator__name'] in day_staff_chart_data:
                 day_staff_chart_data[entry['initiator__name']]=[]
             day_staff_chart_data[entry['initiator__name']].append({'order_day':entry['order_day'],'order_count':entry['order_count']})
-        print(day_staff_chart_data)
         res['dayStaffWise']=day_staff_chart_data
         return res
