@@ -100,7 +100,6 @@ class SummaryManger():
 
     def get_chart_summary(user):
         import datetime
-        print(user)
         from orders.models import CsOrders
         from django.db.models import Count
         res={}
